@@ -744,12 +744,23 @@ type MessageType =
 ### 6.2 Message Subclasses
 
 ```ts
+/** Options for message construction */
+interface MessageOptions {
+  id?: string;
+  metadata?: MessageMetadata;
+}
+
 /**
  * User input message
  */
 class UserMessage extends Message {
   readonly type = 'user';
   readonly content: UserContent[];
+
+  /**
+   * @param content - String (converted to TextBlock) or array of content blocks
+   */
+  constructor(content: string | UserContent[], options?: MessageOptions);
 }
 
 type UserContent = TextBlock | ImageBlock | AudioBlock | VideoBlock | BinaryBlock;
@@ -764,6 +775,17 @@ class AssistantMessage extends Message {
 
   /** Tool calls requested by the model (if any) */
   readonly toolCalls?: ToolCall[];
+
+  /**
+   * @param content - String (converted to TextBlock) or array of content blocks
+   * @param toolCalls - Tool calls requested by the model
+   * @param options - Message ID and metadata
+   */
+  constructor(
+    content: string | AssistantContent[],
+    toolCalls?: ToolCall[],
+    options?: MessageOptions
+  );
 
   /** Check if this message requests tool execution */
   get hasToolCalls(): boolean {
@@ -785,6 +807,12 @@ interface ToolCall {
 class ToolResultMessage extends Message {
   readonly type = 'tool_result';
   readonly results: ToolResult[];
+
+  /**
+   * @param results - Array of tool execution results
+   * @param options - Message ID and metadata
+   */
+  constructor(results: ToolResult[], options?: MessageOptions);
 }
 
 interface ToolResult {
@@ -894,10 +922,15 @@ class Image {
 
   private constructor(source: ImageSource, mimeType: string);
 
-  /** Create from file path (loads data) */
+  /** Create from file path (reads file into memory) */
   static fromPath(path: string): Promise<Image>;
 
-  /** Create from URL (provider will fetch or pass URL based on support) */
+  /**
+   * Create from URL reference.
+   * Does NOT fetch the image - just stores the URL.
+   * Provider decides how to handle: pass URL directly if supported,
+   * or fetch and convert to base64 during request transformation.
+   */
   static fromUrl(url: string, mimeType?: string): Image;
 
   /** Create from raw bytes */
@@ -906,14 +939,26 @@ class Image {
   /** Create from base64 string */
   static fromBase64(base64: string, mimeType: string): Image;
 
-  /** Convert to base64 string (loads if needed) */
-  toBase64(): Promise<string>;
+  /** Check if this image has data loaded (false for URL sources) */
+  get hasData(): boolean;
 
-  /** Convert to data URL */
-  toDataUrl(): Promise<string>;
+  /**
+   * Convert to base64 string.
+   * @throws Error if source is URL (no data loaded)
+   */
+  toBase64(): string;
 
-  /** Get raw bytes (loads if needed) */
-  toBytes(): Promise<Uint8Array>;
+  /**
+   * Convert to data URL.
+   * @throws Error if source is URL (no data loaded)
+   */
+  toDataUrl(): string;
+
+  /**
+   * Get raw bytes.
+   * @throws Error if source is URL (no data loaded)
+   */
+  toBytes(): Uint8Array;
 }
 ```
 
@@ -1393,12 +1438,13 @@ const deleteFile: Tool<{ path: string }> = {
 
 By default, useAI handles tool execution automatically:
 
-1. Model returns a message with `ToolCallBlock`
-2. useAI validates parameters against JSON Schema
-3. If `approval` is defined, it's called first (rejected = error result sent to model)
-4. Tool's `run` function is executed
-5. Result (or error) is sent back to the model as `ToolResultBlock`
-6. Loop continues until model returns without tool calls OR max iterations reached
+1. Model returns an `AssistantMessage` with `toolCalls`
+2. If `approval` is defined, it's called first (rejected = error result sent to model)
+3. Tool's `run` function is executed with arguments from the model
+4. Result (or error) is sent back to the model as `ToolResultMessage`
+5. Loop continues until model returns without tool calls OR max iterations reached
+
+**Important:** useAI does NOT validate tool arguments against the JSON Schema. The schema is provided to the model to guide its output, but validation and sanitization of LLM-provided arguments is the responsibility of the tool implementation. Always treat tool arguments as untrusted input.
 
 ### 10.5 ToolUseStrategy
 
@@ -1698,6 +1744,7 @@ export {
   UserMessage,       // User input
   AssistantMessage,  // Assistant response (may include tool calls)
   ToolResultMessage, // Tool execution results
+  MessageOptions,    // Constructor options
   MessageMetadata,   // Provider-namespaced metadata
   MessageType,       // Message type discriminator
 
