@@ -272,13 +272,47 @@ import { toBase64, toDataUrl } from 'useAI/mutators';
 
 The provider MUST transform vendor responses to UPP structures:
 
-- Map vendor response to appropriate `Message` subclass (`AssistantMessage`, `ToolCallMessage`)
+- Map vendor response to `AssistantMessage` (which may include `toolCalls`)
 - Map streaming chunks to `MessageFragment` with fragment metadata
-- Preserve vendor-specific metadata in `Message.meta`
+- Preserve vendor-specific metadata in `Message.metadata` under the provider's namespace
 
 **Note:** The provider returns a single `ProviderResponse`. useAI core handles constructing the full `Turn` including tool loops.
 
-#### 4.4.3 System Prompt Handling
+#### 4.4.3 Metadata Handling
+
+Providers MUST handle their own metadata namespace in `Message.metadata`:
+
+**Extracting metadata from responses:**
+```ts
+// Google provider extracting thought_signature
+const message = new AssistantMessage(content, toolCalls, {
+  metadata: {
+    google: {
+      thought_signature: vendorResponse.thought_signature,
+    },
+  },
+});
+```
+
+**Including metadata in requests:**
+```ts
+// When sending messages back to the API, providers extract their namespace
+function transformToVendor(message: Message) {
+  const googleMeta = message.metadata?.google;
+  return {
+    role: message.type,
+    content: transformContent(message.content),
+    // Include provider-specific fields
+    ...(googleMeta?.thought_signature && {
+      thought_signature: googleMeta.thought_signature,
+    }),
+  };
+}
+```
+
+Providers SHOULD preserve unknown metadata fields during round-trips to support future API additions.
+
+#### 4.4.4 System Prompt Handling
 
 The provider MUST handle system prompts according to vendor requirements:
 
@@ -290,7 +324,7 @@ The provider MUST handle system prompts according to vendor requirements:
 
 UPP accepts system prompts at the `useAI` level and providers transform accordingly.
 
-#### 4.4.4 Structured Output Handling
+#### 4.4.5 Structured Output Handling
 
 If `structure` is provided, the provider MUST:
 
@@ -298,7 +332,7 @@ If `structure` is provided, the provider MUST:
 2. Enable structured output mode on the API request
 3. If the vendor doesn't support native structured outputs, the provider is responsible for parsing and validating the response against the schema
 
-#### 4.4.5 Error Handling
+#### 4.4.6 Error Handling
 
 The provider MUST normalize errors to `UPPError`:
 
@@ -316,6 +350,7 @@ type ErrorCode =
   | 'CONTEXT_LENGTH_EXCEEDED'
   | 'MODEL_NOT_FOUND'
   | 'INVALID_REQUEST'
+  | 'INVALID_RESPONSE'      // Response failed validation (e.g., structured output)
   | 'PROVIDER_ERROR'
   | 'NETWORK_ERROR'
   | 'TIMEOUT'
@@ -433,21 +468,35 @@ class DynamicKey implements KeyStrategy {
 interface AIInstance<TParams = unknown> {
   /**
    * Execute inference and return complete Turn
-   * @param history - Previous messages (or empty array for new conversation)
-   * @param input - New user input(s)
+   *
+   * @overload No history - single input
+   * generate(input: InferenceInput): Promise<Turn>
+   *
+   * @overload No history - multiple inputs
+   * generate(...inputs: InferenceInput[]): Promise<Turn>
+   *
+   * @overload With history
+   * generate(history: Message[] | Thread, ...inputs: InferenceInput[]): Promise<Turn>
    */
   generate(
-    history: Message[] | Thread,
+    historyOrInput: Message[] | Thread | InferenceInput,
     ...input: InferenceInput[]
   ): Promise<Turn>;
 
   /**
    * Execute streaming inference
-   * @param history - Previous messages (or empty array for new conversation)
-   * @param input - New user input(s)
+   *
+   * @overload No history - single input
+   * stream(input: InferenceInput): StreamResult
+   *
+   * @overload No history - multiple inputs
+   * stream(...inputs: InferenceInput[]): StreamResult
+   *
+   * @overload With history
+   * stream(history: Message[] | Thread, ...inputs: InferenceInput[]): StreamResult
    */
   stream(
-    history: Message[] | Thread,
+    historyOrInput: Message[] | Thread | InferenceInput,
     ...input: InferenceInput[]
   ): StreamResult;
 
@@ -464,6 +513,24 @@ interface AIInstance<TParams = unknown> {
 type InferenceInput = string | Message | ContentBlock;
 ```
 
+**History Detection:**
+
+useAI determines if the first argument is history or input:
+- `Message[]` or `Thread` → history
+- `string`, `Message`, or `ContentBlock` → input (no history)
+
+```ts
+// No history - one-shot inference
+await claude.generate('What is 2+2?');
+
+// No history - multiple inputs
+await claude.generate('Look at this:', image);
+
+// With history
+await claude.generate(history, 'Follow-up question');
+await claude.generate(thread, 'Continue the conversation');
+```
+
 ### 5.5 Basic Usage
 
 ```ts
@@ -478,8 +545,8 @@ const claude = useAI({
   system: 'You are a helpful assistant.',
 });
 
-// Simple inference (no history)
-const turn = await claude.generate([], 'What is the capital of France?');
+// Simple one-shot inference (no history needed)
+const turn = await claude.generate('What is the capital of France?');
 console.log(turn.response.text); // "The capital of France is Paris."
 ```
 
@@ -536,8 +603,8 @@ useAI core manages the tool execution loop. Providers only handle single request
                             │                              │
                             ▼                              │
               ┌─────────────────────────┐                  │
-              │  Response has tool      │──── No ────┐     │
-              │  calls?                 │            │     │
+              │  response.hasToolCalls? │──── No ────┐     │
+              │                         │            │     │
               └─────────────────────────┘            │     │
                             │                        │     │
                            Yes                       │     │
@@ -558,7 +625,8 @@ useAI core manages the tool execution loop. Providers only handle single request
                             │                              │
                             ▼                              │
               ┌─────────────────────────┐                  │
-              │  Append ToolCallMessage │                  │
+              │  Append AssistantMsg    │                  │
+              │  (with toolCalls)       │                  │
               │  Append ToolResultMsg   │                  │
               │  to messages            │──────────────────┘
               └─────────────────────────┘
@@ -623,8 +691,18 @@ abstract class Message {
   /** Timestamp */
   readonly timestamp: Date;
 
-  /** Provider-specific metadata */
-  readonly meta?: Record<string, unknown>;
+  /**
+   * Provider-specific metadata, namespaced by provider.
+   * Providers are responsible for transforming their metadata to/from API format.
+   *
+   * @example
+   * {
+   *   google: { thought_signature: 'abc123...' },
+   *   openai: { reasoning_encrypted: '...' },
+   *   anthropic: { cache_control: { type: 'ephemeral' } }
+   * }
+   */
+  readonly metadata?: MessageMetadata;
 
   /** Message type discriminator */
   abstract readonly type: MessageType;
@@ -636,10 +714,30 @@ abstract class Message {
   readonly text: string;
 }
 
+/**
+ * Provider-namespaced metadata.
+ * Each provider defines its own metadata shape.
+ */
+interface MessageMetadata {
+  google?: {
+    thought_signature?: string;
+    [key: string]: unknown;
+  };
+  openai?: {
+    reasoning_encrypted?: string;
+    [key: string]: unknown;
+  };
+  anthropic?: {
+    cache_control?: { type: 'ephemeral' };
+    [key: string]: unknown;
+  };
+  /** Extensible for other providers */
+  [provider: string]: Record<string, unknown> | undefined;
+}
+
 type MessageType =
   | 'user'
   | 'assistant'
-  | 'tool_call'
   | 'tool_result';
 ```
 
@@ -657,22 +755,23 @@ class UserMessage extends Message {
 type UserContent = TextBlock | ImageBlock | AudioBlock | VideoBlock | BinaryBlock;
 
 /**
- * Assistant response message (text, no tool calls)
+ * Assistant response message
+ * May contain text, media, and/or tool calls
  */
 class AssistantMessage extends Message {
   readonly type = 'assistant';
   readonly content: AssistantContent[];
+
+  /** Tool calls requested by the model (if any) */
+  readonly toolCalls?: ToolCall[];
+
+  /** Check if this message requests tool execution */
+  get hasToolCalls(): boolean {
+    return this.toolCalls !== undefined && this.toolCalls.length > 0;
+  }
 }
 
 type AssistantContent = TextBlock | ImageBlock | AudioBlock | VideoBlock;
-
-/**
- * Assistant message requesting tool execution
- */
-class ToolCallMessage extends Message {
-  readonly type = 'tool_call';
-  readonly calls: ToolCall[];
-}
 
 interface ToolCall {
   toolCallId: string;
@@ -694,6 +793,8 @@ interface ToolResult {
   isError?: boolean;
 }
 ```
+
+**Note:** Models can return both text AND tool calls in a single response (e.g., "I'll check the weather for you." + tool call). `AssistantMessage` handles both cases - check `hasToolCalls` to determine if tool execution is needed.
 
 ### 6.3 Content Blocks
 
@@ -767,13 +868,14 @@ const urlImageMsg = new UserMessage([
   'What is this?',
 ]);
 
-// Assistant message
+// Assistant message (text only)
 const assistantMsg = new AssistantMessage('I can help with that!');
 
-// Tool call message (typically created by provider)
-const toolCallMsg = new ToolCallMessage([
-  { toolCallId: 'call_123', toolName: 'getWeather', arguments: { location: 'Tokyo' } }
-]);
+// Assistant message with tool calls (typically created by provider)
+const assistantWithTools = new AssistantMessage(
+  [{ type: 'text', text: "I'll check the weather for you." }],
+  [{ toolCallId: 'call_123', toolName: 'getWeather', arguments: { location: 'Tokyo' } }]
+);
 
 // Tool result message (created by useAI core after tool execution)
 const toolResultMsg = new ToolResultMessage([
@@ -822,15 +924,17 @@ UPP provides type guards for message handling:
 ```ts
 function isUserMessage(msg: Message): msg is UserMessage;
 function isAssistantMessage(msg: Message): msg is AssistantMessage;
-function isToolCallMessage(msg: Message): msg is ToolCallMessage;
 function isToolResultMessage(msg: Message): msg is ToolResultMessage;
 
 // Usage
 for (const msg of turn.messages) {
-  if (isToolCallMessage(msg)) {
-    console.log('Tool calls:', msg.calls);
-  } else if (isAssistantMessage(msg)) {
+  if (isAssistantMessage(msg)) {
     console.log('Response:', msg.text);
+    if (msg.hasToolCalls) {
+      console.log('Tool calls:', msg.toolCalls);
+    }
+  } else if (isToolResultMessage(msg)) {
+    console.log('Tool results:', msg.results);
   }
 }
 ```
@@ -847,7 +951,7 @@ A `Turn` represents the complete result of one inference call, including all mes
 interface Turn {
   /**
    * All messages produced during this inference, in chronological order.
-   * Types: UserMessage, ToolCallMessage, ToolResultMessage, AssistantMessage
+   * Types: UserMessage, AssistantMessage (may include toolCalls), ToolResultMessage
    */
   readonly messages: Message[];
 
@@ -925,7 +1029,7 @@ const turn = await claude.generate(history, 'What is the weather in Tokyo?');
 
 // Turn contains ALL messages from this inference:
 // 1. UserMessage: "What is the weather in Tokyo?"
-// 2. ToolCallMessage: [{ toolName: 'getWeather', arguments: { location: 'Tokyo' } }]
+// 2. AssistantMessage: { toolCalls: [{ toolName: 'getWeather', arguments: { location: 'Tokyo' } }] }
 // 3. ToolResultMessage: [{ result: '72°F, sunny' }]
 // 4. AssistantMessage: "The weather in Tokyo is 72°F and sunny!"
 
@@ -943,12 +1047,13 @@ history.push(...turn.messages);
 When no tools are called, the turn contains just the user input and assistant response:
 
 ```ts
-const turn = await claude.generate([], 'Hello!');
+const turn = await claude.generate('Hello!');
 
 console.log(turn.messages.length);      // 2
 console.log(turn.messages[0].type);     // 'user'
 console.log(turn.messages[1].type);     // 'assistant'
 console.log(turn.response.text);        // "Hello! How can I help you today?"
+console.log(turn.response.hasToolCalls); // false
 console.log(turn.toolExecutions);       // []
 console.log(turn.cycles);               // 1
 ```
@@ -1566,7 +1671,7 @@ console.log(turn.data);
 ```ts
 // Core types
 type Modality = 'text' | 'image' | 'audio' | 'video' | 'embedding';
-type MessageType = 'user' | 'assistant' | 'tool_call' | 'tool_result';
+type MessageType = 'user' | 'assistant' | 'tool_result';
 
 // Re-exports from sections above
 export {
@@ -1591,9 +1696,10 @@ export {
   // Messages (hierarchy)
   Message,           // Base class
   UserMessage,       // User input
-  AssistantMessage,  // Assistant response (text)
-  ToolCallMessage,   // Assistant requesting tools
+  AssistantMessage,  // Assistant response (may include tool calls)
   ToolResultMessage, // Tool execution results
+  MessageMetadata,   // Provider-namespaced metadata
+  MessageType,       // Message type discriminator
 
   // Message content
   ContentBlock,
@@ -1610,7 +1716,6 @@ export {
   Image,
   isUserMessage,
   isAssistantMessage,
-  isToolCallMessage,
   isToolResultMessage,
 
   // Turns
@@ -1689,7 +1794,7 @@ Per [Section 2.6](#26-http-first-provider-implementation), providers SHOULD use 
 ### 13.2 Creating a Provider
 
 ```ts
-import { Provider, BoundModel, Turn, MessageFragment, UPPError } from 'useAI';
+import { Provider, BoundModel, ProviderResponse, MessageFragment, UPPError } from 'useAI';
 import { parseSSEStream } from 'useAI/http';
 
 const DEFAULT_BASE_URL = 'https://api.vendor.com/v1';
@@ -1717,7 +1822,7 @@ export const myProvider: Provider<MyConfig> = Object.assign(
       modelId,
       provider: myProvider,
 
-      async generate(request) {
+      async complete(request) {
         const apiKey = await getApiKey();
         const body = buildRequestBody(request, modelId);
 
@@ -1736,11 +1841,11 @@ export const myProvider: Provider<MyConfig> = Object.assign(
         }
 
         const data = await response.json();
-        return buildTurn(request, data);
+        return buildProviderResponse(data);
       },
 
       stream(request) {
-        // Implementation shown in 12.5
+        // Implementation shown in 13.5
       },
     };
   },
@@ -1817,34 +1922,38 @@ function transformToolToVendor(tool: Tool): VendorTool {
 ### 13.4 Response Transformation
 
 ```ts
-function buildTurn(request: ProviderRequest, vendorResponse: VendorResponse): Turn {
-  const inputMessages = request.input.map(inputToMessage);
-  const responseMessage = transformVendorResponse(vendorResponse);
+function buildProviderResponse(vendorResponse: VendorResponse): ProviderResponse {
+  const message = transformVendorResponse(vendorResponse);
 
   return {
-    messages: [...inputMessages, responseMessage],
-    response: responseMessage,
-    toolExecutions: [],
+    message,
     usage: {
       inputTokens: vendorResponse.usage?.input_tokens ?? 0,
       outputTokens: vendorResponse.usage?.output_tokens ?? 0,
       totalTokens: (vendorResponse.usage?.input_tokens ?? 0) +
                    (vendorResponse.usage?.output_tokens ?? 0),
     },
-    cycles: 1,
+    stopReason: vendorResponse.stop_reason ?? 'end_turn',
   };
 }
 
-function transformVendorResponse(data: VendorResponse): Message {
-  return new Message(
-    data.content.map(transformVendorContent),
+function transformVendorResponse(data: VendorResponse): AssistantMessage {
+  const content = data.content.map(transformVendorContent);
+  const toolCalls = content
+    .filter((c: any) => c.type === 'tool_call')
+    .map((c: any) => ({
+      toolCallId: c.toolCallId,
+      toolName: c.toolName,
+      arguments: c.arguments,
+    }));
+
+  return new AssistantMessage(
+    content.filter((c: any) => c.type !== 'tool_call'),
+    toolCalls.length > 0 ? toolCalls : undefined,
     {
-      role: 'assistant',
-      meta: {
-        id: data.id,
-        model: data.model,
-        stopReason: data.stop_reason,
-      },
+      id: data.id,
+      model: data.model,
+      stopReason: data.stop_reason,
     }
   );
 }
@@ -1853,22 +1962,16 @@ function transformVendorResponse(data: VendorResponse): Message {
 ### 13.5 Streaming Implementation
 
 ```ts
-stream(request): StreamResult {
-  const controller = new AbortController();
-  const signal = request.signal
-    ? anySignal([request.signal, controller.signal])
-    : controller.signal;
-
-  let turnResolve: (turn: Turn) => void;
-  let turnReject: (error: Error) => void;
-  const turnPromise = new Promise<Turn>((resolve, reject) => {
-    turnResolve = resolve;
-    turnReject = reject;
+stream(request): ProviderStreamResult {
+  let responseResolve: (res: ProviderResponse) => void;
+  let responseReject: (error: Error) => void;
+  const responsePromise = new Promise<ProviderResponse>((resolve, reject) => {
+    responseResolve = resolve;
+    responseReject = reject;
   });
 
-  const self = {
-    turn: turnPromise,
-    abort: () => controller.abort(),
+  const self: ProviderStreamResult = {
+    response: responsePromise,
 
     async *[Symbol.asyncIterator]() {
       try {
@@ -1882,27 +1985,24 @@ stream(request): StreamResult {
             'Authorization': `Bearer ${apiKey}`,
           },
           body: JSON.stringify({ ...body, stream: true }),
-          signal,
+          signal: request.signal,
         });
 
         if (!response.ok) {
           throw await normalizeError(response);
         }
 
-        const fragments: MessageFragment[] = [];
+        const accumulated: any = { content: [] };
 
         for await (const event of parseSSEStream(response.body!)) {
-          const fragment = transformVendorEvent(event);
-          if (fragment) {
-            fragments.push(fragment);
-            yield fragment;
-          }
+          const fragment = transformVendorEvent(event, accumulated);
+          if (fragment) yield fragment;
         }
 
-        const turn = buildTurnFromFragments(request, fragments);
-        turnResolve(turn);
+        const providerResponse = buildProviderResponse(accumulated);
+        responseResolve(providerResponse);
       } catch (error) {
-        turnReject(error as Error);
+        responseReject(error as Error);
         throw error;
       }
     },
@@ -2027,8 +2127,8 @@ Developers should consult individual provider documentation for feature support.
 ```ts
 // useAI/anthropic.ts
 import {
-  Provider, BoundModel, Turn, MessageFragment,
-  UPPError, ProviderConfig, ProviderRequest
+  Provider, BoundModel, ProviderResponse, ProviderStreamResult,
+  MessageFragment, AssistantMessage, UPPError, ProviderConfig, ProviderRequest
 } from 'useAI';
 import { parseSSEStream, toBase64 } from 'useAI/http';
 
@@ -2092,7 +2192,7 @@ export const anthropic: Provider<AnthropicConfig> = Object.assign(
       modelId,
       provider: anthropic,
 
-      async generate(request) {
+      async complete(request) {
         const apiKey = await getApiKey();
         const body = buildBody(request);
 
@@ -2108,22 +2208,21 @@ export const anthropic: Provider<AnthropicConfig> = Object.assign(
         }
 
         const data = await response.json();
-        return buildAnthropicTurn(request, data);
+        return buildAnthropicResponse(data);
       },
 
       stream(request) {
         const controller = new AbortController();
 
-        let turnResolve: (turn: Turn) => void;
-        let turnReject: (error: Error) => void;
-        const turnPromise = new Promise<Turn>((resolve, reject) => {
-          turnResolve = resolve;
-          turnReject = reject;
+        let responseResolve: (res: ProviderResponse) => void;
+        let responseReject: (error: Error) => void;
+        const responsePromise = new Promise<ProviderResponse>((resolve, reject) => {
+          responseResolve = resolve;
+          responseReject = reject;
         });
 
-        const result: StreamResult = {
-          turn: turnPromise,
-          abort: () => controller.abort(),
+        const result: ProviderStreamResult = {
+          response: responsePromise,
 
           async *[Symbol.asyncIterator]() {
             try {
@@ -2148,10 +2247,10 @@ export const anthropic: Provider<AnthropicConfig> = Object.assign(
                 if (fragment) yield fragment;
               }
 
-              const turn = buildAnthropicTurn(request, accumulated);
-              turnResolve(turn);
+              const providerResponse = buildAnthropicResponse(accumulated);
+              responseResolve(providerResponse);
             } catch (error) {
-              turnReject(error as Error);
+              responseReject(error as Error);
               throw error;
             }
           },
@@ -2228,7 +2327,7 @@ function transformToolToAnthropic(tool: Tool) {
   };
 }
 
-function transformAnthropicResponse(data: any): Message {
+function buildAnthropicResponse(data: any): ProviderResponse {
   const content = data.content.map((block: any) => {
     switch (block.type) {
       case 'text':
@@ -2245,32 +2344,39 @@ function transformAnthropicResponse(data: any): Message {
     }
   });
 
-  return new Message(content, {
-    role: 'assistant',
-    meta: {
-      id: data.id,
-      model: data.model,
-      stopReason: data.stop_reason,
-    },
-  });
-}
+  // Extract tool calls from content
+  const toolCalls = content
+    .filter((c: any) => c.type === 'tool_call')
+    .map((c: any) => ({
+      toolCallId: c.toolCallId,
+      toolName: c.toolName,
+      arguments: c.arguments,
+    }));
 
-function buildAnthropicTurn(request: ProviderRequest, data: any): Turn {
-  const inputMessages = request.input.map(i =>
-    typeof i === 'string' ? new Message(i) : i instanceof Message ? i : new Message([i])
+  const message = new AssistantMessage(
+    content.filter((c: any) => c.type !== 'tool_call'),
+    toolCalls.length > 0 ? toolCalls : undefined,
+    {
+      id: data.id,
+      metadata: {
+        anthropic: {
+          model: data.model,
+          stop_reason: data.stop_reason,
+          // Preserve any additional vendor-specific fields
+          ...data.metadata,
+        },
+      },
+    }
   );
-  const responseMessage = transformAnthropicResponse(data);
 
   return {
-    messages: [...inputMessages, responseMessage],
-    response: responseMessage,
-    toolExecutions: [],
+    message,
     usage: {
       inputTokens: data.usage?.input_tokens ?? 0,
       outputTokens: data.usage?.output_tokens ?? 0,
       totalTokens: (data.usage?.input_tokens ?? 0) + (data.usage?.output_tokens ?? 0),
     },
-    cycles: 1,
+    stopReason: data.stop_reason ?? 'end_turn',
   };
 }
 
@@ -2550,7 +2656,8 @@ export class WeightedKeys implements KeyStrategy {
 - `Turn` as inference result containing all messages from one inference cycle
 - `Thread` as optional utility (user-managed)
 - JSON Schema for tool definitions (not Zod)
-- **Message hierarchy**: `UserMessage`, `AssistantMessage`, `ToolCallMessage`, `ToolResultMessage`
+- **Message hierarchy**: `UserMessage`, `AssistantMessage` (with optional `toolCalls`), `ToolResultMessage`
+- **Provider-namespaced metadata**: `Message.metadata` with provider namespaces (e.g., `metadata.google.thought_signature`)
 - **Configuration split**: `config` for provider infra, `params` for model behavior
 - System prompt at useAI level
 - **Structured outputs**: `structure` option with JSON Schema
