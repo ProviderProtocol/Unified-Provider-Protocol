@@ -2461,7 +2461,7 @@ interface ImageResult {
   };
 
   /** Usage/billing information */
-  usage?: ImageUsage;
+  usage: ImageUsage;
 }
 
 interface GeneratedImage {
@@ -2637,7 +2637,7 @@ interface ImageResponse {
   };
 
   /** Usage information */
-  usage?: ImageUsage;
+  usage: ImageUsage;
 }
 
 interface ImageEditRequest<TParams = unknown> {
