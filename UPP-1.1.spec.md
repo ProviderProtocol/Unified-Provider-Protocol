@@ -69,7 +69,7 @@ This specification covers:
 | **BoundModel** | A model instance bound to a specific provider and model ID |
 | **Message** | A single message in an LLM conversation (user, assistant, or tool result) |
 | **Turn** | The complete result of one LLM inference call, containing all messages produced |
-| **MessageFragment** | A partial response during streaming (tokens, partial images, etc.) |
+| **StreamEvent** | A streaming event (lifecycle or content delta) |
 | **Thread** | A utility class for managing LLM conversation history |
 | **Embedding** | A vector representation of text or other content |
 | **UPP** | Unified Provider Protocol |
@@ -691,7 +691,7 @@ interface LLMResponse {
 }
 
 /** Raw provider stream result */
-interface LLMStreamResult extends AsyncIterable<MessageFragment> {
+interface LLMStreamResult extends AsyncIterable<StreamEvent> {
   readonly response: Promise<LLMResponse>;
 }
 ```
@@ -858,7 +858,7 @@ import { toBase64, toDataUrl } from '@providerprotocol/use/mutators';
 The provider MUST transform vendor responses to UPP structures:
 
 - Map vendor response to `AssistantMessage` (which may include `toolCalls`)
-- Map streaming chunks to `MessageFragment` with fragment metadata
+- Map streaming chunks to `StreamEvent` with appropriate event metadata
 - Preserve vendor-specific metadata in `Message.metadata` under the provider's namespace
 
 **Note:** The provider returns a single `LLMResponse`. useLLM core handles constructing the full `Turn` including tool loops.
@@ -1486,7 +1486,7 @@ interface MessageJSON {
 Streaming returns a `StreamResult` that is both an async iterable and provides access to the final `Turn`:
 
 ```ts
-interface StreamResult extends AsyncIterable<MessageFragment> {
+interface StreamResult extends AsyncIterable<StreamEvent> {
   /**
    * Get the complete Turn after streaming finishes.
    * Resolves when the stream completes.
@@ -1498,23 +1498,23 @@ interface StreamResult extends AsyncIterable<MessageFragment> {
 }
 ```
 
-### 9.2 MessageFragment
+### 9.2 StreamEvent
 
-During streaming, providers emit `MessageFragment` objects:
+During streaming, providers emit `StreamEvent` objects:
 
 ```ts
-interface MessageFragment {
-  /** Fragment type */
-  type: FragmentType;
+interface StreamEvent {
+  /** Event type */
+  type: StreamEventType;
 
-  /** Index of the content block this fragment belongs to */
+  /** Index of the content block this event belongs to */
   index: number;
 
-  /** Partial content (type-specific) */
-  delta: FragmentDelta;
+  /** Event data (type-specific) */
+  delta: EventDelta;
 }
 
-type FragmentType =
+type StreamEventType =
   | 'text_delta'           // Partial text token
   | 'reasoning_delta'      // Reasoning/thinking token
   | 'image_delta'          // Partial image data
@@ -1526,7 +1526,7 @@ type FragmentType =
   | 'content_block_start'  // New content block started
   | 'content_block_stop';  // Content block complete
 
-interface FragmentDelta {
+interface EventDelta {
   text?: string;
   data?: Uint8Array;
   toolCallId?: string;
@@ -1549,9 +1549,9 @@ const history: Message[] = [];
 // Stream the response
 const stream = claude.stream(history, 'Write a haiku about programming.');
 
-for await (const fragment of stream) {
-  if (fragment.type === 'text_delta') {
-    process.stdout.write(fragment.delta.text ?? '');
+for await (const event of stream) {
+  if (event.type === 'text_delta') {
+    process.stdout.write(event.delta.text ?? '');
   }
 }
 
@@ -1567,14 +1567,14 @@ When tools are involved, streaming may pause while tools execute:
 ```ts
 const stream = claude.stream(history, 'What is the weather in Paris?');
 
-for await (const fragment of stream) {
-  switch (fragment.type) {
+for await (const event of stream) {
+  switch (event.type) {
     case 'text_delta':
-      process.stdout.write(fragment.delta.text ?? '');
+      process.stdout.write(event.delta.text ?? '');
       break;
     case 'tool_call_delta':
       // Tool call being streamed
-      console.log('[tool]', fragment.delta.toolName);
+      console.log('[tool]', event.delta.toolName);
       break;
     case 'message_stop':
       // A message completed (might be tool call, will continue after tool runs)
@@ -1596,8 +1596,8 @@ setTimeout(() => {
 }, 5000);
 
 try {
-  for await (const fragment of stream) {
-    process.stdout.write(fragment.delta.text ?? '');
+  for await (const event of stream) {
+    process.stdout.write(event.delta.text ?? '');
   }
 } catch (error) {
   if (error instanceof UPPError && error.code === 'CANCELLED') {
@@ -2401,7 +2401,7 @@ interface ImageUsage {
 ### 13.5 Streaming Generation
 
 ```ts
-interface ImageStreamResult extends AsyncIterable<ImageFragment> {
+interface ImageStreamResult extends AsyncIterable<ImageStreamEvent> {
   /** Final result after streaming completes */
   readonly result: Promise<ImageResult>;
 
@@ -2409,7 +2409,7 @@ interface ImageStreamResult extends AsyncIterable<ImageFragment> {
   abort(): void;
 }
 
-type ImageFragment =
+type ImageStreamEvent =
   | { type: 'progress'; percent: number; stage?: string }
   | { type: 'preview'; image: Image; index: number }
   | { type: 'complete'; image: GeneratedImage; index: number };
@@ -2617,7 +2617,7 @@ interface ImageUpscaleRequest<TParams = unknown> {
   signal?: AbortSignal;
 }
 
-interface ImageProviderStreamResult extends AsyncIterable<ImageFragment> {
+interface ImageProviderStreamResult extends AsyncIterable<ImageStreamEvent> {
   readonly response: Promise<ImageResponse>;
 }
 ```
@@ -2725,17 +2725,17 @@ if (sd.stream) {
     prompt: 'A cyberpunk cityscape at night, neon lights, rain',
   });
 
-  for await (const fragment of stream) {
-    switch (fragment.type) {
+  for await (const event of stream) {
+    switch (event.type) {
       case 'progress':
-        console.log(`${fragment.percent}% - ${fragment.stage}`);
+        console.log(`${event.percent}% - ${event.stage}`);
         break;
       case 'preview':
         // Display low-res preview
-        displayPreview(fragment.image, fragment.index);
+        displayPreview(event.image, event.index);
         break;
       case 'complete':
-        console.log(`Image ${fragment.index} complete`);
+        console.log(`Image ${event.index} complete`);
         break;
     }
   }
@@ -2832,9 +2832,9 @@ export {
 // --- Streaming Types ---
 export {
   StreamResult,
-  MessageFragment,
-  FragmentType,
-  FragmentDelta,
+  StreamEvent,
+  StreamEventType,
+  EventDelta,
 };
 
 // --- Schema Types ---
@@ -2872,7 +2872,7 @@ export {
   GeneratedImage,
   ImageUsage,
   ImageStreamResult,
-  ImageFragment,
+  ImageStreamEvent,
   ImageEditInput,
   ImageEditRequest,
   ImageVaryInput,
@@ -3053,7 +3053,7 @@ Providers may implement one or more modalities. For each modality, conformance i
 
 **Level 2: Streaming**
 - `stream()` method implementation
-- Proper `MessageFragment` emission with correct `FragmentType`
+- Proper `StreamEvent` emission with correct `StreamEventType`
 - `LLMStreamResult` with `response` promise
 - Support for `message_start`, `text_delta`, `message_stop` at minimum
 
@@ -3297,7 +3297,7 @@ export function createImageHandler(): ImageHandler<MyImageParams> {
 1. **Request transformation**: Convert UPP `Message[]` to vendor message format
 2. **Response transformation**: Convert vendor response to `LLMResponse`, `EmbeddingResponse`, or `ImageResponse`
 3. **Error normalization**: Wrap vendor errors in `UPPError` with appropriate `ErrorCode` and `modality`
-4. **Streaming**: Parse SSE streams and emit `MessageFragment` objects
+4. **Streaming**: Parse SSE streams and emit `StreamEvent` objects
 5. **Metadata namespacing**: Store vendor-specific data under `metadata.{providerName}`
 
 Consult vendor API documentation for specific request/response formats, authentication methods, and available parameters.
