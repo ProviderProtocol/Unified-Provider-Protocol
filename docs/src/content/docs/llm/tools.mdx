@@ -1,0 +1,274 @@
+---
+title: Tools
+description: Function calling and tool use with LLMs.
+---
+
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+# Tools
+
+Tools enable LLMs to call functions and interact with external systems.
+
+## Tool Definition
+
+Tools use **JSON Schema** for parameter definitions:
+
+```typescript
+interface Tool<TParams = unknown, TResult = unknown> {
+  /** Tool name (must be unique within a llm() instance) */
+  name: string;
+
+  /** Human-readable description for the model */
+  description: string;
+
+  /** JSON Schema defining parameters */
+  parameters: JSONSchema;
+
+  /** Tool execution function */
+  run(params: TParams): TResult | Promise<TResult>;
+
+  /** Optional approval handler for sensitive operations */
+  approval?(params: TParams): boolean | Promise<boolean>;
+}
+```
+
+## Basic Tool Example
+
+```typescript
+const getWeather: Tool<{ location: string; units?: string }> = {
+  name: 'getWeather',
+  description: 'Get current weather for a location',
+  parameters: {
+    type: 'object',
+    properties: {
+      location: {
+        type: 'string',
+        description: 'City name or coordinates',
+      },
+      units: {
+        type: 'string',
+        enum: ['celsius', 'fahrenheit'],
+        default: 'celsius',
+      },
+    },
+    required: ['location'],
+  },
+  async run({ location, units = 'celsius' }) {
+    const weather = await fetchWeather(location, units);
+    return `${weather.temp}° ${units}, ${weather.condition}`;
+  },
+};
+
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  system: 'You are a weather assistant.',
+  tools: [getWeather],
+});
+```
+
+## Tool Approval
+
+For sensitive operations, tools can require approval:
+
+```typescript
+const deleteFile: Tool<{ path: string }> = {
+  name: 'deleteFile',
+  description: 'Delete a file from the filesystem',
+  parameters: {
+    type: 'object',
+    properties: {
+      path: { type: 'string', description: 'File path to delete' },
+    },
+    required: ['path'],
+  },
+  async approval({ path }) {
+    // UI prompt, admin check, path validation, etc.
+    return await promptUser(`Allow deletion of ${path}?`);
+  },
+  async run({ path }) {
+    await fs.unlink(path);
+    return `Deleted ${path}`;
+  },
+};
+```
+
+<Aside type="note" title="Approval Behavior">
+- If `approval()` throws an exception, it propagates to the caller and aborts generation
+- If `approval()` returns `false`, an error result is sent to the model
+- If the tool's `run` function throws, the error is caught and sent as an error result
+</Aside>
+
+## Tool Execution Flow
+
+By default, `llm()` handles tool execution automatically:
+
+1. Model returns an `AssistantMessage` with `toolCalls`
+2. If `approval` is defined, it's called first
+3. Tool's `run` function is executed
+4. Result (or error) is sent back to the model
+5. Loop continues until model returns without tool calls OR max iterations reached
+
+<Aside type="caution" title="Argument Validation">
+`llm()` does NOT validate tool arguments against the JSON Schema. The schema guides the model, but treat tool arguments as untrusted input. Always validate in your `run` function.
+</Aside>
+
+## ToolUseStrategy
+
+For custom control over tool execution:
+
+```typescript
+interface ToolUseStrategy {
+  /** Maximum tool execution rounds (default: 10) */
+  maxIterations?: number;
+
+  /** Called when the model requests a tool call */
+  onToolCall?(tool: Tool, params: unknown): void | Promise<void>;
+
+  /** Called before tool execution, return false to skip */
+  onBeforeCall?(tool: Tool, params: unknown): boolean | Promise<boolean>;
+
+  /** Called after tool execution */
+  onAfterCall?(tool: Tool, params: unknown, result: unknown): void | Promise<void>;
+
+  /** Called on tool execution error */
+  onError?(tool: Tool, params: unknown, error: Error): void | Promise<void>;
+
+  /** Called when max iterations reached */
+  onMaxIterations?(iterations: number): void | Promise<void>;
+}
+```
+
+## Strategy Example
+
+```typescript
+const strategy: ToolUseStrategy = {
+  maxIterations: 5,
+
+  async onBeforeCall(tool, params) {
+    console.log(`Calling ${tool.name} with`, params);
+    return true; // Allow execution
+  },
+
+  async onAfterCall(tool, params, result) {
+    await logToolUsage(tool.name, params, result);
+  },
+
+  async onError(tool, params, error) {
+    await alertOps(`Tool ${tool.name} failed: ${error.message}`);
+  },
+
+  async onMaxIterations(iterations) {
+    console.warn(`Tool loop hit max iterations: ${iterations}`);
+  },
+};
+
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  tools: [getWeather, searchWeb],
+  toolStrategy: strategy,
+});
+```
+
+## Disabling Automatic Execution
+
+To handle tool calls manually:
+
+```typescript
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  tools: [getWeather],
+  toolStrategy: { maxIterations: 0 }, // Disable auto-execution
+});
+
+const turn = await claude.generate([], 'What is the weather?');
+
+if (turn.response.hasToolCalls) {
+  for (const toolCall of turn.response.toolCalls) {
+    console.log('Model wants to call:', toolCall.toolName);
+    // Execute yourself, then continue conversation
+  }
+}
+```
+
+## Multiple Tool Calls
+
+Models may request multiple tool calls in a single response. `llm()` executes them in parallel by default:
+
+```typescript
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  tools: [getWeather, getTime],
+});
+
+// Model might call both tools simultaneously
+const turn = await claude.generate(
+  'What is the weather and time in Tokyo and Paris?'
+);
+
+// turn.toolExecutions might contain 4 executions
+console.log(turn.toolExecutions.length); // 4
+```
+
+## JSON Schema for Parameters
+
+<Tabs>
+  <TabItem label="Simple">
+```typescript
+const tool: Tool = {
+  name: 'greet',
+  description: 'Greet a user',
+  parameters: {
+    type: 'object',
+    properties: {
+      name: { type: 'string', description: 'User name' },
+    },
+    required: ['name'],
+  },
+  run: ({ name }) => `Hello, ${name}!`,
+};
+```
+  </TabItem>
+  <TabItem label="Complex">
+```typescript
+const tool: Tool = {
+  name: 'createOrder',
+  description: 'Create a new order',
+  parameters: {
+    type: 'object',
+    properties: {
+      items: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            productId: { type: 'string' },
+            quantity: { type: 'integer', minimum: 1 },
+          },
+          required: ['productId', 'quantity'],
+        },
+        minItems: 1,
+      },
+      shippingAddress: {
+        type: 'object',
+        properties: {
+          street: { type: 'string' },
+          city: { type: 'string' },
+          country: { type: 'string' },
+        },
+        required: ['street', 'city', 'country'],
+      },
+      priority: {
+        type: 'string',
+        enum: ['standard', 'express', 'overnight'],
+        default: 'standard',
+      },
+    },
+    required: ['items', 'shippingAddress'],
+  },
+  async run(params) {
+    return await orderService.create(params);
+  },
+};
+```
+  </TabItem>
+</Tabs>

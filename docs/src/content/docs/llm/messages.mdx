@@ -1,0 +1,286 @@
+---
+title: Messages
+description: Understanding UPP's message system for LLM conversations.
+---
+
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+# Messages
+
+Messages are the building blocks of LLM conversations in UPP.
+
+## Message Hierarchy
+
+Messages are represented as a class hierarchy for type-safe handling:
+
+```typescript
+abstract class Message {
+  /** Unique message identifier */
+  readonly id: string;
+
+  /** Timestamp */
+  readonly timestamp: Date;
+
+  /** Provider-specific metadata, namespaced by provider */
+  readonly metadata?: MessageMetadata;
+
+  /** Message type discriminator */
+  abstract readonly type: MessageType;
+
+  /** Convenience accessor for text content */
+  readonly text: string;
+}
+
+type MessageType = 'user' | 'assistant' | 'tool_result';
+```
+
+## Message Types
+
+### UserMessage
+
+Input from the user:
+
+```typescript
+class UserMessage extends Message {
+  readonly type = 'user';
+  readonly content: UserContent[];
+
+  constructor(content: string | UserContent[], options?: MessageOptions);
+}
+
+type UserContent = TextBlock | ImageBlock | AudioBlock | VideoBlock | BinaryBlock;
+```
+
+### AssistantMessage
+
+Response from the model:
+
+```typescript
+class AssistantMessage extends Message {
+  readonly type = 'assistant';
+  readonly content: AssistantContent[];
+
+  /** Tool calls requested by the model (if any) */
+  readonly toolCalls?: ToolCall[];
+
+  /** Check if this message requests tool execution */
+  get hasToolCalls(): boolean;
+}
+
+type AssistantContent = TextBlock | ImageBlock | AudioBlock | VideoBlock;
+```
+
+<Aside type="note">
+Models can return both text AND tool calls in a single response. Check `hasToolCalls` to determine if tool execution is needed.
+</Aside>
+
+### ToolResultMessage
+
+Results of tool execution:
+
+```typescript
+class ToolResultMessage extends Message {
+  readonly type = 'tool_result';
+  readonly results: ToolResult[];
+
+  constructor(results: ToolResult[], options?: MessageOptions);
+}
+
+interface ToolResult {
+  toolCallId: string;
+  result: unknown;
+  isError?: boolean;
+}
+```
+
+## Content Blocks
+
+Content blocks represent discrete pieces of content within messages:
+
+```typescript
+type ContentBlock =
+  | TextBlock
+  | ImageBlock
+  | AudioBlock
+  | VideoBlock
+  | BinaryBlock;
+
+interface TextBlock {
+  type: 'text';
+  text: string;
+}
+
+interface ImageBlock {
+  type: 'image';
+  source: ImageSource;
+  mimeType: string;
+  width?: number;
+  height?: number;
+}
+
+interface AudioBlock {
+  type: 'audio';
+  data: Uint8Array;
+  mimeType: string;
+  duration?: number;
+}
+
+interface VideoBlock {
+  type: 'video';
+  data: Uint8Array;
+  mimeType: string;
+  duration?: number;
+  width?: number;
+  height?: number;
+}
+
+interface BinaryBlock {
+  type: 'binary';
+  data: Uint8Array;
+  mimeType: string;
+  metadata?: Record<string, unknown>;
+}
+```
+
+## Image Sources
+
+Images can come from multiple sources:
+
+```typescript
+type ImageSource =
+  | { type: 'base64'; data: string }
+  | { type: 'url'; url: string }
+  | { type: 'bytes'; data: Uint8Array };
+```
+
+## Message Construction
+
+<Tabs>
+  <TabItem label="Text Messages">
+```typescript
+// Text user message
+const userMsg = new UserMessage('Hello, world!');
+
+// Assistant message (text only)
+const assistantMsg = new AssistantMessage('I can help with that!');
+```
+  </TabItem>
+  <TabItem label="With Images">
+```typescript
+// User message with image from file
+const imageMsg = new UserMessage([
+  await Image.fromPath('diagram.png'),
+  'Please explain this diagram',
+]);
+
+// User message with URL-based image
+const urlImageMsg = new UserMessage([
+  Image.fromUrl('https://example.com/image.png'),
+  'What is this?',
+]);
+```
+  </TabItem>
+  <TabItem label="Tool Messages">
+```typescript
+// Assistant message with tool calls (typically created by provider)
+const assistantWithTools = new AssistantMessage(
+  [{ type: 'text', text: "I'll check the weather for you." }],
+  [{ toolCallId: 'call_123', toolName: 'getWeather', arguments: { location: 'Tokyo' } }]
+);
+
+// Tool result message (created by llm() core after tool execution)
+const toolResultMsg = new ToolResultMessage([
+  { toolCallId: 'call_123', result: '72°F, sunny' }
+]);
+```
+  </TabItem>
+</Tabs>
+
+## Image Type
+
+UPP provides an `Image` type with factory methods:
+
+```typescript
+interface Image {
+  readonly source: ImageSource;
+  readonly mimeType: string;
+  readonly width?: number;
+  readonly height?: number;
+
+  /** Check if this image has data loaded (false for URL sources) */
+  readonly hasData: boolean;
+
+  /** Convert to base64 string (throws if source is URL) */
+  toBase64(): string;
+
+  /** Convert to data URL (throws if source is URL) */
+  toDataUrl(): string;
+
+  /** Get raw bytes (throws if source is URL) */
+  toBytes(): Uint8Array;
+}
+
+namespace Image {
+  /** Create from file path (reads file into memory) */
+  function fromPath(path: string): Promise<Image>;
+
+  /** Create from URL reference (does not fetch) */
+  function fromUrl(url: string, mimeType?: string): Image;
+
+  /** Create from raw bytes */
+  function fromBytes(data: Uint8Array, mimeType: string): Image;
+
+  /** Create from base64 string */
+  function fromBase64(base64: string, mimeType: string): Image;
+}
+```
+
+## Type Guards
+
+UPP provides type guards for message handling:
+
+```typescript
+import {
+  isUserMessage,
+  isAssistantMessage,
+  isToolResultMessage
+} from '@providerprotocol/ai';
+
+for (const msg of turn.messages) {
+  if (isAssistantMessage(msg)) {
+    console.log('Response:', msg.text);
+    if (msg.hasToolCalls) {
+      console.log('Tool calls:', msg.toolCalls);
+    }
+  } else if (isToolResultMessage(msg)) {
+    console.log('Tool results:', msg.results);
+  }
+}
+```
+
+## Metadata
+
+Messages can include provider-specific metadata:
+
+```typescript
+interface MessageMetadata {
+  /** Extensible: each provider uses its own namespace */
+  [provider: string]: Record<string, unknown> | undefined;
+}
+
+// Example metadata
+const message = new AssistantMessage(content, toolCalls, {
+  metadata: {
+    google: {
+      thought_signature: 'abc123...',
+    },
+    anthropic: {
+      cache_control: { type: 'ephemeral' },
+    },
+  },
+});
+```
+
+<Aside type="tip">
+Providers are responsible for handling their own metadata namespace. They extract metadata from responses and include it when sending messages back to the API.
+</Aside>

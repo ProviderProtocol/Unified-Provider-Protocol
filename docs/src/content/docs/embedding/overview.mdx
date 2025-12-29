@@ -1,0 +1,181 @@
+---
+title: Embedding Interface Overview
+description: The embedding() interface for vector embeddings.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+# Embedding Interface
+
+The `embedding()` function provides a unified interface for generating vector embeddings from text and other content.
+
+## Function Signature
+
+```typescript
+function embedding<TParams = unknown>(
+  options: EmbeddingOptions<TParams>
+): EmbeddingInstance<TParams>;
+```
+
+## Options
+
+```typescript
+interface EmbeddingOptions<TParams = unknown> {
+  /** A model reference from a provider factory */
+  model: ModelReference;
+
+  /** Provider infrastructure configuration (optional - uses env vars if omitted) */
+  config?: ProviderConfig;
+
+  /** Model-specific parameters (dimensions, encoding format, etc.) */
+  params?: TParams;
+}
+```
+
+## EmbeddingInstance
+
+```typescript
+interface EmbeddingInstance<TParams = unknown> {
+  /**
+   * Embed a single input
+   */
+  embed(input: EmbeddingInput): Promise<Embedding>;
+
+  /**
+   * Embed multiple inputs in a single request
+   */
+  embedBatch(inputs: EmbeddingInput[]): Promise<EmbeddingBatch>;
+
+  /**
+   * Embed with automatic batching for large input sets
+   */
+  embedMany(
+    inputs: EmbeddingInput[],
+    options?: EmbedManyOptions
+  ): AsyncIterable<EmbeddingProgress>;
+
+  /** The bound model */
+  readonly model: BoundEmbeddingModel<TParams>;
+
+  /** Current parameters */
+  readonly params: TParams | undefined;
+}
+
+type EmbeddingInput = string | TextBlock | ImageBlock;
+```
+
+## Basic Usage
+
+```typescript
+import { embedding } from '@providerprotocol/ai';
+import { openai } from '@providerprotocol/ai/openai';
+
+const embedder = embedding({
+  model: openai('text-embedding-3-large'),
+  config: {
+    apiKey: process.env.OPENAI_API_KEY,
+  },
+  params: {
+    dimensions: 1536,
+  },
+});
+
+// Single embedding
+const result = await embedder.embed('What is the capital of France?');
+console.log(result.vector.length); // 1536
+console.log(result.dimensions);    // 1536
+
+// Batch embedding
+const batch = await embedder.embedBatch([
+  'First document to embed',
+  'Second document to embed',
+  'Third document to embed',
+]);
+
+console.log(batch.embeddings.length); // 3
+console.log(batch.usage.totalTokens); // Total tokens used
+```
+
+## Embedding Result
+
+```typescript
+interface Embedding {
+  /** The embedding vector */
+  vector: number[];
+
+  /** Vector dimensionality */
+  dimensions: number;
+
+  /** The input that was embedded (for reference) */
+  input: EmbeddingInput;
+
+  /** Token count (if available) */
+  tokens?: number;
+}
+
+interface EmbeddingBatch {
+  /** Embeddings in same order as inputs */
+  embeddings: Embedding[];
+
+  /** Aggregate usage */
+  usage: EmbeddingUsage;
+}
+
+interface EmbeddingUsage {
+  /** Total tokens processed */
+  totalTokens: number;
+}
+```
+
+## BoundEmbeddingModel
+
+The low-level model interface:
+
+```typescript
+interface BoundEmbeddingModel<TParams = unknown> {
+  /** The model identifier */
+  readonly modelId: string;
+
+  /** Maximum inputs per batch */
+  readonly maxBatchSize: number;
+
+  /** Maximum input length (tokens or characters) */
+  readonly maxInputLength: number;
+
+  /** Output dimensions (may be configurable) */
+  readonly dimensions: number;
+
+  /** Execute embedding request */
+  embed(request: EmbeddingRequest<TParams>): Promise<EmbeddingResponse>;
+}
+```
+
+## Provider-Specific Parameters
+
+Each provider exports its own parameter types:
+
+```typescript
+import { embedding } from '@providerprotocol/ai';
+import { openai } from '@providerprotocol/ai/openai';
+import type { OpenAIEmbedParams } from '@providerprotocol/ai/openai';
+
+const embedder = embedding({
+  model: openai('text-embedding-3-large'),
+  params: {
+    dimensions: 1536,  // OpenAI-specific: custom dimensions
+  } as OpenAIEmbedParams,
+});
+```
+
+<Aside type="tip">
+Consult provider documentation for available parameters like output dimensions, encoding formats, and task type hints.
+</Aside>
+
+## Supported Providers
+
+| Provider | Models | Notes |
+|----------|--------|-------|
+| OpenAI | text-embedding-3-small, text-embedding-3-large | Configurable dimensions |
+| Google | text-embedding-004 | |
+| Voyage | voyage-3, voyage-2 | Specialized for RAG |
+| Cohere | embed-english-v3.0 | Multiple task types |

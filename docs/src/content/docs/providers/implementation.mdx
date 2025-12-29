@@ -1,0 +1,294 @@
+---
+title: Provider Implementation Guide
+description: How to implement a UPP-compliant provider.
+---
+
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+# Provider Implementation Guide
+
+This guide explains how to implement a UPP-compliant provider for AI services.
+
+## Provider Module Structure
+
+Each provider module exports a single factory that combines all modality handlers:
+
+```typescript
+// @providerprotocol/ai/openai/index.ts
+import { createProvider } from '@providerprotocol/ai';
+import { createLLMHandler } from './llm';
+import { createEmbeddingHandler } from './embed';
+import { createImageHandler } from './image';
+
+export const openai = createProvider({
+  name: 'openai',
+  version: '1.0.0',
+  modalities: {
+    llm: createLLMHandler(),
+    embedding: createEmbeddingHandler(),
+    image: createImageHandler(),
+  },
+});
+
+// Re-export param types for consumers
+export type { OpenAILLMParams } from './llm';
+export type { OpenAIEmbedParams } from './embed';
+export type { OpenAIImageParams } from './image';
+```
+
+## createProvider Helper
+
+UPP provides a helper to create providers:
+
+```typescript
+import { createProvider, Provider, ModelReference } from '@providerprotocol/ai';
+
+interface CreateProviderOptions {
+  name: string;
+  version: string;
+  modalities: {
+    llm?: LLMHandler;
+    embedding?: EmbeddingHandler;
+    image?: ImageHandler;
+  };
+}
+
+function createProvider(options: CreateProviderOptions): Provider {
+  const provider: Provider = Object.assign(
+    function (modelId: string): ModelReference {
+      return { modelId, provider };
+    },
+    {
+      name: options.name,
+      version: options.version,
+      modalities: options.modalities,
+    }
+  );
+  return provider;
+}
+```
+
+## HTTP-First Approach
+
+Per UPP design principles, providers SHOULD use direct HTTP calls rather than vendor SDKs:
+
+```typescript
+import { resolveApiKey, doFetch } from '@providerprotocol/ai/http';
+
+async function callVendorAPI(request: LLMRequest) {
+  const apiKey = await resolveApiKey(request.config, 'OPENAI_API_KEY');
+
+  const response = await doFetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(transformRequest(request)),
+  }, request.config);
+
+  return await response.json();
+}
+```
+
+## Shared Utilities
+
+UPP provides utilities for provider implementations from `@providerprotocol/ai/http`:
+
+```typescript
+/**
+ * Resolve API key from ProviderConfig.
+ * Falls back to environment variable if config.apiKey is not set.
+ */
+function resolveApiKey(config: ProviderConfig, envVar?: string): Promise<string>;
+
+/**
+ * Execute fetch with retry, timeout, and error normalization.
+ */
+function doFetch(url: string, init: RequestInit, config: ProviderConfig): Promise<Response>;
+
+/**
+ * Parse Server-Sent Events stream into JSON objects.
+ */
+function parseSSEStream(body: ReadableStream<Uint8Array>): AsyncGenerator<unknown>;
+
+/**
+ * Normalize HTTP error responses to UPPError.
+ */
+function normalizeHttpError(response: Response, provider: string, modality: Modality): Promise<UPPError>;
+```
+
+## LLM Handler Pattern
+
+```typescript
+// @providerprotocol/ai/anthropic/llm.ts
+import { LLMHandler, BoundLLMModel, LLMResponse } from '@providerprotocol/ai';
+import { resolveApiKey, doFetch } from '@providerprotocol/ai/http';
+
+export interface AnthropicLLMParams {
+  max_tokens?: number;
+  temperature?: number;
+  // ... consult vendor documentation
+}
+
+export function createLLMHandler(): LLMHandler<AnthropicLLMParams> {
+  return {
+    bind(modelId: string): BoundLLMModel<AnthropicLLMParams> {
+      return {
+        modelId,
+
+        async complete(request) {
+          const apiKey = await resolveApiKey(request.config, 'ANTHROPIC_API_KEY');
+
+          // Transform UPP request to vendor format
+          const body = transformRequest(request, modelId);
+
+          const response = await doFetch(VENDOR_URL, {
+            method: 'POST',
+            headers: {
+              'x-api-key': apiKey,
+              'anthropic-version': '2024-01-01',
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify(body),
+          }, request.config);
+
+          const data = await response.json();
+
+          // Transform vendor response to UPP format
+          return transformResponse(data);
+        },
+
+        stream(request) {
+          // Similar pattern with SSE parsing
+          // Return LLMStreamResult with async iterator
+        },
+      };
+    },
+  };
+}
+```
+
+## Embedding Handler Pattern
+
+```typescript
+export function createEmbeddingHandler(): EmbeddingHandler<OpenAIEmbedParams> {
+  return {
+    supportedInputs: ['text'],
+
+    bind(modelId: string): BoundEmbeddingModel<OpenAIEmbedParams> {
+      return {
+        modelId,
+        maxBatchSize: 2048,
+        maxInputLength: 8191,
+        dimensions: 1536,
+
+        async embed(request) {
+          const apiKey = await resolveApiKey(request.config, 'OPENAI_API_KEY');
+
+          // Transform inputs, call vendor API
+          const body = {
+            model: modelId,
+            input: request.inputs.map(transformInput),
+            ...request.params,
+          };
+
+          const response = await doFetch(VENDOR_URL, { ... }, request.config);
+          const data = await response.json();
+
+          // Return EmbeddingResponse
+          return {
+            embeddings: data.data.map(transformEmbedding),
+            usage: { totalTokens: data.usage.total_tokens },
+          };
+        },
+      };
+    },
+  };
+}
+```
+
+## Image Handler Pattern
+
+```typescript
+export function createImageHandler(): ImageHandler<OpenAIImageParams> {
+  return {
+    bind(modelId: string): BoundImageModel<OpenAIImageParams> {
+      return {
+        modelId,
+        capabilities: {
+          generate: true,
+          streaming: false,
+          edit: modelId.includes('dall-e-2'),
+          vary: modelId.includes('dall-e-2'),
+          upscale: false,
+          outpaint: false,
+          imageToImage: false,
+          maxImages: modelId === 'dall-e-3' ? 1 : 10,
+          supportedSizes: ['1024x1024', '1792x1024', '1024x1792'],
+          supportedFormats: ['png'],
+        },
+
+        async generate(request) {
+          // Transform prompt, call vendor API, return ImageResponse
+        },
+
+        // Implement edit, vary if capabilities indicate support
+      };
+    },
+  };
+}
+```
+
+## Key Implementation Requirements
+
+<Aside type="caution" title="Provider Responsibilities">
+1. **Request transformation**: Convert UPP `Message[]` to vendor message format
+2. **Response transformation**: Convert vendor response to UPP types
+3. **Error normalization**: Wrap vendor errors in `UPPError` with appropriate `ErrorCode` and `modality`
+4. **Streaming**: Parse SSE streams and emit `StreamEvent` objects
+5. **Metadata namespacing**: Store vendor-specific data under `metadata.{providerName}`
+</Aside>
+
+## System Prompt Handling
+
+Different providers handle system prompts differently:
+
+| Provider | System Prompt Handling |
+|----------|----------------------|
+| Anthropic | Top-level `system` parameter |
+| OpenAI | Message with `role: 'system'` |
+| Google | `systemInstruction` field |
+
+Your provider MUST transform system prompts according to vendor requirements.
+
+## Metadata Handling
+
+Providers MUST handle their own metadata namespace:
+
+```typescript
+// Extracting metadata from responses
+const message = new AssistantMessage(content, toolCalls, {
+  metadata: {
+    google: {
+      thought_signature: vendorResponse.thought_signature,
+    },
+  },
+});
+
+// Including metadata in requests
+function transformToVendor(message: Message) {
+  const googleMeta = message.metadata?.google;
+  return {
+    role: message.type,
+    content: transformContent(message.content),
+    ...(googleMeta?.thought_signature && {
+      thought_signature: googleMeta.thought_signature,
+    }),
+  };
+}
+```
+
+<Aside type="tip">
+Providers SHOULD preserve unknown metadata fields during round-trips to support future API additions.
+</Aside>

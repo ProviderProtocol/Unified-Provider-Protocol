@@ -1,0 +1,223 @@
+---
+title: Error Handling
+description: Understanding and handling UPP errors.
+---
+
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+# Error Handling
+
+All modalities normalize errors to `UPPError` for consistent error handling across providers.
+
+## UPPError
+
+```typescript
+class UPPError extends Error {
+  readonly code: ErrorCode;
+  readonly provider: string;
+  readonly modality: Modality;
+  readonly statusCode?: number;
+  readonly cause?: Error;
+
+  constructor(
+    message: string,
+    code: ErrorCode,
+    provider: string,
+    modality: Modality,
+    statusCode?: number,
+    cause?: Error
+  ) {
+    super(message);
+    this.code = code;
+    this.provider = provider;
+    this.modality = modality;
+    this.statusCode = statusCode;
+    this.cause = cause;
+  }
+}
+```
+
+## Error Codes
+
+| Code | Description | Common Causes |
+|------|-------------|---------------|
+| `AUTHENTICATION_FAILED` | API key invalid or missing | Invalid key, expired key |
+| `RATE_LIMITED` | Too many requests | Exceeding rate limits |
+| `CONTEXT_LENGTH_EXCEEDED` | Input too long | Messages exceed model's context window |
+| `MODEL_NOT_FOUND` | Model doesn't exist | Typo in model ID, deprecated model |
+| `INVALID_REQUEST` | Malformed request | Invalid parameters, wrong format |
+| `INVALID_RESPONSE` | Response failed validation | Structured output validation failed |
+| `CONTENT_FILTERED` | Content policy violation | Inappropriate content |
+| `QUOTA_EXCEEDED` | Usage limits reached | Monthly quota exceeded |
+| `PROVIDER_ERROR` | Vendor API error | Server-side issues |
+| `NETWORK_ERROR` | Network failure | Connection issues |
+| `TIMEOUT` | Request timed out | Slow response |
+| `CANCELLED` | Request was cancelled | User aborted |
+
+## Modality Field
+
+The `modality` field indicates which interface threw the error:
+
+```typescript
+type Modality = 'llm' | 'embedding' | 'image' | 'audio' | 'video';
+```
+
+## Handling Errors
+
+<Tabs>
+  <TabItem label="Basic">
+```typescript
+import { UPPError } from '@providerprotocol/ai';
+
+try {
+  const turn = await claude.generate('Hello');
+} catch (error) {
+  if (error instanceof UPPError) {
+    console.log('Error code:', error.code);
+    console.log('Provider:', error.provider);
+    console.log('Modality:', error.modality);
+  }
+}
+```
+  </TabItem>
+  <TabItem label="By Code">
+```typescript
+try {
+  const turn = await claude.generate('Hello');
+} catch (error) {
+  if (error instanceof UPPError) {
+    switch (error.code) {
+      case 'RATE_LIMITED':
+        console.log('Rate limited, waiting...');
+        await sleep(5000);
+        break;
+      case 'CONTEXT_LENGTH_EXCEEDED':
+        console.log('Message too long, truncating...');
+        break;
+      case 'AUTHENTICATION_FAILED':
+        console.log('Check your API key');
+        break;
+      default:
+        throw error;
+    }
+  }
+}
+```
+  </TabItem>
+  <TabItem label="With Retry">
+```typescript
+async function generateWithRetry(prompt: string, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await claude.generate(prompt);
+    } catch (error) {
+      if (error instanceof UPPError) {
+        if (error.code === 'RATE_LIMITED' && i < maxRetries - 1) {
+          await sleep(Math.pow(2, i) * 1000);
+          continue;
+        }
+      }
+      throw error;
+    }
+  }
+}
+```
+  </TabItem>
+</Tabs>
+
+## Provider-Specific Errors
+
+The original vendor error is preserved in the `cause` property:
+
+```typescript
+try {
+  const turn = await claude.generate('Hello');
+} catch (error) {
+  if (error instanceof UPPError) {
+    console.log('UPP Error:', error.message);
+
+    if (error.cause) {
+      console.log('Original error:', error.cause);
+    }
+
+    if (error.statusCode) {
+      console.log('HTTP status:', error.statusCode);
+    }
+  }
+}
+```
+
+## Streaming Errors
+
+Errors can occur during streaming. Handle them in the async iterator:
+
+```typescript
+try {
+  const stream = claude.stream('Write a long story');
+
+  for await (const event of stream) {
+    process.stdout.write(event.delta.text ?? '');
+  }
+} catch (error) {
+  if (error instanceof UPPError) {
+    if (error.code === 'CANCELLED') {
+      console.log('Stream was aborted');
+    } else {
+      console.log('Stream error:', error.message);
+    }
+  }
+}
+```
+
+## Cancellation Errors
+
+When a request is cancelled (e.g., via `stream.abort()`), a `CANCELLED` error is thrown:
+
+```typescript
+const stream = claude.stream('Write a very long story...');
+
+// Abort after 5 seconds
+setTimeout(() => {
+  stream.abort();
+}, 5000);
+
+try {
+  for await (const event of stream) {
+    process.stdout.write(event.delta.text ?? '');
+  }
+} catch (error) {
+  if (error instanceof UPPError && error.code === 'CANCELLED') {
+    console.log('Request was cancelled');
+  }
+}
+```
+
+<Aside type="note">
+When a stream is aborted during a tool execution loop, the abort signal propagates to any in-flight tool execution.
+</Aside>
+
+## Structured Output Validation Errors
+
+When structured output validation fails, an `INVALID_RESPONSE` error is thrown:
+
+```typescript
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  structure: {
+    type: 'object',
+    properties: {
+      name: { type: 'string' },
+      age: { type: 'integer' },
+    },
+    required: ['name', 'age'],
+  },
+});
+
+try {
+  const turn = await claude.generate('Extract: John is thirty');
+} catch (error) {
+  if (error instanceof UPPError && error.code === 'INVALID_RESPONSE') {
+    console.log('Response did not match schema');
+  }
+}
+```

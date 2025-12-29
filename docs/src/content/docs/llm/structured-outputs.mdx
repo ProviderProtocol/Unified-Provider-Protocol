@@ -1,0 +1,249 @@
+---
+title: Structured Outputs
+description: Constraining LLM responses to specific JSON schemas.
+---
+
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+# Structured Outputs
+
+Structured outputs allow you to constrain model responses to a specific JSON schema, ensuring valid, parseable data.
+
+## Basic Usage
+
+```typescript
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  system: 'Extract structured data from text.',
+  structure: {
+    type: 'object',
+    properties: {
+      name: { type: 'string', description: 'Person name' },
+      age: { type: 'integer', description: 'Person age' },
+      email: { type: 'string', format: 'email' },
+    },
+    required: ['name', 'age'],
+  },
+});
+
+const turn = await claude.generate('John Doe is 30 years old, email: john@example.com');
+
+// turn.data contains the structured response
+console.log(turn.data);
+// { name: 'John Doe', age: 30, email: 'john@example.com' }
+```
+
+## Schema Definition
+
+Structured outputs use standard JSON Schema:
+
+```typescript
+interface JSONSchema {
+  type: 'object';
+  properties: Record<string, JSONSchemaProperty>;
+  required?: string[];
+  additionalProperties?: boolean;
+  description?: string;
+}
+
+interface JSONSchemaProperty {
+  type: 'string' | 'number' | 'integer' | 'boolean' | 'array' | 'object' | 'null';
+  description?: string;
+  enum?: unknown[];
+  const?: unknown;
+  default?: unknown;
+
+  // String-specific
+  minLength?: number;
+  maxLength?: number;
+  pattern?: string;
+  format?: 'email' | 'uri' | 'date' | 'date-time' | 'uuid';
+
+  // Number-specific
+  minimum?: number;
+  maximum?: number;
+  exclusiveMinimum?: number;
+  exclusiveMaximum?: number;
+  multipleOf?: number;
+
+  // Array-specific
+  items?: JSONSchemaProperty;
+  minItems?: number;
+  maxItems?: number;
+  uniqueItems?: boolean;
+
+  // Object-specific
+  properties?: Record<string, JSONSchemaProperty>;
+  required?: string[];
+  additionalProperties?: boolean;
+}
+```
+
+## Provider Handling
+
+Different providers implement structured outputs differently:
+
+| Provider | Implementation |
+|----------|----------------|
+| Anthropic | Uses tool_choice with schema |
+| OpenAI | Uses response_format with json_schema |
+| Google | Uses responseSchema |
+
+<Aside type="note">
+If a provider doesn't natively support structured outputs, it MUST:
+1. Attempt to get JSON output
+2. Validate the response against the schema
+3. Throw `UPPError` with code `INVALID_RESPONSE` if validation fails
+</Aside>
+
+## Complex Schema Example
+
+```typescript
+const weatherSchema: JSONSchema = {
+  type: 'object',
+  properties: {
+    location: {
+      type: 'object',
+      properties: {
+        city: { type: 'string' },
+        country: { type: 'string' },
+        coordinates: {
+          type: 'object',
+          properties: {
+            lat: { type: 'number' },
+            lon: { type: 'number' },
+          },
+          required: ['lat', 'lon'],
+        },
+      },
+      required: ['city', 'country'],
+    },
+    current: {
+      type: 'object',
+      properties: {
+        temperature: { type: 'number' },
+        unit: { type: 'string', enum: ['celsius', 'fahrenheit'] },
+        conditions: { type: 'string' },
+        humidity: { type: 'integer', minimum: 0, maximum: 100 },
+      },
+      required: ['temperature', 'unit', 'conditions'],
+    },
+    forecast: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          date: { type: 'string', format: 'date' },
+          high: { type: 'number' },
+          low: { type: 'number' },
+          conditions: { type: 'string' },
+        },
+        required: ['date', 'high', 'low'],
+      },
+      maxItems: 7,
+    },
+  },
+  required: ['location', 'current'],
+};
+
+const weatherAI = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  system: 'Provide weather information in the requested format.',
+  structure: weatherSchema,
+});
+
+const turn = await weatherAI.generate('Weather in Tokyo for the next 3 days');
+const weather = turn.data as WeatherResponse;
+
+console.log(weather.location.city);    // 'Tokyo'
+console.log(weather.forecast.length);  // 3
+```
+
+## Structured Output with Tools
+
+Structured outputs can be combined with tools. The final response will be structured:
+
+```typescript
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  tools: [getWeatherTool],
+  structure: {
+    type: 'object',
+    properties: {
+      summary: { type: 'string' },
+      temperature: { type: 'number' },
+      recommendation: { type: 'string' },
+    },
+    required: ['summary', 'temperature', 'recommendation'],
+  },
+});
+
+// Model may call tools, but final response will be structured
+const turn = await claude.generate('Should I bring an umbrella in Tokyo today?');
+
+console.log(turn.data);
+// { summary: 'Sunny and warm', temperature: 72, recommendation: 'No umbrella needed' }
+```
+
+## Type Safety
+
+For TypeScript users, define types that match your schema:
+
+<Tabs>
+  <TabItem label="With Type">
+```typescript
+interface PersonData {
+  name: string;
+  age: number;
+  email?: string;
+}
+
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  structure: {
+    type: 'object',
+    properties: {
+      name: { type: 'string' },
+      age: { type: 'integer' },
+      email: { type: 'string' },
+    },
+    required: ['name', 'age'],
+  },
+});
+
+const turn = await claude.generate('John is 30, john@example.com');
+const person = turn.data as PersonData;
+
+console.log(person.name); // TypeScript knows this is a string
+```
+  </TabItem>
+  <TabItem label="Generic">
+```typescript
+const turn = await claude.generate<PersonData>('John is 30');
+// turn.data is typed as PersonData | undefined
+```
+  </TabItem>
+</Tabs>
+
+## Error Handling
+
+When validation fails, an `INVALID_RESPONSE` error is thrown:
+
+```typescript
+try {
+  const turn = await claude.generate('Extract: Some ambiguous text');
+} catch (error) {
+  if (error instanceof UPPError && error.code === 'INVALID_RESPONSE') {
+    console.log('Response did not match schema');
+    console.log('Cause:', error.cause);
+  }
+}
+```
+
+## Best Practices
+
+1. **Provide descriptions** - Help the model understand what each field should contain
+2. **Use required fields** - Explicitly mark which fields are required
+3. **Add constraints** - Use `minimum`, `maximum`, `enum`, etc. to narrow valid values
+4. **Keep schemas reasonable** - Very complex schemas may lead to errors
+5. **Handle validation errors** - Always catch `INVALID_RESPONSE` errors

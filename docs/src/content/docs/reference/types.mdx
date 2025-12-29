@@ -1,0 +1,283 @@
+---
+title: Type Definitions
+description: Complete type reference for UPP-1.1.
+---
+
+# Type Definitions
+
+Complete TypeScript type reference for UPP-1.1.
+
+## Entry Points
+
+```typescript
+export { llm, embedding, image };
+
+// Namespace (alternative import style)
+export { ai };  // ai = { llm, embedding, image }
+```
+
+## LLM Types
+
+```typescript
+export {
+  LLMOptions,
+  LLMInstance,
+  LLMProvider,
+  BoundLLMModel,
+  LLMRequest,
+  LLMResponse,
+  LLMStreamResult,
+  InferenceInput,
+};
+```
+
+## Message Types
+
+```typescript
+export {
+  Message,
+  UserMessage,
+  AssistantMessage,
+  ToolResultMessage,
+  MessageOptions,
+  MessageMetadata,
+  MessageType,
+};
+```
+
+## Content Block Types
+
+```typescript
+export {
+  ContentBlock,
+  TextBlock,
+  ImageBlock,
+  AudioBlock,
+  VideoBlock,
+  BinaryBlock,
+  ImageSource,
+};
+```
+
+## Tool Types
+
+```typescript
+export {
+  ToolCall,
+  ToolResult,
+  Tool,
+  ToolUseStrategy,
+  ToolExecution,
+};
+```
+
+## Turn & Thread Types
+
+```typescript
+export {
+  Turn,
+  TokenUsage,
+  Thread,
+  ThreadJSON,
+};
+```
+
+## Streaming Types
+
+```typescript
+export {
+  StreamResult,
+  StreamEvent,
+  StreamEventType,
+  EventDelta,
+};
+```
+
+## Schema Types
+
+```typescript
+export {
+  JSONSchema,
+  JSONSchemaProperty,
+};
+```
+
+## Embedding Types
+
+```typescript
+export {
+  EmbeddingOptions,
+  EmbeddingInstance,
+  EmbeddingProvider,
+  BoundEmbeddingModel,
+  EmbeddingRequest,
+  EmbeddingResponse,
+  EmbeddingInput,
+  Embedding,
+  EmbeddingBatch,
+  EmbeddingUsage,
+  EmbeddingProgress,
+  EmbedManyOptions,
+};
+```
+
+## Image Types
+
+```typescript
+export {
+  ImageOptions,
+  ImageInstance,
+  ImageProvider,
+  BoundImageModel,
+  ImageRequest,
+  ImageResponse,
+  ImagePrompt,
+  ImageResult,
+  GeneratedImage,
+  ImageUsage,
+  ImageStreamResult,
+  ImageStreamEvent,
+  ImageEditInput,
+  ImageEditRequest,
+  ImageVaryInput,
+  ImageVaryRequest,
+  ImageUpscaleInput,
+  ImageUpscaleRequest,
+  ImageCapabilities,
+  ImageProviderStreamResult,
+};
+```
+
+## Shared Infrastructure
+
+```typescript
+export {
+  ProviderConfig,
+  KeyStrategy,
+  RoundRobinKeys,
+  WeightedKeys,
+  DynamicKey,
+  RetryStrategy,
+  ExponentialBackoff,
+  LinearBackoff,
+  NoRetry,
+  TokenBucket,
+  RetryAfterStrategy,
+  UPPError,
+  ErrorCode,
+  Modality,
+};
+```
+
+## Utilities
+
+```typescript
+export {
+  Image,
+  isUserMessage,
+  isAssistantMessage,
+  isToolResultMessage,
+};
+
+// Similarity utilities (from '@providerprotocol/ai/similarity')
+export {
+  cosineSimilarity,
+  euclideanDistance,
+  dotProduct,
+};
+```
+
+## Provider Exports
+
+Each provider module exports a factory function and parameter types:
+
+```typescript
+// Pattern: @providerprotocol/ai/{provider}
+import { openai } from '@providerprotocol/ai/openai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { google } from '@providerprotocol/ai/google';
+
+// Each provider also exports its parameter types
+import type { OpenAILLMParams } from '@providerprotocol/ai/openai';
+import type { AnthropicLLMParams } from '@providerprotocol/ai/anthropic';
+```
+
+## Core Interface Definitions
+
+### ProviderConfig
+
+```typescript
+interface ProviderConfig {
+  apiKey?: string | (() => string | Promise<string>) | KeyStrategy;
+  baseUrl?: string;
+  timeout?: number;
+  fetch?: typeof fetch;
+  apiVersion?: string;
+  retryStrategy?: RetryStrategy;
+}
+```
+
+### Message
+
+```typescript
+abstract class Message {
+  readonly id: string;
+  readonly timestamp: Date;
+  readonly metadata?: MessageMetadata;
+  abstract readonly type: MessageType;
+  readonly text: string;
+}
+```
+
+### Turn
+
+```typescript
+interface Turn<TData = unknown> {
+  readonly messages: Message[];
+  readonly response: AssistantMessage;
+  readonly toolExecutions: ToolExecution[];
+  readonly usage: TokenUsage;
+  readonly cycles: number;
+  readonly data?: TData;
+}
+```
+
+### Tool
+
+```typescript
+interface Tool<TParams = unknown, TResult = unknown> {
+  name: string;
+  description: string;
+  parameters: JSONSchema;
+  run(params: TParams): TResult | Promise<TResult>;
+  approval?(params: TParams): boolean | Promise<boolean>;
+}
+```
+
+### UPPError
+
+```typescript
+class UPPError extends Error {
+  readonly code: ErrorCode;
+  readonly provider: string;
+  readonly modality: Modality;
+  readonly statusCode?: number;
+  readonly cause?: Error;
+}
+
+type ErrorCode =
+  | 'AUTHENTICATION_FAILED'
+  | 'RATE_LIMITED'
+  | 'CONTEXT_LENGTH_EXCEEDED'
+  | 'MODEL_NOT_FOUND'
+  | 'INVALID_REQUEST'
+  | 'INVALID_RESPONSE'
+  | 'CONTENT_FILTERED'
+  | 'QUOTA_EXCEEDED'
+  | 'PROVIDER_ERROR'
+  | 'NETWORK_ERROR'
+  | 'TIMEOUT'
+  | 'CANCELLED';
+
+type Modality = 'llm' | 'embedding' | 'image' | 'audio' | 'video';
+```

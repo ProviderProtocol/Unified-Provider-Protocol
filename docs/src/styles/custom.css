@@ -1,0 +1,56 @@
+/* UPP-1.1 Custom Styles */
+
+:root {
+	--sl-color-accent-low: #1a1f35;
+	--sl-color-accent: #5b6ee1;
+	--sl-color-accent-high: #a8b4ff;
+	--sl-color-white: #ffffff;
+	--sl-color-gray-1: #eceef2;
+	--sl-color-gray-2: #c0c2c7;
+	--sl-color-gray-3: #888b96;
+	--sl-color-gray-4: #545861;
+	--sl-color-gray-5: #353841;
+	--sl-color-gray-6: #24272f;
+	--sl-color-black: #17181c;
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-low: #e8eaff;
+	--sl-color-accent: #5b6ee1;
+	--sl-color-accent-high: #303970;
+}
+
+/* Hero section styling */
+.hero {
+	text-align: center;
+	padding: 2rem;
+}
+
+/* Code block enhancements */
+.expressive-code pre {
+	border-radius: 8px;
+}
+
+/* Badge styles */
+.sl-badge {
+	font-weight: 600;
+}
+
+/* Card-like callout styling */
+.starlight-aside {
+	border-radius: 8px;
+}
+
+/* Table styling improvements */
+table {
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+th {
+	background: var(--sl-color-gray-6);
+}
+
+:root[data-theme='light'] th {
+	background: var(--sl-color-gray-1);
+}

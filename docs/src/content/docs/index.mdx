@@ -1,0 +1,85 @@
+---
+title: Unified Provider Protocol
+description: A first-generation standard for simplifying AI inference and enabling multi-provider interoperability.
+template: splash
+hero:
+  tagline: UPP-1.1 provides uniform interfaces for interacting with LLMs, Embeddings, and Image Generation across providers.
+  image:
+    file: ../../assets/houston.webp
+  actions:
+    - text: Get Started
+      link: /introduction/
+      icon: right-arrow
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/providerprotocol/upp
+      icon: external
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Why UPP?
+
+Modern AI development requires interacting with multiple providers—Anthropic, OpenAI, Google, Stability, and more—each with distinct APIs, authentication schemes, and response formats. **UPP-1.1** solves this by providing a unified protocol.
+
+<CardGrid stagger>
+	<Card title="Multi-Provider Support" icon="rocket">
+		Switch between Anthropic, OpenAI, Google, and other providers without changing your application code.
+	</Card>
+	<Card title="Modality-Specific APIs" icon="puzzle">
+		Purpose-built interfaces for LLM (`llm()`), embeddings (`embedding()`), and image generation (`image()`).
+	</Card>
+	<Card title="Provider Transparency" icon="open-book">
+		Configuration passes through unchanged—reference provider docs directly with no hidden transformations.
+	</Card>
+	<Card title="Shared Infrastructure" icon="setting">
+		Common patterns for authentication, retry strategies, error handling, and HTTP utilities.
+	</Card>
+</CardGrid>
+
+## Quick Example
+
+```typescript
+import { llm, embedding, image } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { openai } from '@providerprotocol/ai/openai';
+
+// LLM inference
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  system: 'You are a helpful assistant.',
+});
+const turn = await claude.generate('What is the capital of France?');
+console.log(turn.response.text);
+
+// Embeddings
+const embedder = embedding({
+  model: openai('text-embedding-3-large'),
+});
+const result = await embedder.embed('Hello, world!');
+console.log(result.vector.length);
+
+// Image generation
+const dalle = image({
+  model: openai('dall-e-3'),
+});
+const img = await dalle.generate('A sunset over mountains');
+```
+
+## Specification Status
+
+| Version | Status | Description |
+|---------|--------|-------------|
+| **UPP-1.1** | Draft | Multi-modality support (LLM, Embedding, Image) |
+| UPP-1.0 | Draft | Initial LLM-focused specification |
+
+---
+
+<CardGrid>
+	<Card title="Read the Spec" icon="document">
+		Dive into the [full introduction](/introduction/) to understand UPP's goals and terminology.
+	</Card>
+	<Card title="Start Building" icon="laptop">
+		Follow the [Quick Start guide](/quick-start/) to integrate UPP into your project.
+	</Card>
+</CardGrid>

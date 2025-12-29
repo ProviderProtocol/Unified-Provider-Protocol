@@ -1,0 +1,71 @@
+---
+title: Introduction
+description: Understanding the Unified Provider Protocol and its goals.
+---
+
+import { Aside, Badge } from '@astrojs/starlight/components';
+
+# Introduction to UPP-1.1
+
+<Badge text="Version 1.1.0-draft" variant="note" />
+
+**UPP (Unified Provider Protocol)** is a first-generation standard for simplifying AI inference and enabling multi-provider interoperability. The protocol defines uniform interfaces for interacting with Large Language Models, Embedding Models, Image Generation Models, and other AI inference APIs through modality-specific, consistent developer experiences.
+
+## Purpose
+
+Modern AI development requires interacting with multiple providers (Anthropic, OpenAI, Google, Stability, Voyage, etc.), each with distinct APIs, authentication schemes, and response formats. UPP-1.1 establishes a standard protocol that:
+
+- Provides modality-specific interfaces (`llm`, `embedding`, `image`)
+- Enables provider switching without application code changes
+- Maintains provider-native configuration to avoid abstraction leakage
+- Shares common infrastructure (auth, retry, HTTP) across modalities
+- Supports text, image, audio, video, embeddings, and future modalities
+
+## Scope
+
+This specification covers:
+
+- The `llm()` function interface (chat/completion)
+- The `embedding()` function interface (vector embeddings)
+- The `image()` function interface (image generation)
+- Provider adapter requirements for each modality
+- Shared infrastructure (ProviderConfig, KeyStrategy, error handling)
+- Message, Turn, and Thread data structures (LLM-specific)
+- Streaming response handling
+- Tool definition and execution
+
+## Terminology
+
+| Term | Definition |
+|------|------------|
+| **Provider** | A vendor-specific adapter exposing one or more modality interfaces |
+| **Modality** | A distinct AI capability: LLM, embedding, image generation, etc. |
+| **BoundModel** | A model instance bound to a specific provider and model ID |
+| **Message** | A single message in an LLM conversation (user, assistant, or tool result) |
+| **Turn** | The complete result of one LLM inference call, containing all messages produced |
+| **StreamEvent** | A streaming event (lifecycle or content delta) |
+| **Thread** | A utility class for managing LLM conversation history |
+| **Embedding** | A vector representation of text or other content |
+| **UPP** | Unified Provider Protocol |
+
+## Requirements Language
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
+
+## Modality Overview
+
+| Entry Point | Purpose | Example Models |
+|-------------|---------|----------------|
+| `llm()` | Chat, completion, reasoning | Claude, GPT-4, Gemini |
+| `embedding()` | Vector embeddings | text-embedding-3, Voyage, Cohere |
+| `image()` | Image generation/editing | DALL-E, Stable Diffusion, Imagen |
+
+<Aside type="tip">
+Future modalities may include `audio()` for speech-to-text/text-to-speech and `video()` for video generation.
+</Aside>
+
+## What's Next?
+
+- Learn about [Design Principles](/design-principles/) that guide UPP
+- Jump to the [Quick Start](/quick-start/) guide
+- Explore the [Architecture](/core/architecture/) overview

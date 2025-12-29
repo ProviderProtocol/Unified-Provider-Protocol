@@ -1,0 +1,120 @@
+---
+title: Changelog
+description: Version history and changes for UPP.
+---
+
+import { Badge } from '@astrojs/starlight/components';
+
+# Changelog
+
+## 1.1.0-draft <Badge text="Current" variant="tip" />
+
+### Breaking Changes
+
+- **Renamed** from "useAI Provider Protocol" to "Unified Provider Protocol"
+- **Renamed** package from `useAI` to `@providerprotocol/ai`
+- **Renamed** entry points:
+  - `useAI()` → `llm()`
+  - `useEmbedding()` → `embedding()`
+  - `useImage()` → `image()`
+- **Renamed** related types:
+  - `AIInstance` → `LLMInstance`
+  - `UseLLMOptions` → `LLMOptions`
+  - etc.
+- **Replaced** `RetryConfig` with `RetryStrategy` for flexibility
+
+### New Features
+
+- **Added** `ai` namespace export for grouped imports:
+  ```typescript
+  import { ai } from '@providerprotocol/ai';
+  ai.llm({ ... });
+  ai.embedding({ ... });
+  ai.image({ ... });
+  ```
+- **Added** `embedding()` interface for vector embeddings
+- **Added** `image()` interface for image generation
+- **Added** unified provider factories (single export per provider)
+- **Added** `ModelReference` type for portable model references
+- **Added** `createProvider()` helper for provider implementations
+- **Added** `EmbeddingHandler`, `ImageHandler` interfaces
+- **Added** `BoundEmbeddingModel`, `BoundImageModel` types
+- **Added** `ImageCapabilities` for runtime feature detection
+- **Added** `embedMany()` for large-scale embedding with progress
+- **Added** optional similarity utilities
+- **Added** image editing, variation, and upscaling interfaces
+- **Added** `RetryStrategy` interface for pluggable retry/rate-limit handling
+
+### Updates
+
+- **Updated** `UPPError` with `modality` field
+- **Updated** provider structure to use unified factories
+- **Added** Conformance section (Section 16)
+- **Added** migration guide from UPP-1.0
+
+---
+
+## 1.0.0-draft
+
+Initial draft specification focused on LLM capabilities:
+
+- Core `useAI()` interface for LLM inference
+- Message, Turn, and Thread abstractions
+- Streaming support with `StreamEvent`
+- Tool definition and automatic execution
+- Structured output support
+- Provider configuration with retry strategies
+- Error normalization with `UPPError`
+
+---
+
+## Migration from 1.0 to 1.1
+
+### Package Rename
+
+```diff
+- import { useAI } from 'useAI';
++ import { llm } from '@providerprotocol/ai';
+```
+
+### Function Renames
+
+```diff
+- const instance = useAI({ ... });
++ const instance = llm({ ... });
+```
+
+### Provider Imports
+
+```diff
+- import { anthropic } from 'useAI/anthropic';
++ import { anthropic } from '@providerprotocol/ai/anthropic';
+```
+
+### RetryConfig to RetryStrategy
+
+```diff
+- config: {
+-   retry: {
+-     maxAttempts: 3,
+-     baseDelay: 1000,
+-   },
+- }
++ config: {
++   retryStrategy: new ExponentialBackoff({
++     maxAttempts: 3,
++     baseDelay: 1000,
++   }),
++ }
+```
+
+### Type Renames
+
+| Old Name | New Name |
+|----------|----------|
+| `AIInstance` | `LLMInstance` |
+| `UseAIOptions` | `LLMOptions` |
+| `AIProvider` | `LLMProvider` |
+| `BoundAIModel` | `BoundLLMModel` |
+| `AIRequest` | `LLMRequest` |
+| `AIResponse` | `LLMResponse` |

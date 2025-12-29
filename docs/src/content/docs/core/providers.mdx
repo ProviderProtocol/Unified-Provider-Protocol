@@ -1,0 +1,176 @@
+---
+title: Providers
+description: How UPP providers work and how to use them.
+---
+
+import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+
+# Providers
+
+Providers are vendor-specific adapters that expose one or more modality interfaces (LLM, embedding, image).
+
+## Import Patterns
+
+Providers are imported from their respective modules:
+
+```typescript
+import { openai } from '@providerprotocol/ai/openai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { google } from '@providerprotocol/ai/google';
+import { stability } from '@providerprotocol/ai/stability';
+import { voyage } from '@providerprotocol/ai/voyage';
+```
+
+## Using Providers
+
+All providers use the same pattern—a single factory per provider:
+
+<Tabs>
+  <TabItem label="LLM">
+```typescript
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { openai } from '@providerprotocol/ai/openai';
+import { google } from '@providerprotocol/ai/google';
+
+// Anthropic
+const claude = llm({ model: anthropic('claude-sonnet-4-20250514') });
+
+// OpenAI
+const gpt = llm({ model: openai('gpt-4o') });
+
+// Google
+const gemini = llm({ model: google('gemini-pro') });
+```
+  </TabItem>
+  <TabItem label="Embedding">
+```typescript
+import { embedding } from '@providerprotocol/ai';
+import { openai } from '@providerprotocol/ai/openai';
+import { google } from '@providerprotocol/ai/google';
+import { voyage } from '@providerprotocol/ai/voyage';
+
+// OpenAI
+const embedder1 = embedding({ model: openai('text-embedding-3-small') });
+
+// Google
+const embedder2 = embedding({ model: google('text-embedding-004') });
+
+// Voyage
+const embedder3 = embedding({ model: voyage('voyage-3') });
+```
+  </TabItem>
+  <TabItem label="Image">
+```typescript
+import { image } from '@providerprotocol/ai';
+import { openai } from '@providerprotocol/ai/openai';
+import { google } from '@providerprotocol/ai/google';
+import { stability } from '@providerprotocol/ai/stability';
+
+// OpenAI
+const dalle = image({ model: openai('dall-e-3') });
+
+// Google
+const imagen = image({ model: google('imagen-3.0-generate-001') });
+
+// Stability
+const sdxl = image({ model: stability('stable-diffusion-xl-1024-v1-0') });
+```
+  </TabItem>
+</Tabs>
+
+## Provider Capabilities
+
+Not all providers support all modalities:
+
+| Provider | LLM | Embedding | Image |
+|----------|-----|-----------|-------|
+| Anthropic | ✓ | - | - |
+| OpenAI | ✓ | ✓ | ✓ |
+| Google | ✓ | ✓ | ✓ |
+| Stability | - | - | ✓ |
+| Voyage | - | ✓ | - |
+
+<Aside type="caution">
+Using a modality that a provider doesn't support will throw a `UPPError` with code `INVALID_REQUEST`.
+</Aside>
+
+## Provider-Specific Parameters
+
+Each provider exports its own parameter types for type-safe configuration:
+
+```typescript
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import type { AnthropicLLMParams } from '@providerprotocol/ai/anthropic';
+
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  params: {
+    max_tokens: 4096,
+    temperature: 0.7,
+    // TypeScript knows these are valid Anthropic params
+  } as AnthropicLLMParams,
+});
+```
+
+Available parameter types:
+
+| Provider | LLM Params | Embedding Params | Image Params |
+|----------|------------|------------------|--------------|
+| Anthropic | `AnthropicLLMParams` | - | - |
+| OpenAI | `OpenAILLMParams` | `OpenAIEmbedParams` | `OpenAIImageParams` |
+| Google | `GoogleLLMParams` | `GoogleEmbedParams` | `GoogleImageParams` |
+| Stability | - | - | `StabilityImageParams` |
+
+## Provider Internal Structure
+
+Internally, each provider combines modality handlers:
+
+```typescript
+// @providerprotocol/ai/openai/index.ts
+import { createLLMHandler } from './llm';
+import { createEmbeddingHandler } from './embed';
+import { createImageHandler } from './image';
+
+export const openai = createProvider({
+  name: 'openai',
+  modalities: {
+    llm: createLLMHandler(),
+    embedding: createEmbeddingHandler(),
+    image: createImageHandler(),
+  },
+});
+```
+
+## Handler Interfaces
+
+Each modality has its own handler interface:
+
+```typescript
+/**
+ * Handler for LLM operations
+ */
+interface LLMHandler<TParams = unknown> {
+  bind(modelId: string): BoundLLMModel<TParams>;
+}
+
+/**
+ * Handler for embedding operations
+ */
+interface EmbeddingHandler<TParams = unknown> {
+  readonly supportedInputs: ('text' | 'image')[];
+  bind(modelId: string): BoundEmbeddingModel<TParams>;
+}
+
+/**
+ * Handler for image operations
+ */
+interface ImageHandler<TParams = unknown> {
+  bind(modelId: string): BoundImageModel<TParams>;
+}
+```
+
+<Aside type="tip">
+For detailed information on implementing providers, see the [Provider Implementation Guide](/providers/implementation/).
+</Aside>

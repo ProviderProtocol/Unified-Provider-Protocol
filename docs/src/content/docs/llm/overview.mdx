@@ -1,0 +1,204 @@
+---
+title: LLM Interface Overview
+description: The llm() interface for chat and completion with Large Language Models.
+---
+
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+# LLM Interface
+
+The `llm()` function provides a unified interface for chat and completion with Large Language Models.
+
+## Function Signature
+
+```typescript
+function llm<TParams = unknown>(options: LLMOptions<TParams>): LLMInstance<TParams>;
+```
+
+## Options
+
+```typescript
+interface LLMOptions<TParams = unknown> {
+  /** A model reference from a provider factory */
+  model: ModelReference;
+
+  /** Provider infrastructure configuration (optional - uses env vars if omitted) */
+  config?: ProviderConfig;
+
+  /** Model-specific parameters (temperature, max_tokens, etc.) */
+  params?: TParams;
+
+  /** System prompt for all inferences */
+  system?: string;
+
+  /** Tools available to the model */
+  tools?: Tool[];
+
+  /** Tool execution strategy */
+  toolStrategy?: ToolUseStrategy;
+
+  /** Structured output schema (JSON Schema) */
+  structure?: JSONSchema;
+}
+```
+
+## LLMInstance
+
+The `llm()` function returns an `LLMInstance`:
+
+```typescript
+interface LLMInstance<TParams = unknown> {
+  /**
+   * Execute inference and return complete Turn
+   */
+  generate(
+    historyOrInput: Message[] | Thread | InferenceInput,
+    ...input: InferenceInput[]
+  ): Promise<Turn>;
+
+  /**
+   * Execute streaming inference
+   */
+  stream(
+    historyOrInput: Message[] | Thread | InferenceInput,
+    ...input: InferenceInput[]
+  ): StreamResult;
+
+  /** The bound model */
+  readonly model: BoundLLMModel<TParams>;
+
+  /** Current system prompt */
+  readonly system: string | undefined;
+
+  /** Current parameters */
+  readonly params: TParams | undefined;
+}
+
+type InferenceInput = string | Message | ContentBlock;
+```
+
+## Basic Usage
+
+```typescript
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  config: {
+    apiKey: process.env.ANTHROPIC_API_KEY,
+  },
+  system: 'You are a helpful assistant.',
+});
+
+// Simple one-shot inference (no history needed)
+const turn = await claude.generate('What is the capital of France?');
+console.log(turn.response.text); // "The capital of France is Paris."
+```
+
+## History Detection
+
+`llm()` automatically determines if the first argument is history or input:
+
+- `Message[]` or `Thread` → history
+- `string`, `Message`, or `ContentBlock` → input (no history)
+
+<Tabs>
+  <TabItem label="No History">
+```typescript
+// No history - one-shot inference
+await claude.generate('What is 2+2?');
+
+// No history - multiple inputs
+await claude.generate('Look at this:', imageBlock);
+```
+  </TabItem>
+  <TabItem label="With History">
+```typescript
+// With Message array
+await claude.generate(history, 'Follow-up question');
+
+// With Thread
+await claude.generate(thread, 'Continue the conversation');
+```
+  </TabItem>
+</Tabs>
+
+## Full Configuration Example
+
+```typescript
+import { llm, RoundRobinKeys, ExponentialBackoff } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import type { AnthropicLLMParams } from '@providerprotocol/ai/anthropic';
+
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  config: {
+    apiKey: new RoundRobinKeys([
+      process.env.ANTHROPIC_KEY_1!,
+      process.env.ANTHROPIC_KEY_2!,
+    ]),
+    baseUrl: 'https://my-proxy.example.com',
+    timeout: 30000,
+    retryStrategy: new ExponentialBackoff({ maxAttempts: 3 }),
+  },
+  params: {
+    max_tokens: 4096,
+    temperature: 0.7,
+  } as AnthropicLLMParams,
+  system: 'You are a friendly AI assistant.',
+});
+```
+
+## Conversation Flow
+
+```typescript
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  system: 'You are a helpful assistant.',
+});
+
+// User manages their own history
+const history: Message[] = [];
+
+// First turn
+const turn1 = await claude.generate(history, 'My name is Alice.');
+history.push(...turn1.messages);
+
+// Second turn (history preserved)
+const turn2 = await claude.generate(history, 'What is my name?');
+history.push(...turn2.messages);
+
+console.log(turn2.response.text); // "Your name is Alice."
+```
+
+<Aside type="tip">
+UPP does not manage conversation history internally. Users control their own history, giving full flexibility over context management.
+</Aside>
+
+## BoundLLMModel
+
+The low-level model interface used internally:
+
+```typescript
+interface BoundLLMModel<TParams = unknown> {
+  readonly modelId: string;
+
+  /** Execute a single non-streaming request */
+  complete(request: LLMRequest<TParams>): Promise<LLMResponse>;
+
+  /** Execute a single streaming request */
+  stream(request: LLMRequest<TParams>): LLMStreamResult;
+}
+```
+
+<Aside type="note">
+Providers return a single `LLMResponse`. The `llm()` core handles constructing the full `Turn` including tool loops.
+</Aside>
+
+## What's Next?
+
+- Learn about [Messages](/llm/messages/) - the building blocks of conversations
+- Understand [Turns](/llm/turns/) - the result of inference calls
+- Explore [Streaming](/llm/streaming/) for real-time responses
+- Add [Tools](/llm/tools/) for function calling
