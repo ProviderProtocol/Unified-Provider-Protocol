@@ -149,9 +149,9 @@ interface ModelReference {
 /**
  * A provider factory function with metadata and modality handlers.
  */
-interface Provider {
-  /** Create a model reference */
-  (modelId: string): ModelReference;
+interface Provider<TOptions = unknown> {
+  /** Create a model reference, optionally with provider-specific options */
+  (modelId: string, options?: TOptions): ModelReference;
 
   /** Provider name */
   readonly name: string;

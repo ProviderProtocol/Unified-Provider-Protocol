@@ -40,6 +40,35 @@ interface ProviderConfig {
 }
 ```
 
+### Provider-Specific Options
+
+Some providers accept additional options for vendor-specific operational choices. These are passed to the **provider factory function**, not to `ProviderConfig`:
+
+```typescript
+interface OpenAIProviderOptions {
+  /**
+   * Which API to use:
+   * - 'responses': Modern Responses API (default, recommended)
+   * - 'completions': Legacy Chat Completions API
+   */
+  api?: 'responses' | 'completions';
+}
+
+// Use the modern Responses API (default)
+const gpt = llm({
+  model: openai('gpt-4o'),
+});
+
+// Explicitly use the legacy Completions API
+const gptLegacy = llm({
+  model: openai('gpt-4o', { api: 'completions' }),
+});
+```
+
+<Aside type="note">
+Provider options should be rare, well-documented, and have sensible defaults. Fundamentally different deployment targets (e.g., Vertex AI) should be separate providers, not options.
+</Aside>
+
 ## API Key Configuration
 
 <Tabs>

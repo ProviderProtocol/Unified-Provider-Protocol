@@ -376,6 +376,47 @@ interface ProviderConfig {
 }
 ```
 
+#### Provider-Specific Options
+
+`ProviderConfig` defines common infrastructure settings shared across all providers. However, some providers may offer additional options for vendor-specific operational choices—for example, selecting between different API variants.
+
+These options are passed to the **provider factory function**, not to `ProviderConfig`:
+
+```ts
+// Provider factory signature with optional options
+function openai(modelId: string, options?: OpenAIProviderOptions): ModelReference;
+
+interface OpenAIProviderOptions {
+  /**
+   * Which API to use:
+   * - 'responses': Modern Responses API (default, recommended)
+   * - 'completions': Legacy Chat Completions API
+   */
+  api?: 'responses' | 'completions';
+}
+```
+
+Usage:
+
+```ts
+// Use the modern Responses API (default)
+const gpt = llm({
+  model: openai('gpt-4o'),
+});
+
+// Explicitly use the legacy Completions API
+const gptLegacy = llm({
+  model: openai('gpt-4o', { api: 'completions' }),
+});
+```
+
+Provider options should be:
+- **Rare**: Most providers need no options beyond the model ID
+- **Well-documented**: Clearly explain when and why each option is needed
+- **Defaulted sensibly**: The provider should work without any options
+
+Note: Fundamentally different deployment targets (e.g., Google Vertex AI vs standard Gemini API) should be implemented as **separate providers** rather than options on a single provider.
+
 ### 4.2 Key Strategies
 
 UPP provides built-in key strategies for API key management:
@@ -492,9 +533,9 @@ interface ModelReference {
 /**
  * A provider factory function with metadata and modality handlers.
  */
-interface Provider {
-  /** Create a model reference */
-  (modelId: string): ModelReference;
+interface Provider<TOptions = unknown> {
+  /** Create a model reference, optionally with provider-specific options */
+  (modelId: string, options?: TOptions): ModelReference;
 
   /** Provider name */
   readonly name: string;
