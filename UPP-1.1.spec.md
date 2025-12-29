@@ -10,7 +10,7 @@
 
 UPP (Unified Provider Protocol) is a first-generation standard for simplifying AI inference and enabling multi-provider interoperability. The protocol defines uniform interfaces for interacting with Large Language Models, Embedding Models, Image Generation Models, and other AI inference APIs through modality-specific, consistent developer experiences.
 
-UPP provides separate entry points for each modality—`useLLM()`, `useEmbedding()`, `useImage()`—while sharing common provider infrastructure, configuration patterns, and design principles.
+UPP provides separate entry points for each modality—`llm()`, `embedding()`, `image()`—while sharing common provider infrastructure, configuration patterns, and design principles.
 
 ---
 
@@ -20,15 +20,15 @@ UPP provides separate entry points for each modality—`useLLM()`, `useEmbedding
 2. [Design Principles](#2-design-principles)
 3. [Core Concepts](#3-core-concepts)
 4. [Provider Protocol](#4-provider-protocol)
-5. [useLLM Interface](#5-usellm-interface)
+5. [llm() Interface](#5-llm-interface)
 6. [Messages](#6-messages)
 7. [Turns](#7-turns)
 8. [Threads](#8-threads)
 9. [Streaming](#9-streaming)
 10. [Tools](#10-tools)
 11. [Structured Outputs](#11-structured-outputs)
-12. [useEmbedding Interface](#12-useembedding-interface)
-13. [useImage Interface](#13-useimage-interface)
+12. [embedding() Interface](#12-embedding-interface)
+13. [image() Interface](#13-image-interface)
 14. [Type Definitions](#14-type-definitions)
 15. [Provider Implementation Guide](#15-provider-implementation-guide)
 16. [Conformance](#16-conformance)
@@ -41,7 +41,7 @@ UPP provides separate entry points for each modality—`useLLM()`, `useEmbedding
 
 Modern AI development requires interacting with multiple providers (Anthropic, OpenAI, Google, Stability, Voyage, etc.), each with distinct APIs, authentication schemes, and response formats. UPP-1.1 establishes a standard protocol that:
 
-- Provides modality-specific interfaces (`useLLM`, `useEmbedding`, `useImage`)
+- Provides modality-specific interfaces (`llm`, `embedding`, `image`)
 - Enables provider switching without application code changes
 - Maintains provider-native configuration to avoid abstraction leakage
 - Shares common infrastructure (auth, retry, HTTP) across modalities
@@ -51,9 +51,9 @@ Modern AI development requires interacting with multiple providers (Anthropic, O
 
 This specification covers:
 
-- The `useLLM` function interface (chat/completion)
-- The `useEmbedding` function interface (vector embeddings)
-- The `useImage` function interface (image generation)
+- The `llm()` function interface (chat/completion)
+- The `embedding()` function interface (vector embeddings)
+- The `image()` function interface (image generation)
 - Provider adapter requirements for each modality
 - Shared infrastructure (ProviderConfig, KeyStrategy, error handling)
 - Message, Turn, and Thread data structures (LLM-specific)
@@ -82,13 +82,13 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 | Entry Point | Purpose | Example Models |
 |-------------|---------|----------------|
-| `useLLM()` | Chat, completion, reasoning | Claude, GPT-4, Gemini |
-| `useEmbedding()` | Vector embeddings | text-embedding-3, Voyage, Cohere |
-| `useImage()` | Image generation/editing | DALL-E, Stable Diffusion, Imagen |
+| `llm()` | Chat, completion, reasoning | Claude, GPT-4, Gemini |
+| `embedding()` | Vector embeddings | text-embedding-3, Voyage, Cohere |
+| `image()` | Image generation/editing | DALL-E, Stable Diffusion, Imagen |
 
 Future modalities may include:
-- `useAudio()` - Speech-to-text, text-to-speech
-- `useVideo()` - Video generation
+- `audio()` - Speech-to-text, text-to-speech
+- `video()` - Video generation
 
 ---
 
@@ -163,8 +163,8 @@ Providers MAY use vendor SDKs if there's a compelling reason, but this should be
            │                    │                    │
            ▼                    ▼                    ▼
     ┌─────────────┐     ┌──────────────┐     ┌─────────────┐
-    │  useLLM()   │     │ useEmbedding │     │  useImage() │
-    │             │     │     ()       │     │             │
+    │    llm()    │     │   embedding()    │     │   image()   │
+    │             │     │              │     │             │
     └─────────────┘     └──────────────┘     └─────────────┘
            │                    │                    │
            ▼                    ▼                    ▼
@@ -184,29 +184,80 @@ Providers MAY use vendor SDKs if there's a compelling reason, but this should be
     └─────────────────────────────────────────────────────────────┘
 ```
 
-### 3.2 Provider Structure
+### 3.2 Import Patterns
+
+UPP exports both a namespace object and individual functions, giving developers flexibility in import style:
+
+```ts
+// @providerprotocol/ai/index.ts
+export const llm = (...) => { ... };
+export const embedding = (...) => { ... };
+export const image = (...) => { ... };
+
+export const ai = { llm, embedding, image };
+```
+
+**Namespace style (recommended for clarity):**
+
+```ts
+import { ai } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+
+const claude = ai.llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  system: 'You are a helpful assistant.',
+});
+
+const embedder = ai.embedding({
+  model: anthropic('voyage-3'),
+});
+```
+
+**Direct import style (shorter, user accepts collision risk):**
+
+```ts
+import { llm, embedding } from '@providerprotocol/ai';
+import { openai } from '@providerprotocol/ai/openai';
+
+const gpt = llm({ model: openai('gpt-4o') });
+const embedder = embedding({ model: openai('text-embedding-3-small') });
+```
+
+**Mix and match:**
+
+```ts
+import { ai, llm } from '@providerprotocol/ai';
+
+// Use direct import for frequently-used functions
+const claude = llm({ ... });
+
+// Use namespace for less common modalities
+const imageGen = ai.image({ ... });
+```
+
+### 3.3 Provider Structure
 
 A provider exports a single factory function that returns a `ModelReference`. The same factory works with any modality—the model ID determines which handler is used:
 
 ```ts
-import { openai } from '@providerprotocol/use/openai';
-import { anthropic } from '@providerprotocol/use/anthropic';
-import { stability } from '@providerprotocol/use/stability';
+import { openai } from '@providerprotocol/ai/openai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { stability } from '@providerprotocol/ai/stability';
 
 // Same openai() factory works with all modalities
-useLLM({ model: openai('gpt-4o') });
-useEmbedding({ model: openai('text-embedding-3-small') });
-useImage({ model: openai('dall-e-3') });
+llm({ model: openai('gpt-4o') });
+embedding({ model: openai('text-embedding-3-small') });
+image({ model: openai('dall-e-3') });
 
 // Providers that only support one modality still use the same pattern
-useLLM({ model: anthropic('claude-sonnet-4-20250514') });
-useImage({ model: stability('stable-diffusion-xl-1024-v1-0') });
+llm({ model: anthropic('claude-sonnet-4-20250514') });
+image({ model: stability('stable-diffusion-xl-1024-v1-0') });
 ```
 
 Internally, each provider combines modality handlers:
 
 ```ts
-// @providerprotocol/use/openai/index.ts
+// @providerprotocol/ai/openai/index.ts
 import { createLLMHandler } from './llm';
 import { createEmbeddingHandler } from './embed';
 import { createImageHandler } from './image';
@@ -221,11 +272,11 @@ export const openai = createProvider({
 });
 ```
 
-### 3.3 Data Flow
+### 3.4 Data Flow
 
 #### LLM Data Flow
 
-1. Developer calls `useLLM` with a provider-bound model
+1. Developer calls `llm()` with a provider-bound model
 2. Developer calls `generate()` or `stream()` with message history and new input
 3. Provider transforms input to vendor-specific format
 4. Provider handles tool execution loop (if tools configured)
@@ -234,21 +285,21 @@ export const openai = createProvider({
 
 #### Embedding Data Flow
 
-1. Developer calls `useEmbedding` with a provider-bound model
-2. Developer calls `embed()` or `embedBatch()` with text/content
+1. Developer calls `embedding()` with a provider-bound model
+2. Developer calls `embedding()` or `embedBatch()` with text/content
 3. Provider transforms input to vendor-specific format
 4. Provider returns `Embedding` or `EmbeddingBatch` with vectors
 5. Developer uses vectors for search, clustering, etc.
 
 #### Image Data Flow
 
-1. Developer calls `useImage` with a provider-bound model
+1. Developer calls `image()` with a provider-bound model
 2. Developer calls `generate()`, `edit()`, or `vary()` with prompt/images
 3. Provider transforms input to vendor-specific format
 4. Provider returns `ImageResult` with generated images
 5. Developer saves or displays images
 
-### 3.4 Separation of Concerns
+### 3.5 Separation of Concerns
 
 UPP separates configuration into distinct layers:
 
@@ -259,7 +310,7 @@ UPP separates configuration into distinct layers:
 | **Modality Options** | Interface-specific settings | No |
 
 ```ts
-import { openai } from '@providerprotocol/use/openai';
+import { openai } from '@providerprotocol/ai/openai';
 
 // Provider config is shared
 const config: ProviderConfig = {
@@ -269,7 +320,7 @@ const config: ProviderConfig = {
 };
 
 // Same openai() factory, different modalities
-const llm = useLLM({
+const llm = llm({
   model: openai('gpt-4o'),
   config,
   params: { temperature: 0.7, max_tokens: 4096 },  // LLM params
@@ -277,13 +328,13 @@ const llm = useLLM({
   tools: [getWeather],
 });
 
-const embedder = useEmbedding({
+const embedder = embedding({
   model: openai('text-embedding-3-large'),
   config,
   params: { dimensions: 1536 },  // Embedding params
 });
 
-const imageGen = useImage({
+const imageGen = image({
   model: openai('dall-e-3'),
   config,
   params: { size: '1024x1024', quality: 'hd' },  // Image params
@@ -460,7 +511,7 @@ interface Provider {
 }
 
 /**
- * Handler for LLM operations (used internally by useLLM)
+ * Handler for LLM operations (used internally by llm())
  */
 interface LLMHandler<TParams = unknown> {
   /** Bind model ID to create executable model */
@@ -468,7 +519,7 @@ interface LLMHandler<TParams = unknown> {
 }
 
 /**
- * Handler for embedding operations (used internally by useEmbedding)
+ * Handler for embedding operations (used internally by embedding())
  */
 interface EmbeddingHandler<TParams = unknown> {
   /** Supported input types */
@@ -478,7 +529,7 @@ interface EmbeddingHandler<TParams = unknown> {
 }
 
 /**
- * Handler for image operations (used internally by useImage)
+ * Handler for image operations (used internally by image())
  */
 interface ImageHandler<TParams = unknown> {
   /** Bind model ID to create executable model */
@@ -507,24 +558,24 @@ type ImageProvider<TParams = unknown> = Provider & {
 Providers are imported from their respective modules:
 
 ```ts
-import { openai } from '@providerprotocol/use/openai';
-import { anthropic } from '@providerprotocol/use/anthropic';
-import { google } from '@providerprotocol/use/google';
-import { stability } from '@providerprotocol/use/stability';
-import { voyage } from '@providerprotocol/use/voyage';
+import { openai } from '@providerprotocol/ai/openai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { google } from '@providerprotocol/ai/google';
+import { stability } from '@providerprotocol/ai/stability';
+import { voyage } from '@providerprotocol/ai/voyage';
 
 // All use the same pattern - single factory per provider
-useLLM({ model: openai('gpt-4o') });
-useLLM({ model: anthropic('claude-sonnet-4-20250514') });
-useLLM({ model: google('gemini-pro') });
+llm({ model: openai('gpt-4o') });
+llm({ model: anthropic('claude-sonnet-4-20250514') });
+llm({ model: google('gemini-pro') });
 
-useEmbedding({ model: openai('text-embedding-3-small') });
-useEmbedding({ model: google('text-embedding-004') });
-useEmbedding({ model: voyage('voyage-3') });
+embedding({ model: openai('text-embedding-3-small') });
+embedding({ model: google('text-embedding-004') });
+embedding({ model: voyage('voyage-3') });
 
-useImage({ model: openai('dall-e-3') });
-useImage({ model: google('imagen-3.0-generate-001') });
-useImage({ model: stability('stable-diffusion-xl-1024-v1-0') });
+image({ model: openai('dall-e-3') });
+image({ model: google('imagen-3.0-generate-001') });
+image({ model: stability('stable-diffusion-xl-1024-v1-0') });
 ```
 
 When a `use*` function receives a `ModelReference`, it:
@@ -534,18 +585,18 @@ When a `use*` function receives a `ModelReference`, it:
 
 ---
 
-## 5. useLLM Interface
+## 5. llm() Interface
 
 ### 5.1 Function Signature
 
 ```ts
-function useLLM<TParams = unknown>(options: UseLLMOptions<TParams>): LLMInstance<TParams>;
+function llm<TParams = unknown>(options: LLMOptions<TParams>): LLMInstance<TParams>;
 ```
 
 ### 5.2 Options
 
 ```ts
-interface UseLLMOptions<TParams = unknown> {
+interface LLMOptions<TParams = unknown> {
   /** A model reference from a provider factory */
   model: ModelReference;
 
@@ -622,7 +673,7 @@ type InferenceInput = string | Message | ContentBlock;
 
 **History Detection:**
 
-useLLM determines if the first argument is history or input:
+llm() determines if the first argument is history or input:
 - `Message[]` or `Thread` → history
 - `string`, `Message`, or `ContentBlock` → input (no history)
 
@@ -656,9 +707,9 @@ interface BoundLLMModel<TParams = unknown> {
 }
 
 /**
- * Request passed from useLLM core to providers.
- * Note: config is required here because useLLM core resolves defaults
- * before passing to providers. UseLLMOptions.config is optional for callers.
+ * Request passed from llm() core to providers.
+ * Note: config is required here because llm() core resolves defaults
+ * before passing to providers. LLMOptions.config is optional for callers.
  */
 interface LLMRequest<TParams = unknown> {
   /** All messages for this request (history + new input) */
@@ -676,7 +727,7 @@ interface LLMRequest<TParams = unknown> {
   /** Structured output schema (if requested) */
   structure?: JSONSchema;
 
-  /** Provider infrastructure config (resolved by useLLM core) */
+  /** Provider infrastructure config (resolved by llm() core) */
   config: ProviderConfig;
 
   /** Abort signal for cancellation */
@@ -699,10 +750,10 @@ interface LLMStreamResult extends AsyncIterable<StreamEvent> {
 ### 5.5 Basic Usage
 
 ```ts
-import { useLLM } from '@providerprotocol/use';
-import { anthropic } from '@providerprotocol/use/anthropic';
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
 
-const claude = useLLM({
+const claude = llm({
   model: anthropic('claude-haiku-4.5'),
   config: {
     apiKey: process.env.ANTHROPIC_API_KEY,
@@ -718,11 +769,11 @@ console.log(turn.response.text); // "The capital of France is Paris."
 ### 5.6 Full Configuration
 
 ```ts
-import { useLLM, RoundRobinKeys, ExponentialBackoff } from '@providerprotocol/use';
-import { anthropic } from '@providerprotocol/use/anthropic';
-import type { AnthropicLLMParams } from '@providerprotocol/use/anthropic';
+import { llm,RoundRobinKeys, ExponentialBackoff } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import type { AnthropicLLMParams } from '@providerprotocol/ai/anthropic';
 
-const claude = useLLM({
+const claude = llm({
   model: anthropic('claude-haiku-4.5'),
   config: {
     apiKey: new RoundRobinKeys([
@@ -743,13 +794,13 @@ const claude = useLLM({
 
 ### 5.7 Tool Execution Loop
 
-useLLM core manages the tool execution loop. Providers only handle single request/response cycles.
+llm() core manages the tool execution loop. Providers only handle single request/response cycles.
 
 **Loop Flow:**
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  useLLM.generate(history, input)                             │
+│  llm.generate(history, input)                               │
 └─────────────────────────────────────────────────────────────┘
                             │
                             ▼
@@ -815,7 +866,7 @@ useLLM core manages the tool execution loop. Providers only handle single reques
 ### 5.8 Conversation Flow
 
 ```ts
-const claude = useLLM({
+const claude = llm({
   model: anthropic('claude-haiku-4.5'),
   config: { apiKey: process.env.ANTHROPIC_API_KEY },
   system: 'You are a helpful assistant.',
@@ -850,7 +901,7 @@ The provider MUST transform UPP structures to vendor format:
 UPP provides standard mutators for common transformations:
 
 ```ts
-import { toBase64, toDataUrl } from '@providerprotocol/use/mutators';
+import { toBase64, toDataUrl } from '@providerprotocol/ai/mutators';
 ```
 
 #### 5.9.2 Response Transformation
@@ -861,7 +912,7 @@ The provider MUST transform vendor responses to UPP structures:
 - Map streaming chunks to `StreamEvent` with appropriate event metadata
 - Preserve vendor-specific metadata in `Message.metadata` under the provider's namespace
 
-**Note:** The provider returns a single `LLMResponse`. useLLM core handles constructing the full `Turn` including tool loops.
+**Note:** The provider returns a single `LLMResponse`. llm() core handles constructing the full `Turn` including tool loops.
 
 #### 5.9.3 Metadata Handling
 
@@ -907,7 +958,7 @@ The provider MUST handle system prompts according to vendor requirements:
 | OpenAI | Message with `role: 'system'` |
 | Google | `systemInstruction` field |
 
-useLLM accepts system prompts at the options level and providers transform accordingly.
+llm() accepts system prompts at the options level and providers transform accordingly.
 
 #### 5.9.5 Structured Output Handling
 
@@ -1168,7 +1219,7 @@ const assistantWithTools = new AssistantMessage(
   [{ toolCallId: 'call_123', toolName: 'getWeather', arguments: { location: 'Tokyo' } }]
 );
 
-// Tool result message (created by useLLM core after tool execution)
+// Tool result message (created by llm() core after tool execution)
 const toolResultMsg = new ToolResultMessage([
   { toolCallId: 'call_123', result: '72°F, sunny' }
 ]);
@@ -1313,7 +1364,7 @@ interface TokenUsage {
 ### 7.2 Turn Usage
 
 ```ts
-const claude = useLLM({
+const claude = llm({
   model: anthropic('claude-haiku-4.5'),
   config: { apiKey: process.env.ANTHROPIC_API_KEY },
   system: 'You are a helpful assistant.',
@@ -1419,7 +1470,7 @@ class Thread {
 ### 8.2 Thread Usage
 
 ```ts
-const claude = useLLM({
+const claude = llm({
   model: anthropic('claude-haiku-4.5'),
   config: { apiKey: process.env.ANTHROPIC_API_KEY },
   system: 'You are a helpful assistant.',
@@ -1538,7 +1589,7 @@ interface EventDelta {
 ### 9.3 Streaming Usage
 
 ```ts
-const claude = useLLM({
+const claude = llm({
   model: anthropic('claude-haiku-4.5'),
   config: { apiKey: process.env.ANTHROPIC_API_KEY },
   system: 'You are a helpful assistant.',
@@ -1653,7 +1704,7 @@ Tools use **JSON Schema** for parameter definitions:
 
 ```ts
 interface Tool<TParams = unknown, TResult = unknown> {
-  /** Tool name (must be unique within a useLLM instance) */
+  /** Tool name (must be unique within a llm() instance) */
   name: string;
 
   /** Human-readable description for the model */
@@ -1714,7 +1765,7 @@ const getWeather: Tool<{ location: string; units?: string }> = {
   },
 };
 
-const claude = useLLM({
+const claude = llm({
   model: anthropic('claude-haiku-4.5'),
   config: { apiKey: process.env.ANTHROPIC_API_KEY },
   system: 'You are a weather assistant.',
@@ -1750,7 +1801,7 @@ const deleteFile: Tool<{ path: string }> = {
 
 ### 10.4 Tool Execution Flow
 
-By default, useLLM handles tool execution automatically:
+By default, llm() handles tool execution automatically:
 
 1. Model returns an `AssistantMessage` with `toolCalls`
 2. If `approval` is defined, it's called first (rejected = error result sent to model)
@@ -1763,7 +1814,7 @@ By default, useLLM handles tool execution automatically:
 - If `approval()` returns `false`, an error result is sent to the model
 - If the tool's `run` function throws, the error is caught and sent as an error result to the model
 
-**Important:** useLLM does NOT validate tool arguments against the JSON Schema. The schema is provided to the model to guide its output, but validation and sanitization of LLM-provided arguments is the responsibility of the tool implementation. Always treat tool arguments as untrusted input.
+**Important:** llm() does NOT validate tool arguments against the JSON Schema. The schema is provided to the model to guide its output, but validation and sanitization of LLM-provided arguments is the responsibility of the tool implementation. Always treat tool arguments as untrusted input.
 
 **Note on validation asymmetry:** This differs from structured outputs (Section 11), where providers MUST validate responses against the schema. The distinction is intentional: structured outputs are a contract with the developer about response format, while tool arguments are inputs to developer-controlled functions that should perform their own validation appropriate to their security context.
 
@@ -1817,7 +1868,7 @@ const strategy: ToolUseStrategy = {
   },
 };
 
-const claude = useLLM({
+const claude = llm({
   model: anthropic('claude-haiku-4.5'),
   config: { apiKey: process.env.ANTHROPIC_API_KEY },
   tools: [getWeather, searchWeb],
@@ -1830,7 +1881,7 @@ const claude = useLLM({
 To handle tool calls manually:
 
 ```ts
-const claude = useLLM({
+const claude = llm({
   model: anthropic('claude-haiku-4.5'),
   config: { apiKey: process.env.ANTHROPIC_API_KEY },
   tools: [getWeather],
@@ -1850,10 +1901,10 @@ if (turn.response.hasToolCalls) {
 
 ### 10.8 Multiple Tool Calls
 
-Models may request multiple tool calls in a single response. useLLM executes them in parallel by default:
+Models may request multiple tool calls in a single response. llm() executes them in parallel by default:
 
 ```ts
-const claude = useLLM({
+const claude = llm({
   model: anthropic('claude-haiku-4.5'),
   config: { apiKey: process.env.ANTHROPIC_API_KEY },
   tools: [getWeather, getTime],
@@ -1877,7 +1928,7 @@ const turn = await claude.generate(
 Structured outputs allow you to constrain model responses to a specific JSON schema, ensuring valid, parseable data.
 
 ```ts
-const claude = useLLM({
+const claude = llm({
   model: anthropic('claude-haiku-4.5'),
   config: { apiKey: process.env.ANTHROPIC_API_KEY },
   system: 'Extract structured data from text.',
@@ -2012,7 +2063,7 @@ const weatherSchema: JSONSchema = {
   required: ['location', 'current'],
 };
 
-const weatherAI = useLLM({
+const weatherAI = llm({
   model: anthropic('claude-haiku-4.5'),
   config: { apiKey: process.env.ANTHROPIC_API_KEY },
   system: 'Provide weather information in the requested format.',
@@ -2030,7 +2081,7 @@ console.log(weather.forecast.length); // 3
 Structured outputs can be combined with tools. The final response will be structured:
 
 ```ts
-const claude = useLLM({
+const claude = llm({
   model: anthropic('claude-haiku-4.5'),
   config: { apiKey: process.env.ANTHROPIC_API_KEY },
   tools: [getWeatherTool],
@@ -2053,20 +2104,20 @@ console.log(turn.data);
 
 ---
 
-## 12. useEmbedding Interface
+## 12. embedding() Interface
 
 ### 12.1 Function Signature
 
 ```ts
-function useEmbedding<TParams = unknown>(
-  options: UseEmbeddingOptions<TParams>
+function embedding<TParams = unknown>(
+  options: EmbeddingOptions<TParams>
 ): EmbeddingInstance<TParams>;
 ```
 
 ### 12.2 Options
 
 ```ts
-interface UseEmbeddingOptions<TParams = unknown> {
+interface EmbeddingOptions<TParams = unknown> {
   /** A model reference from a provider factory */
   model: ModelReference;
 
@@ -2220,10 +2271,10 @@ interface EmbeddingResponse {
 ### 12.6 Basic Usage
 
 ```ts
-import { useEmbedding } from '@providerprotocol/use';
-import { openai } from '@providerprotocol/use/openai';
+import { embedding } from '@providerprotocol/ai';
+import { openai } from '@providerprotocol/ai/openai';
 
-const embedder = useEmbedding({
+const embedder = embedding({
   model: openai('text-embedding-3-large'),
   config: {
     apiKey: process.env.OPENAI_API_KEY,
@@ -2280,27 +2331,27 @@ Each provider exports its own parameter types (e.g., `OpenAIEmbedParams`, `Voyag
 UPP provides optional utilities for working with embeddings:
 
 ```ts
-import { cosineSimilarity, euclideanDistance, dotProduct } from '@providerprotocol/use/similarity';
+import { cosineSimilarity, euclideanDistance, dotProduct } from '@providerprotocol/ai/similarity';
 
 const similarity = cosineSimilarity(embedding1.vector, embedding2.vector);
 ```
 
 ---
 
-## 13. useImage Interface
+## 13. image() Interface
 
 ### 13.1 Function Signature
 
 ```ts
-function useImage<TParams = unknown>(
-  options: UseImageOptions<TParams>
+function image<TParams = unknown>(
+  options: ImageOptions<TParams>
 ): ImageInstance<TParams>;
 ```
 
 ### 13.2 Options
 
 ```ts
-interface UseImageOptions<TParams = unknown> {
+interface ImageOptions<TParams = unknown> {
   /** A model reference from a provider factory */
   model: ModelReference;
 
@@ -2625,10 +2676,10 @@ interface ImageProviderStreamResult extends AsyncIterable<ImageStreamEvent> {
 ### 13.9 Basic Usage
 
 ```ts
-import { useImage } from '@providerprotocol/use';
-import { openai } from '@providerprotocol/use/openai';
+import { image } from '@providerprotocol/ai';
+import { openai } from '@providerprotocol/ai/openai';
 
-const dalle = useImage({
+const dalle = image({
   model: openai('dall-e-3'),
   config: {
     apiKey: process.env.OPENAI_API_KEY,
@@ -2653,10 +2704,10 @@ await Bun.write('sunset.png', imageData);
 ### 13.10 Advanced Generation
 
 ```ts
-import { useImage } from '@providerprotocol/use';
-import { stability } from '@providerprotocol/use/stability';
+import { image } from '@providerprotocol/ai';
+import { stability } from '@providerprotocol/ai/stability';
 
-const sd = useImage({
+const sd = image({
   model: stability('stable-diffusion-xl-1024-v1-0'),
   config: {
     apiKey: process.env.STABILITY_API_KEY,
@@ -2776,11 +2827,14 @@ type Modality = 'llm' | 'embedding' | 'image' | 'audio' | 'video';
 
 ```ts
 // --- Entry Points ---
-export { useLLM, useEmbedding, useImage };
+export { llm, embedding, image };
+
+// --- Namespace (alternative import style) ---
+export { ai };  // ai = { llm, embedding, image }
 
 // --- LLM Types ---
 export {
-  UseLLMOptions,
+  LLMOptions,
   LLMInstance,
   LLMProvider,
   BoundLLMModel,
@@ -2845,7 +2899,7 @@ export {
 
 // --- Embedding Types ---
 export {
-  UseEmbeddingOptions,
+  EmbeddingOptions,
   EmbeddingInstance,
   EmbeddingProvider,
   BoundEmbeddingModel,
@@ -2861,7 +2915,7 @@ export {
 
 // --- Image Types ---
 export {
-  UseImageOptions,
+  ImageOptions,
   ImageInstance,
   ImageProvider,
   BoundImageModel,
@@ -2911,7 +2965,7 @@ export {
 
 // --- Similarity Utilities (optional) ---
 // cosineSimilarity, euclideanDistance, dotProduct
-// Available from '@providerprotocol/use/similarity'
+// Available from '@providerprotocol/ai/similarity'
 ```
 
 ### 14.3 Provider Exports
@@ -2919,13 +2973,13 @@ export {
 Each provider module exports a single factory function and its own parameter types. The model ID passed to the factory determines which modality handler is used.
 
 ```ts
-// Pattern: @providerprotocol/use/{provider}
-import { openai } from '@providerprotocol/use/openai';
-import { anthropic } from '@providerprotocol/use/anthropic';
-import { google } from '@providerprotocol/use/google';
+// Pattern: @providerprotocol/ai/{provider}
+import { openai } from '@providerprotocol/ai/openai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { google } from '@providerprotocol/ai/google';
 
 // Each provider also exports its parameter types
-import type { OpenAILLMParams } from '@providerprotocol/use/openai';
+import type { OpenAILLMParams } from '@providerprotocol/ai/openai';
 ```
 
 Consult individual provider documentation for available parameter types and supported modalities.
@@ -2939,8 +2993,8 @@ Consult individual provider documentation for available parameter types and supp
 Each provider module exports a single factory that combines all modality handlers:
 
 ```ts
-// @providerprotocol/use/openai/index.ts
-import { createProvider } from '@providerprotocol/use';
+// @providerprotocol/ai/openai/index.ts
+import { createProvider } from '@providerprotocol/ai';
 import { createLLMHandler } from './llm';
 import { createEmbeddingHandler } from './embed';
 import { createImageHandler } from './image';
@@ -2966,7 +3020,7 @@ export type { OpenAIImageParams } from './image';
 UPP provides a helper to create providers:
 
 ```ts
-import { createProvider, Provider, ModelReference } from '@providerprotocol/use';
+import { createProvider, Provider, ModelReference } from '@providerprotocol/ai';
 
 interface CreateProviderOptions {
   name: string;
@@ -2999,7 +3053,7 @@ Per [Section 2.7](#27-http-first-provider-implementation), providers SHOULD use 
 
 ### 15.4 Shared Utilities
 
-UPP provides utilities for provider implementations. These are available from `@providerprotocol/use/http`.
+UPP provides utilities for provider implementations. These are available from `@providerprotocol/ai/http`.
 
 ```ts
 /**
@@ -3061,7 +3115,7 @@ Providers may implement one or more modalities. For each modality, conformance i
 - Tool definition transformation (JSON Schema to vendor format)
 - Tool call detection in responses (`AssistantMessage.toolCalls`)
 - Tool result handling (`ToolResultMessage` transformation)
-- Note: Tool execution loop is handled by useLLM core, not providers
+- Note: Tool execution loop is handled by llm() core, not providers
 
 **Level 4: Structured Output**
 - Transform `structure` schema to vendor format
@@ -3077,7 +3131,7 @@ Providers may implement one or more modalities. For each modality, conformance i
 #### 16.1.2 Embedding Conformance
 
 **Level 1: Core (Required)**
-- `embed()` method for single inputs
+- `embedding()` method for single inputs
 - Return `EmbeddingResponse` with vectors and usage
 - Text input support
 - Error normalization with `modality: 'embedding'`
@@ -3175,8 +3229,8 @@ This appendix shows the minimal pattern for implementing a provider. Full implem
 ### A.1 Provider Entry Point
 
 ```ts
-// @providerprotocol/use/anthropic/index.ts
-import { createProvider } from '@providerprotocol/use';
+// @providerprotocol/ai/anthropic/index.ts
+import { createProvider } from '@providerprotocol/ai';
 import { createLLMHandler } from './llm';
 
 export const anthropic = createProvider({
@@ -3193,9 +3247,9 @@ export type { AnthropicLLMParams } from './llm';
 ### A.2 LLM Handler Pattern
 
 ```ts
-// @providerprotocol/use/anthropic/llm.ts
-import { LLMHandler, BoundLLMModel, LLMResponse } from '@providerprotocol/use';
-import { resolveApiKey, doFetch } from '@providerprotocol/use/http';
+// @providerprotocol/ai/anthropic/llm.ts
+import { LLMHandler, BoundLLMModel, LLMResponse } from '@providerprotocol/ai';
+import { resolveApiKey, doFetch } from '@providerprotocol/ai/http';
 
 export interface AnthropicLLMParams {
   max_tokens?: number;
@@ -3303,100 +3357,18 @@ export function createImageHandler(): ImageHandler<MyImageParams> {
 Consult vendor API documentation for specific request/response formats, authentication methods, and available parameters.
 
 ---
-## Appendix B: Migration from UPP-1.0
-
-### Naming Changes
-
-| UPP-1.0 | UPP-1.1 |
-|---------|---------|
-| `useAI()` | `useLLM()` |
-| `AIInstance` | `LLMInstance` |
-| `Provider` | `Provider` (unified) |
-| `BoundModel` | `BoundLLMModel` |
-| `ProviderRequest` | `LLMRequest` |
-| `ProviderResponse` | `LLMResponse` |
-| `ProviderStreamResult` | `LLMStreamResult` |
-| `useAI/anthropic` | `@providerprotocol/use/anthropic` |
-
-### Import Changes
-
-```ts
-// UPP-1.0
-import { useAI } from 'useAI';
-import { anthropic } from 'useAI/anthropic';
-
-const claude = useAI({
-  model: anthropic('claude-haiku-4.5'),
-  config: { apiKey: '...' },
-});
-
-// UPP-1.1
-import { useLLM } from '@providerprotocol/use';
-import { anthropic } from '@providerprotocol/use/anthropic';
-
-const claude = useLLM({
-  model: anthropic('claude-haiku-4.5'),
-  config: { apiKey: '...' },
-});
-```
-
-### Provider Changes
-
-In UPP-1.1, providers export a single unified factory instead of separate factories per modality:
-
-```ts
-// UPP-1.0 (hypothetical multi-modality)
-import { openai, openaiEmbed, openaiImage } from 'useAI/openai';
-
-// UPP-1.1 - single factory for all modalities
-import { openai } from '@providerprotocol/use/openai';
-
-useLLM({ model: openai('gpt-4o') });
-useEmbedding({ model: openai('text-embedding-3-small') });
-useImage({ model: openai('dall-e-3') });
-```
-
-### New Features in 1.1
-
-1. **`useEmbedding()`** - Vector embedding interface
-2. **`useImage()`** - Image generation interface
-3. **Unified providers** - Single factory per provider for all modalities
-4. **`ModelReference`** - Portable model references across modalities
-5. **`RetryStrategy`** - Pluggable retry/rate-limit handling
-6. **Modality field in errors** - `UPPError.modality`
-7. **Image capabilities** - Runtime capability detection
-8. **Conformance levels** - Clear provider implementation requirements
-
-### Breaking Changes
-
-1. **Package name**: `useAI` → `@providerprotocol/use`
-2. **Entry point**: `useAI()` → `useLLM()`
-3. **Provider imports**: Unified factory per provider
-4. **Type names**: Various renames (see table above)
-
-### Automated Migration
-
-```bash
-# Find and replace in codebase
-sed -i 's/from "useAI"/from "@providerprotocol\/use"/g' src/**/*.ts
-sed -i 's/from "useAI\//from "@providerprotocol\/use\/providers\//g' src/**/*.ts
-sed -i 's/useAI(/useLLM(/g' src/**/*.ts
-sed -i 's/AIInstance/LLMInstance/g' src/**/*.ts
-sed -i 's/BoundModel/BoundLLMModel/g' src/**/*.ts
-```
-
----
 
 ## Changelog
 
 ### 1.1.0-draft
 
 - **Renamed** from "useAI Provider Protocol" to "Unified Provider Protocol"
-- **Renamed** package from `useAI` to `@providerprotocol/use`
-- **Renamed** `useAI()` to `useLLM()` for clarity
-- **Renamed** related types (`AIInstance` → `LLMInstance`, etc.)
-- **Added** `useEmbedding()` interface for vector embeddings
-- **Added** `useImage()` interface for image generation
+- **Renamed** package from `useAI` to `@providerprotocol/ai`
+- **Renamed** entry points: `useAI()` → `llm()`, `useEmbedding()` → `embedding()`, `useImage()` → `image()`
+- **Added** `ai` namespace export for grouped imports: `import { ai } from '@providerprotocol/ai'`
+- **Renamed** related types (`AIInstance` → `LLMInstance`, `UseLLMOptions` → `LLMOptions`, etc.)
+- **Added** `embedding()` interface for vector embeddings
+- **Added** `image()` interface for image generation
 - **Added** unified provider factories (single export per provider)
 - **Added** `ModelReference` type for portable model references
 - **Added** `createProvider()` helper for provider implementations
