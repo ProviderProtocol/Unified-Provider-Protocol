@@ -5,6 +5,7 @@ import starlightPageActions from 'starlight-page-actions';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://providerprotocol.org',
 	integrations: [
 		starlight({
 			plugins: [
