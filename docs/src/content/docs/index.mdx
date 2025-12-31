@@ -14,7 +14,7 @@ hero:
       icon: external
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 ## Why UPP?
 
@@ -66,9 +66,24 @@ const img = await dalle.generate('A sunset over mountains');
 
 ## Specification Status
 
+<Badge text="UPP-1.2.0-draft" variant="note" /> <Badge text="Current" variant="success" />
+
+| Section | Status | Description |
+|---------|--------|-------------|
+| **Core Architecture** | <Badge text="Stable" variant="success" size="small" /> | Provider model, configuration, entry points |
+| **LLM Interface** | <Badge text="Stable" variant="success" size="small" /> | `llm()`, generate/stream, tools, structured output |
+| **Embedding Interface** | <Badge text="Stable" variant="success" size="small" /> | `embedding()`, batch processing, similarity utilities |
+| **Image Interface** | <Badge text="Stable" variant="success" size="small" /> | `image()`, generation, editing, variations |
+| **Error Handling** | <Badge text="Stable" variant="success" size="small" /> | UPPError, error codes, retry strategies |
+| Audio Interface | <Badge text="Planned" variant="default" size="small" /> | Future: `audio()` for speech-to-text, TTS |
+| Video Interface | <Badge text="Planned" variant="default" size="small" /> | Future: `video()` for video generation |
+
+### Version History
+
 | Version | Status | Description |
 |---------|--------|-------------|
-| **UPP-1.1** | Draft | Multi-modality support (LLM, Embedding, Image) |
+| **UPP-1.2** | Draft | Language-agnostic reformat, security section, clarifications |
+| UPP-1.1 | Draft | Multi-modality support (LLM, Embedding, Image) |
 | UPP-1.0 | Draft | Initial LLM-focused specification |
 
 ---

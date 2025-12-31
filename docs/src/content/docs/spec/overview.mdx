@@ -12,6 +12,32 @@ import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 The Unified Provider Protocol (UPP) is a **language-agnostic specification** for interacting with AI inference services. This document defines the protocol semantics, data structures, and implementation requirements for building UPP-compliant clients and providers in any programming language.
 
+## Specification Status
+
+The following table indicates the maturity level of each section in UPP 1.2:
+
+| Section | Status | Notes |
+|---------|--------|-------|
+| **Core Architecture** | <Badge text="Stable" variant="success" size="small" /> | Provider model, configuration, entry points |
+| **LLM Interface** | <Badge text="Stable" variant="success" size="small" /> | `llm()`, generate/stream, capabilities |
+| **LLM Messages** | <Badge text="Stable" variant="success" size="small" /> | UserMessage, AssistantMessage, content blocks |
+| **LLM Turns & Threads** | <Badge text="Stable" variant="success" size="small" /> | Turn structure, Thread utility |
+| **LLM Streaming** | <Badge text="Stable" variant="success" size="small" /> | StreamResult, StreamEvent types |
+| **LLM Tools** | <Badge text="Stable" variant="success" size="small" /> | Tool definition, execution loop, strategies |
+| **LLM Structured Output** | <Badge text="Stable" variant="success" size="small" /> | JSON Schema constrained responses |
+| **Embedding Interface** | <Badge text="Stable" variant="success" size="small" /> | `embedding()`, batch, similarity utilities |
+| **Image Interface** | <Badge text="Stable" variant="success" size="small" /> | `image()`, generation, editing, variations |
+| **Error Handling** | <Badge text="Stable" variant="success" size="small" /> | UPPError, error codes, retry strategies |
+| **Provider Conformance** | <Badge text="Stable" variant="success" size="small" /> | Compliance levels, capability declaration |
+| **Security Guidelines** | <Badge text="Stable" variant="success" size="small" /> | API keys, tool security, injection prevention |
+| **Types & Schemas** | <Badge text="Stable" variant="success" size="small" /> | JSON Schema definitions |
+| Audio Interface | <Badge text="Planned" variant="default" size="small" /> | Future: `audio()` for speech-to-text, TTS |
+| Video Interface | <Badge text="Planned" variant="default" size="small" /> | Future: `video()` for video generation |
+
+<Aside type="note" title="Draft Status">
+  While individual sections are marked "Stable" to indicate they are complete and internally consistent, the overall specification remains in **Draft** status until 1.2.0 is finalized. Stable sections may still receive minor clarifications before the final release.
+</Aside>
+
 ## Abstract
 
 UPP establishes uniform interfaces for Large Language Models (LLM), Embedding Models, and Image Generation Models. The protocol enables multi-provider interoperability while preserving provider-native configuration and avoiding abstraction leakage.
