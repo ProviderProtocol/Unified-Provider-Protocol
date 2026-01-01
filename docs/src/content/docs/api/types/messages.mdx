@@ -45,6 +45,15 @@ abstract class Message {
 
   /** Convenience accessor - concatenates all text content */
   get text(): string;
+
+  /** Convenience accessor - returns all image blocks */
+  get images(): ImageBlock[];
+
+  /** Convenience accessor - returns all audio blocks */
+  get audio(): AudioBlock[];
+
+  /** Convenience accessor - returns all video blocks */
+  get video(): VideoBlock[];
 }
 
 type MessageType = 'user' | 'assistant' | 'tool_result';

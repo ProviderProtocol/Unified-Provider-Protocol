@@ -24,6 +24,9 @@ Messages are represented as a type hierarchy, allowing type-safe handling and pr
 | `metadata` | Map? | Provider-specific metadata, namespaced by provider |
 | `type` | MessageType | Message type discriminator |
 | `text` | String | Convenience accessor - concatenates all text blocks with "\n\n" |
+| `images` | List&lt;ImageBlock&gt; | Convenience accessor - returns all image blocks |
+| `audio` | List&lt;AudioBlock&gt; | Convenience accessor - returns all audio blocks |
+| `video` | List&lt;VideoBlock&gt; | Convenience accessor - returns all video blocks |
 
 ### MessageType Values
 
