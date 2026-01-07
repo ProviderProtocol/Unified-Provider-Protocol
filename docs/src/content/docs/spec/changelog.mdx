@@ -13,6 +13,12 @@ This document tracks changes between UPP specification versions.
 
 <Badge text="Current" variant="success" />
 
+### Streaming
+
+- **Added** `tool_execution_start` streaming event emitted when tool execution begins
+- **Added** `tool_execution_end` streaming event emitted when tool execution completes
+- **Added** `result`, `isError`, and `timestamp` fields to `EventDelta` for tool execution events
+
 ### Provider-Native Tools
 
 - **Added** Provider-Native Tools section documenting server-side built-in tools (web search, image generation, code interpreter, etc.)
