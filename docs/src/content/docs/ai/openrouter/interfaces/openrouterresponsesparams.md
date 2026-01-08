@@ -10,7 +10,7 @@ title: "Interface: OpenRouterResponsesParams"
 
 # Interface: OpenRouterResponsesParams
 
-Defined in: [src/providers/openrouter/types.ts:121](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/openrouter/types.ts#L121)
+Defined in: [src/providers/openrouter/types.ts:158](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/providers/openrouter/types.ts#L158)
 
 Parameters for OpenRouter's Responses API (beta).
 
@@ -24,13 +24,43 @@ supports features like reasoning configuration.
 
 ## Properties
 
+### image\_config?
+
+> `optional` **image\_config**: `OpenRouterImageConfig`
+
+Defined in: [src/providers/openrouter/types.ts:190](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/providers/openrouter/types.ts#L190)
+
+Image generation configuration.
+Only applies when `modalities` includes 'image'.
+
+#### See
+
+[https://openrouter.ai/docs/guides/overview/multimodal/image-generation](https://openrouter.ai/docs/guides/overview/multimodal/image-generation)
+
+***
+
 ### max\_output\_tokens?
 
 > `optional` **max\_output\_tokens**: `number`
 
-Defined in: [src/providers/openrouter/types.ts:123](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/openrouter/types.ts#L123)
+Defined in: [src/providers/openrouter/types.ts:160](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/providers/openrouter/types.ts#L160)
 
 Maximum output tokens
+
+***
+
+### modalities?
+
+> `optional` **modalities**: (`"text"` \| `"image"`)[]
+
+Defined in: [src/providers/openrouter/types.ts:183](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/providers/openrouter/types.ts#L183)
+
+Output modalities for multimodal generation.
+Set to `['text', 'image']` to enable image generation with compatible models.
+
+#### See
+
+[https://openrouter.ai/docs/guides/overview/multimodal/image-generation](https://openrouter.ai/docs/guides/overview/multimodal/image-generation)
 
 ***
 
@@ -38,7 +68,7 @@ Maximum output tokens
 
 > `optional` **parallel\_tool\_calls**: `boolean`
 
-Defined in: [src/providers/openrouter/types.ts:132](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/openrouter/types.ts#L132)
+Defined in: [src/providers/openrouter/types.ts:169](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/providers/openrouter/types.ts#L169)
 
 Whether to enable parallel tool calls
 
@@ -48,7 +78,7 @@ Whether to enable parallel tool calls
 
 > `optional` **reasoning**: `object`
 
-Defined in: [src/providers/openrouter/types.ts:137](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/openrouter/types.ts#L137)
+Defined in: [src/providers/openrouter/types.ts:174](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/providers/openrouter/types.ts#L174)
 
 Reasoning configuration
 
@@ -62,7 +92,7 @@ Reasoning configuration
 
 > `optional` **temperature**: `number`
 
-Defined in: [src/providers/openrouter/types.ts:126](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/openrouter/types.ts#L126)
+Defined in: [src/providers/openrouter/types.ts:163](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/providers/openrouter/types.ts#L163)
 
 Temperature for randomness (0.0 - 2.0)
 
@@ -72,6 +102,6 @@ Temperature for randomness (0.0 - 2.0)
 
 > `optional` **top\_p**: `number`
 
-Defined in: [src/providers/openrouter/types.ts:129](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/openrouter/types.ts#L129)
+Defined in: [src/providers/openrouter/types.ts:166](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/providers/openrouter/types.ts#L166)
 
 Top-p (nucleus) sampling (0.0 - 1.0)

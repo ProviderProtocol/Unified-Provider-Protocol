@@ -388,7 +388,8 @@ Returns a scalar value. For normalized vectors, equivalent to cosine similarity.
 - **Added** `EmbeddingHandler`, `ImageHandler` interfaces
 - **Added** `BoundEmbeddingModel`, `BoundImageModel` types
 - **Added** `ImageCapabilities` for runtime feature detection
-- **Added** `embedMany()` for large-scale embedding with progress
+- **Added** unified `embed()` interface for single, batch, and chunked embedding
+- **Added** `EmbeddingStream` for large-scale embedding with progress
 - **Added** optional similarity utilities
 - **Added** image editing, variation, and upscaling interfaces
 - **Added** `RetryStrategy` interface for pluggable retry/rate-limit handling

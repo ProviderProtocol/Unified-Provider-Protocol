@@ -10,7 +10,7 @@ title: "Interface: XAIHeaders"
 
 # Interface: XAIHeaders
 
-Defined in: [src/providers/xai/types.ts:1590](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/xai/types.ts#L1590)
+Defined in: [src/providers/xai/types.ts:1590](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/providers/xai/types.ts#L1590)
 
 xAI-specific HTTP headers for API requests.
 
@@ -32,6 +32,6 @@ const headers: XAIHeaders = {
 
 > `optional` **X-Client-Request-Id**: `string`
 
-Defined in: [src/providers/xai/types.ts:1592](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/xai/types.ts#L1592)
+Defined in: [src/providers/xai/types.ts:1592](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/providers/xai/types.ts#L1592)
 
 Client-generated request ID for tracing.

@@ -129,10 +129,11 @@ openai_provider = createProvider({
 #### Embedding Data Flow
 
 1. Developer calls `embedding()` with a provider-bound model to create an embedder instance
-2. Developer calls `embed()` or `embedBatch()` on the embedder with text/content
-3. Provider transforms input to vendor-specific format
-4. Provider returns `Embedding` or `EmbeddingBatch` with vectors
-5. Developer uses vectors for search, clustering, etc.
+2. Developer calls `embed()` on the embedder with text/content (single or array)
+3. Provider transforms input to vendor-specific format, passing params through unchanged
+4. Provider returns `EmbeddingResponse` with vectors, usage, and metadata
+5. `embedding()` core returns `EmbeddingResult` (or `EmbeddingStream` for chunked mode)
+6. Developer uses vectors for search, clustering, etc.
 
 #### Image Data Flow
 

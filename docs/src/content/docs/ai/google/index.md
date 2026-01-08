@@ -43,6 +43,7 @@ console.log(turn.response.text);
 - [GoogleCacheUpdateRequest](interfaces/googlecacheupdaterequest.md)
 - [GoogleCodeExecutionResult](interfaces/googlecodeexecutionresult.md)
 - [GoogleCodeExecutionTool](interfaces/googlecodeexecutiontool.md)
+- [GoogleEmbedParams](interfaces/googleembedparams.md)
 - [GoogleFileSearchTool](interfaces/googlefilesearchtool.md)
 - [GoogleGroundingMetadata](interfaces/googlegroundingmetadata.md)
 - [GoogleHeaders](interfaces/googleheaders.md)
@@ -55,6 +56,7 @@ console.log(turn.response.text);
 ## Type Aliases
 
 - [GoogleBuiltInTool](type-aliases/googlebuiltintool.md)
+- [GoogleTaskType](type-aliases/googletasktype.md)
 
 ## Variables
 

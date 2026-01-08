@@ -12,7 +12,7 @@ title: "Type Alias: ErrorCode"
 
 > **ErrorCode** = `"AUTHENTICATION_FAILED"` \| `"RATE_LIMITED"` \| `"CONTEXT_LENGTH_EXCEEDED"` \| `"MODEL_NOT_FOUND"` \| `"INVALID_REQUEST"` \| `"INVALID_RESPONSE"` \| `"CONTENT_FILTERED"` \| `"QUOTA_EXCEEDED"` \| `"PROVIDER_ERROR"` \| `"NETWORK_ERROR"` \| `"TIMEOUT"` \| `"CANCELLED"`
 
-Defined in: [src/types/errors.ts:33](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/errors.ts#L33)
+Defined in: [src/types/errors.ts:33](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/errors.ts#L33)
 
 Normalized error codes for cross-provider error handling.
 

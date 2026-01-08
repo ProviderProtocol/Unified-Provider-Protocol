@@ -43,6 +43,7 @@ console.log(turn.response.text);
 
 ## Interfaces
 
+- [OllamaEmbedParams](interfaces/ollamaembedparams.md)
 - [OllamaLLMParams](interfaces/ollamallmparams.md)
 
 ## Variables

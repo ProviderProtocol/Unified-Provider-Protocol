@@ -10,7 +10,7 @@ title: "Interface: StreamEvent"
 
 # Interface: StreamEvent
 
-Defined in: [src/types/stream.ts:93](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/stream.ts#L93)
+Defined in: [src/types/stream.ts:93](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/stream.ts#L93)
 
 A single streaming event from the LLM.
 
@@ -35,7 +35,7 @@ for await (const event of stream) {
 
 > **delta**: [`EventDelta`](eventdelta.md)
 
-Defined in: [src/types/stream.ts:101](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/stream.ts#L101)
+Defined in: [src/types/stream.ts:101](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/stream.ts#L101)
 
 Event-specific data payload
 
@@ -45,7 +45,7 @@ Event-specific data payload
 
 > **index**: `number`
 
-Defined in: [src/types/stream.ts:98](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/stream.ts#L98)
+Defined in: [src/types/stream.ts:98](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/stream.ts#L98)
 
 Index of the content block this event belongs to
 
@@ -55,6 +55,6 @@ Index of the content block this event belongs to
 
 > **type**: [`StreamEventType`](../type-aliases/streameventtype.md)
 
-Defined in: [src/types/stream.ts:95](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/stream.ts#L95)
+Defined in: [src/types/stream.ts:95](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/stream.ts#L95)
 
 Event type discriminator

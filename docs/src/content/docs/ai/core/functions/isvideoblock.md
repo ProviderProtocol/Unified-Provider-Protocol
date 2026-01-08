@@ -12,7 +12,7 @@ title: "Function: isVideoBlock()"
 
 > **isVideoBlock**(`block`): `block is VideoBlock`
 
-Defined in: [src/types/content.ts:306](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/content.ts#L306)
+Defined in: [src/types/content.ts:306](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/content.ts#L306)
 
 Type guard for VideoBlock.
 

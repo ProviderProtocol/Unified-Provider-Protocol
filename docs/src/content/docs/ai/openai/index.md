@@ -62,6 +62,7 @@ const model = llm({
 - [OpenAIComputerTool](interfaces/openaicomputertool.md)
 - [OpenAIConfig](interfaces/openaiconfig.md)
 - [OpenAIConversation](interfaces/openaiconversation.md)
+- [OpenAIEmbedParams](interfaces/openaiembedparams.md)
 - [OpenAIFileSearchTool](interfaces/openaifilesearchtool.md)
 - [OpenAIImageGenerationTool](interfaces/openaiimagegenerationtool.md)
 - [OpenAIMcpServerConfig](interfaces/openaimcpserverconfig.md)

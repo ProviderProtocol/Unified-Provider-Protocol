@@ -55,6 +55,7 @@ const responsesModel = llm({
 
 - [OpenRouterCompletionsParams](interfaces/openroutercompletionsparams.md)
 - [OpenRouterConfig](interfaces/openrouterconfig.md)
+- [OpenRouterEmbedParams](interfaces/openrouterembedparams.md)
 - [OpenRouterModelOptions](interfaces/openroutermodeloptions.md)
 - [OpenRouterModelReference](interfaces/openroutermodelreference.md)
 - [OpenRouterProviderPreferences](interfaces/openrouterproviderpreferences.md)

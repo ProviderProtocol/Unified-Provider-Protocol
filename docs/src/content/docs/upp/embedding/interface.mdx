@@ -23,7 +23,7 @@ embedding(options: EmbeddingOptions) -> EmbeddingInstance
 |-------|------|----------|-------------|
 | `model` | ModelReference | Yes | A model reference from a provider factory |
 | `config` | ProviderConfig | No | Provider infrastructure configuration |
-| `params` | Map | No | Model-specific parameters (dimensions, encoding format, etc.) |
+| `params` | Map | No | Provider-specific parameters (passed through unchanged) |
 
 ## EmbeddingInstance
 
@@ -31,11 +31,22 @@ embedding(options: EmbeddingOptions) -> EmbeddingInstance
 
 | Method/Property | Type | Description |
 |-----------------|------|-------------|
-| `embed(input)` | Function | Embed a single input |
-| `embedBatch(inputs)` | Function | Embed multiple inputs in a single request |
-| `embedMany(inputs, options)` | Function | Embed with automatic batching for large sets |
+| `embed(input, options?)` | Function | Embed one or more inputs |
 | `model` | BoundEmbeddingModel | The bound model |
 | `params` | Map? | Current parameters |
+
+The `embed()` method is the single interface for all embedding operations. It accepts either a single input or an array of inputs, and optionally supports chunked processing for large-scale operations.
+
+**embed() Overloads:**
+
+```text
+// Single or batch input - returns Promise
+embed(input: EmbeddingInput | List&lt;EmbeddingInput&gt;) -> Promise&lt;EmbeddingResult&gt;
+embed(input: EmbeddingInput | List&lt;EmbeddingInput&gt;, options: EmbedOptions) -> Promise&lt;EmbeddingResult&gt;
+
+// Chunked mode for large-scale - returns EmbeddingStream
+embed(input: List&lt;EmbeddingInput&gt;, options: EmbedOptions & { chunked: true }) -> EmbeddingStream
+```
 
 **EmbeddingInput Type:**
 
@@ -43,15 +54,28 @@ embedding(options: EmbeddingOptions) -> EmbeddingInstance
 EmbeddingInput = String | TextBlock | ImageBlock
 ```
 
-**EmbedManyOptions Structure:**
+Providers declare which input types they support via `supportedInputs`. Text input is universally supported. Image input is provider-dependent (e.g., Google multimodal embeddings).
+
+**EmbedOptions Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `batchSize` | Integer? | Maximum inputs per batch (default: provider limit) |
-| `concurrency` | Integer? | Concurrency limit (default: 1) |
-| `signal` | AbortSignal? | Abort signal |
+| `chunked` | Boolean? | Enable chunked processing with progress (returns EmbeddingStream) |
+| `batchSize` | Integer? | Maximum inputs per batch when chunked (default: provider limit) |
+| `concurrency` | Integer? | Concurrent batch limit when chunked (default: 1) |
+| `signal` | AbortSignal? | Abort signal for cancellation |
+
+When `chunked` is `true`, the method returns an `EmbeddingStream` instead of a Promise. This enables processing of large input sets with progress tracking and incremental results.
 
 ## Embedding Results
+
+**EmbeddingResult Structure:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `embeddings` | List&lt;Embedding&gt; | Embeddings in same order as inputs |
+| `usage` | EmbeddingUsage | Aggregate usage statistics |
+| `metadata` | Map? | Provider-specific response metadata |
 
 **Embedding Structure:**
 
@@ -59,15 +83,9 @@ EmbeddingInput = String | TextBlock | ImageBlock
 |-------|------|-------------|
 | `vector` | List&lt;Float&gt; | The embedding vector |
 | `dimensions` | Integer | Vector dimensionality |
-| `input` | EmbeddingInput | The input that was embedded |
-| `tokens` | Integer? | Token count (if available) |
-
-**EmbeddingBatch Structure:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `embeddings` | List&lt;Embedding&gt; | Embeddings in same order as inputs |
-| `usage` | EmbeddingUsage | Aggregate usage |
+| `index` | Integer | Index corresponding to input array position |
+| `tokens` | Integer? | Token count for this input (if provider reports) |
+| `metadata` | Map? | Provider-specific per-embedding metadata |
 
 **EmbeddingUsage Structure:**
 
@@ -75,21 +93,26 @@ EmbeddingInput = String | TextBlock | ImageBlock
 |-------|------|-------------|
 | `totalTokens` | Integer | Total tokens processed |
 
+## EmbeddingStream
+
+When `embed()` is called with `{ chunked: true }`, it returns an `EmbeddingStream` that provides progress updates during processing.
+
+**EmbeddingStream Interface:**
+
+| Property/Method | Type | Description |
+|-----------------|------|-------------|
+| `[Symbol.asyncIterator]` | AsyncIterator | Yields `EmbeddingProgress` objects |
+| `result` | Promise&lt;EmbeddingResult&gt; | Resolves to complete result after iteration |
+| `abort()` | Function | Abort the operation |
+
 **EmbeddingProgress Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `embeddings` | List&lt;Embedding&gt; | Completed embeddings so far |
-| `progress` | ProgressInfo | Progress information |
-| `done` | Boolean | True when all complete |
-
-**ProgressInfo Structure:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `completed` | Integer | Number completed |
-| `total` | Integer | Total count |
-| `percent` | Float | Percentage complete |
+| `embeddings` | List&lt;Embedding&gt; | Embeddings from the latest batch |
+| `completed` | Integer | Total embeddings completed so far |
+| `total` | Integer | Total number of inputs |
+| `percent` | Float | Percentage complete (0-100) |
 
 ## BoundEmbeddingModel
 
@@ -98,33 +121,43 @@ EmbeddingInput = String | TextBlock | ImageBlock
 | Field | Type | Description |
 |-------|------|-------------|
 | `modelId` | String | The model identifier |
-| `maxBatchSize` | Integer | Maximum inputs per batch |
+| `provider` | EmbeddingProvider | Reference to the parent provider |
+| `maxBatchSize` | Integer | Maximum inputs per batch request |
 | `maxInputLength` | Integer | Maximum input length (tokens or characters) |
-| `dimensions` | Integer | Output dimensions (may be configurable) |
+| `dimensions` | Integer | Default output dimensions (may be configurable via params) |
 | `embed(request)` | Function | Execute embedding request |
+
+## Provider Request/Response
+
+Providers implement a single `embed()` method that handles batch requests. The `embedding()` core handles input normalization and chunked processing.
 
 **EmbeddingRequest Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `inputs` | List&lt;EmbeddingInput&gt; | Inputs to embed |
-| `params` | Map? | Model-specific parameters |
+| `params` | Map? | Provider-specific parameters (passed through unchanged) |
 | `config` | ProviderConfig | Provider infrastructure config |
-| `signal` | AbortSignal? | Abort signal |
+| `signal` | AbortSignal? | Abort signal for cancellation |
 
 **EmbeddingResponse Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `embeddings` | List&lt;EmbeddingVector&gt; | Embedding vectors with optional token counts |
+| `embeddings` | List&lt;EmbeddingVector&gt; | Embedding vectors |
 | `usage` | EmbeddingUsage | Aggregate usage |
+| `metadata` | Map? | Provider-specific response metadata |
 
 **EmbeddingVector Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `vector` | List&lt;Float&gt; | The embedding vector |
-| `tokens` | Integer? | Token count |
+| `vector` | List&lt;Float&gt; \| String | The embedding vector (floats or base64-encoded string) |
+| `index` | Integer | Index in input array |
+| `tokens` | Integer? | Token count for this input |
+| `metadata` | Map? | Provider-specific per-embedding metadata |
+
+Providers return `vector` as either a `List&lt;Float&gt;` or a base64-encoded `String` depending on the encoding format requested in params. The `embedding()` core detects the type and normalizes to `List&lt;Float&gt;` in the public result.
 
 ## Basic Usage
 
@@ -142,70 +175,119 @@ embedder = embedding({
   }
 })
 
-// Single embedding
+// Single input
 result = await embedder.embed("What is the capital of France?")
-print(result.vector.length)  // 1536
-print(result.dimensions)     // 1536
+print(result.embeddings[0].vector.length)  // 1536
+print(result.embeddings[0].dimensions)     // 1536
 
-// Batch embedding
-batch = await embedder.embedBatch([
+// Batch input (array)
+result = await embedder.embed([
   "First document to embed",
   "Second document to embed",
   "Third document to embed"
 ])
 
-print(batch.embeddings.length)  // 3
-print(batch.usage.totalTokens)  // Total tokens used
+print(result.embeddings.length)   // 3
+print(result.usage.totalTokens)   // Total tokens used
 ```
 
 ## Large-Scale Embedding
 
-For embedding large document sets:
+For embedding large document sets, use chunked mode to receive progress updates and process results incrementally:
 
 ```text
 documents = await loadDocuments()  // 10,000 documents
 
-for await (progress in embedder.embedMany(documents, {
+stream = embedder.embed(documents, {
+  chunked: true,
   batchSize: 100,
   concurrency: 2
-})) {
-  print("Progress:", progress.progress.percent + "%")
+})
+
+for await (progress in stream) {
+  print("Progress:", progress.percent + "%")
 
   // Process embeddings as they complete
   await storeInVectorDB(progress.embeddings)
-
-  if (progress.done) {
-    print("All embeddings complete")
-  }
 }
+
+// Get complete result after iteration
+final = await stream.result
+print("Total tokens:", final.usage.totalTokens)
 ```
 
 ## Provider-Specific Parameters
 
-Each provider exports its own parameter types (e.g., `OpenAIEmbedParams`, `VoyageEmbedParams`). Consult provider documentation for available options such as output dimensions, encoding formats, and task type hints.
+Each provider exports its own parameter types. Parameters are passed through unchanged to the provider's API, enabling full access to provider-native features.
 
-**EmbeddingInputType:**
+**OpenAI Parameters:**
 
-Some providers distinguish between embeddings optimized for different use cases:
+```text
+// OpenAIEmbedParams
+{
+  dimensions: 1536,              // Output dimensions (text-embedding-3 models)
+  encoding_format: "float"       // "float" or "base64"
+}
+```
+
+**Google Parameters:**
+
+```text
+// GoogleEmbedParams
+{
+  taskType: "RETRIEVAL_DOCUMENT",   // Task optimization (see below)
+  title: "Document Title",          // Document title (for RETRIEVAL_DOCUMENT)
+  outputDimensionality: 768         // Output dimensions
+}
+```
+
+**Google Task Types:**
+
+Google embeddings are optimized based on the intended use case. For retrieval systems, documents and queries SHOULD use different task types for optimal performance.
 
 | Value | Description |
 |-------|-------------|
-| `document` | Optimize embedding for storage/indexing (longer text, corpus documents) |
-| `query` | Optimize embedding for search queries (shorter text, retrieval queries) |
+| `RETRIEVAL_QUERY` | Optimize for search queries |
+| `RETRIEVAL_DOCUMENT` | Optimize for corpus documents (supports `title` param) |
+| `SEMANTIC_SIMILARITY` | Optimize for similarity comparison |
+| `CLASSIFICATION` | Optimize for classification tasks |
+| `CLUSTERING` | Optimize for clustering tasks |
+| `QUESTION_ANSWERING` | Optimize for QA query embeddings |
+| `FACT_VERIFICATION` | Optimize for fact verification retrieval |
 
-Providers that support input type hints (e.g., Voyage, Cohere) MAY produce different embeddings for the same text depending on this value. Providers that do not support this feature MUST ignore the parameter.
+**Voyage/Cohere Parameters:**
 
 ```text
-// OpenAI embedding params (OpenAIEmbedParams)
+// VoyageEmbedParams
 {
-  dimensions: 1536,
-  encoding_format: "float"
+  input_type: "document"   // "document" or "query"
 }
+```
 
-// Voyage embedding params (VoyageEmbedParams)
-{
-  input_type: EmbeddingInputType  // "document" or "query"
-}
+Providers that do not support a parameter MUST ignore it. This enables portable code that includes provider-specific hints without breaking on other providers.
+
+## Metadata Preservation
+
+Providers MUST preserve provider-specific metadata in the response rather than discarding it. This enables access to provider-native features and diagnostics.
+
+**Per-Embedding Metadata:**
+
+Metadata specific to individual embeddings (e.g., truncation status, token counts):
+
+```text
+result = await embedder.embed(["long document..."])
+
+// Google provides truncation info per embedding
+print(result.embeddings[0].metadata?.truncated)  // true/false
+```
+
+**Response-Level Metadata:**
+
+Metadata applying to the entire response:
+
+```text
+// Google may include safety ratings
+print(result.metadata?.safetyRatings)
 ```
 
 ## Similarity Utilities

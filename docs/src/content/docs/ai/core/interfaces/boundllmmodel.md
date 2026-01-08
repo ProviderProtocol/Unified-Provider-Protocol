@@ -10,7 +10,7 @@ title: "Interface: BoundLLMModel"
 
 # Interface: BoundLLMModel\<TParams\>
 
-Defined in: [src/types/llm.ts:276](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/llm.ts#L276)
+Defined in: [src/types/llm.ts:295](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/llm.ts#L295)
 
 Bound LLM model - full definition.
 
@@ -31,7 +31,7 @@ Provider-specific parameter type
 
 > `readonly` **capabilities**: [`LLMCapabilities`](llmcapabilities.md)
 
-Defined in: [src/types/llm.ts:284](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/llm.ts#L284)
+Defined in: [src/types/llm.ts:303](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/llm.ts#L303)
 
 Provider API capabilities
 
@@ -41,7 +41,7 @@ Provider API capabilities
 
 > `readonly` **modelId**: `string`
 
-Defined in: [src/types/llm.ts:278](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/llm.ts#L278)
+Defined in: [src/types/llm.ts:297](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/llm.ts#L297)
 
 The model identifier
 
@@ -51,7 +51,7 @@ The model identifier
 
 > `readonly` **provider**: [`LLMProvider`](../type-aliases/llmprovider.md)\<`TParams`\>
 
-Defined in: [src/types/llm.ts:281](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/llm.ts#L281)
+Defined in: [src/types/llm.ts:300](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/llm.ts#L300)
 
 Reference to the parent provider
 
@@ -61,7 +61,7 @@ Reference to the parent provider
 
 > **complete**(`request`): `Promise`\<[`LLMResponse`](llmresponse.md)\>
 
-Defined in: [src/types/llm.ts:292](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/llm.ts#L292)
+Defined in: [src/types/llm.ts:311](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/llm.ts#L311)
 
 Executes a single non-streaming inference request.
 
@@ -85,7 +85,7 @@ Promise resolving to the response
 
 > **stream**(`request`): [`LLMStreamResult`](llmstreamresult.md)
 
-Defined in: [src/types/llm.ts:300](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/llm.ts#L300)
+Defined in: [src/types/llm.ts:319](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/llm.ts#L319)
 
 Executes a single streaming inference request.
 

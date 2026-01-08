@@ -12,7 +12,7 @@ title: "Variable: tools"
 
 > `const` **tools**: `object`
 
-Defined in: [src/providers/openai/types.ts:1479](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/openai/types.ts#L1479)
+Defined in: [src/providers/openai/types.ts:1480](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/providers/openai/types.ts#L1480)
 
 Namespace object containing all tool helper constructors.
 
@@ -191,6 +191,10 @@ Optional image generation settings
 ###### output_format?
 
 `"jpeg"` \| `"png"` \| `"webp"`
+
+###### partial_images?
+
+`number`
 
 ###### quality?
 

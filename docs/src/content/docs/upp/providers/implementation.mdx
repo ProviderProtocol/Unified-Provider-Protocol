@@ -135,6 +135,10 @@ function createLLMHandler() -> LLMHandler {
 
 ## Embedding Handler Pattern
 
+Providers implement a single `embed()` method that handles batch requests. The `embedding()` core manages input normalization and chunked processing.
+
+**OpenAI Example (Simple):**
+
 ```text
 function createEmbeddingHandler() -> EmbeddingHandler {
   return {
@@ -148,16 +152,16 @@ function createEmbeddingHandler() -> EmbeddingHandler {
         dimensions: 1536,
 
         embed: async (request) => {
-          apiKey = await resolveApiKey(request.config, "VENDOR_API_KEY")
+          apiKey = await resolveApiKey(request.config, "OPENAI_API_KEY")
 
-          // Transform inputs to vendor format
+          // Pass params through unchanged to vendor API
           body = {
             model: modelId,
-            input: request.inputs.map(transformInput),
-            ...request.params
+            input: request.inputs.map(i => typeof i == "string" ? i : i.text),
+            ...request.params  // dimensions, encoding_format pass through
           }
 
-          response = await doFetch(VENDOR_URL, {
+          response = await doFetch(OPENAI_EMBEDDINGS_URL, {
             method: "POST",
             headers: { Authorization: "Bearer " + apiKey },
             body: JSON.stringify(body)
@@ -165,13 +169,16 @@ function createEmbeddingHandler() -> EmbeddingHandler {
 
           data = await response.json()
 
-          // Return EmbeddingResponse
+          // Return EmbeddingResponse with metadata preserved
+          // vector is List<Float> or base64 String depending on encoding_format
           return {
             embeddings: data.data.map(d => ({
-              vector: d.embedding,
-              tokens: d.usage?.tokens
+              vector: d.embedding,  // floats or base64 string (core detects and decodes)
+              index: d.index,
+              tokens: null  // OpenAI doesn't report per-embedding tokens
             })),
-            usage: { totalTokens: data.usage.total_tokens }
+            usage: { totalTokens: data.usage.total_tokens },
+            metadata: {}  // OpenAI has no additional response metadata
           }
         }
       }
@@ -179,6 +186,78 @@ function createEmbeddingHandler() -> EmbeddingHandler {
   }
 }
 ```
+
+**Google Example (Complex with taskType):**
+
+```text
+function createGoogleEmbeddingHandler() -> EmbeddingHandler {
+  return {
+    supportedInputs: ["text", "image"],  // Google supports multimodal
+
+    bind(modelId: String) -> BoundEmbeddingModel {
+      return {
+        modelId: modelId,
+        maxBatchSize: 100,
+        maxInputLength: 2048,
+        dimensions: 3072,
+
+        embed: async (request) => {
+          apiKey = await resolveApiKey(request.config, "GOOGLE_API_KEY")
+
+          // Transform to Google's batchEmbedContents format
+          // Params (taskType, title, outputDimensionality) pass through
+          body = {
+            requests: request.inputs.map(input => ({
+              model: "models/" + modelId,
+              content: { parts: [{ text: typeof input == "string" ? input : input.text }] },
+              taskType: request.params?.taskType,
+              title: request.params?.title,
+              outputDimensionality: request.params?.outputDimensionality
+            }))
+          }
+
+          url = GOOGLE_API_URL + "/models/" + modelId + ":batchEmbedContents?key=" + apiKey
+
+          response = await doFetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+          }, request.config)
+
+          data = await response.json()
+
+          // Return EmbeddingResponse - preserve ALL metadata
+          return {
+            embeddings: data.embeddings.map((e, index) => ({
+              vector: e.values,
+              index: index,
+              tokens: e.statistics?.tokenCount,
+              // Per-embedding metadata (NOT redacted)
+              metadata: {
+                truncated: e.statistics?.truncated
+              }
+            })),
+            usage: {
+              totalTokens: data.embeddings.reduce((sum, e) => sum + (e.statistics?.tokenCount ?? 0), 0)
+            },
+            // Response-level metadata (NOT redacted)
+            metadata: {
+              safetyRatings: data.safetyRatings
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**Key Implementation Notes:**
+
+1. **Params pass-through:** Provider-specific parameters (`dimensions`, `taskType`, `encoding_format`, etc.) are passed through unchanged via `...request.params`
+2. **Metadata preservation:** Providers MUST NOT discard provider-specific response data. Include it in `metadata` fields at both the embedding and response level
+3. **Vector encoding:** The `vector` field can be `List&lt;Float&gt;` or a base64-encoded `String`. The `embedding()` core detects the type and normalizes to floats in the public result
+4. **Providers without embeddings:** Providers that do not offer embedding APIs (e.g., Anthropic) simply do not include an embedding handler in their `modalities` object
 
 ## Image Handler Pattern
 

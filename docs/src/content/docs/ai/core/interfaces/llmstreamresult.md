@@ -10,7 +10,7 @@ title: "Interface: LLMStreamResult"
 
 # Interface: LLMStreamResult
 
-Defined in: [src/types/llm.ts:263](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/llm.ts#L263)
+Defined in: [src/types/llm.ts:282](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/llm.ts#L282)
 
 **`Internal`**
 
@@ -29,7 +29,7 @@ to the complete response after streaming finishes.
 
 > `readonly` **response**: `Promise`\<[`LLMResponse`](llmresponse.md)\>
 
-Defined in: [src/types/llm.ts:265](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/llm.ts#L265)
+Defined in: [src/types/llm.ts:284](https://github.com/ProviderProtocol/ai/blob/1bc41d9f0bcf65740d187b8dd1dcfde98fae1ee5/src/types/llm.ts#L284)
 
 Promise resolving to the complete response
 
