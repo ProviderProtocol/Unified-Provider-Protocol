@@ -1,0 +1,218 @@
+---
+title: Execution Strategies
+description: "Execution strategies: react(), plan(), and loop() patterns."
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Execution Strategies
+
+<Badge text="UAP-1.0.0" variant="note" />
+
+## ExecutionStrategy Interface
+
+```text
+interface ExecutionStrategy {
+  name: String
+  execute(context: ExecutionContext) -> Promise&lt;ExecutionResult&gt;
+  stream(context: ExecutionContext) -> AgentStreamResult
+}
+```
+
+**ExecutionContext Structure:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `agent` | Agent | The agent being executed |
+| `llm` | LLMInstance | The bound LLM instance |
+| `input` | Message | The user input message |
+| `state` | AgentState | Current immutable state |
+| `tools` | List&lt;Tool&gt; | Resolved tools |
+| `strategy` | AgentStrategy | Agent lifecycle hooks |
+| `signal` | AbortSignal? | Abort signal for cancellation |
+
+**ExecutionResult Structure:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `turn` | Turn | The complete UPP Turn |
+| `state` | AgentState | New immutable state |
+
+## loop() Strategy
+
+The simplest strategy—equivalent to UPP's tool loop behavior.
+
+```text
+loop(options?: LoopOptions) -> ExecutionStrategy
+```
+
+**LoopOptions Structure:**
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `maxIterations` | Integer | Infinity | Maximum tool execution rounds |
+
+**Behavior:**
+
+1. Send input to LLM
+2. If response has tool calls, execute tools and loop
+3. Continue until no tool calls or max iterations (if set)
+4. Return final response as UPP Turn
+
+```text
+import { agent } from "agents"
+import { loop } from "agents/execution"
+
+// Infinite by default - loops until model stops calling tools
+simple = agent({
+  model: anthropic("claude-sonnet-4-20250514"),
+  execution: loop(),  // maxIterations: Infinity
+  tools: [calculator],
+})
+
+// Explicit limit when needed
+limited = agent({
+  model: anthropic("claude-sonnet-4-20250514"),
+  execution: loop({ maxIterations: 5 }),
+  tools: [calculator],
+})
+```
+
+## react() Strategy
+
+ReAct (Reason-Act-Observe) loop with explicit reasoning phases.
+
+```text
+react(options?: ReactOptions) -> ExecutionStrategy
+```
+
+**ReactOptions Structure:**
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `maxSteps` | Integer | Infinity | Maximum reason-act-observe cycles |
+| `reasoningPrompt` | String | (default) | Prompt suffix for reasoning phase |
+
+**Behavior:**
+
+1. **Reason**: LLM outputs reasoning about what to do next
+2. **Act**: LLM selects and executes tool(s)
+3. **Observe**: Tool results are formatted as observations
+4. Repeat until stop condition, no more actions, or max steps (if set)
+
+**Step Lifecycle:**
+
+```text
+step = 0
+while (true) {
+  step++
+  newState = state.withStep(step)
+  strategy.onStepStart?.(step, newState)
+
+  // Reason phase
+  reasoningTurn = await llm.generate(
+    buildHistory(newState),
+    "Think about what to do next."
+  )
+  reasoning = reasoningTurn.response.text
+  newState = newState.withReasoning(reasoning)
+  strategy.onReason?.(step, reasoning)
+
+  // Act phase
+  actionTurn = await llm.generate(
+    buildHistory(newState),
+    "Based on your reasoning, take action."
+  )
+
+  if (actionTurn.response.hasToolCalls) {
+    strategy.onAct?.(step, actionTurn.response.toolCalls)
+    // Tool execution happens via UPP
+    strategy.onObserve?.(step, actionTurn.toolExecutions)
+  }
+
+  newState = newState.withMessages(actionTurn.messages)
+  strategy.onStepEnd?.(step, { turn: actionTurn, state: newState })
+
+  // Check termination
+  if (strategy.stopCondition?.(newState)) break
+  if (!actionTurn.response.hasToolCalls) break
+  // Note: No maxSteps check if maxSteps is Infinity
+  if (options.maxSteps !== Infinity && step >= options.maxSteps) break
+}
+
+return { turn: buildFinalTurn(newState), state: newState }
+```
+
+**MUST Requirements:**
+
+1. MUST emit `onReason`, `onAct`, `onObserve` hooks at appropriate phases
+2. MUST track reasoning in state
+3. MUST call `stopCondition` after each step
+4. MUST NOT impose artificial limits unless explicitly configured
+
+## plan() Strategy
+
+Plan-then-execute strategy with upfront planning phase.
+
+```text
+plan(options?: PlanOptions) -> ExecutionStrategy
+```
+
+**PlanOptions Structure:**
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `maxPlanSteps` | Integer | Infinity | Maximum steps in a plan |
+| `allowReplan` | Boolean | true | Allow replanning on failure |
+| `planSchema` | JSONSchema | (default) | Schema for plan structure |
+
+**PlanStep Structure:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | String | Step identifier |
+| `description` | String | What this step does |
+| `tool` | String? | Tool to use (if applicable) |
+| `dependsOn` | List&lt;String&gt; | IDs of steps this depends on |
+| `status` | String | "pending" \| "in_progress" \| "completed" \| "failed" |
+
+**Behavior:**
+
+1. **Plan**: LLM generates structured plan with steps and dependencies
+2. **Execute**: Execute each plan step respecting dependency order
+3. **Replan**: If a step fails and `allowReplan`, generate new plan
+
+**MUST Requirements:**
+
+1. MUST produce structured plan via structured output
+2. MUST respect step dependencies (topological order)
+3. MUST track plan in state
+4. MUST update step status during execution
+
+## Custom Strategies
+
+Implementations MUST allow custom execution strategies:
+
+```text
+customStrategy: ExecutionStrategy = {
+  name: "custom",
+
+  execute: async (context) => {
+    { agent, llm, input, state, strategy } = context
+
+    strategy.onStepStart?.(1, state)
+
+    // Custom execution logic
+    turn = await llm.generate(state.messages, input)
+    newState = state.withMessages(turn.messages)
+
+    strategy.onStepEnd?.(1, { turn, state: newState })
+
+    return { turn, state: newState }
+  },
+
+  stream: (context) => {
+    // Streaming implementation
+  },
+}
+```

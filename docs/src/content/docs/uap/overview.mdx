@@ -1,0 +1,144 @@
+---
+title: Specification Overview
+description: UAP-1.0 Specification Overview - A protocol for building AI agents on UPP-1.2.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# UAP-1.0 Specification
+
+<Badge text="Version 1.0.0" variant="note" />
+<Badge text="Status: Approved" variant="success" />
+<Badge text="Built on UPP-1.2" variant="tip" />
+
+The Unified Agent Protocol (UAP) is a specification for building AI agents on top of the Unified Provider Protocol (UPP-1.2). This document defines the protocol semantics, data structures, and implementation requirements for building UAP-compliant agents, sessions, and execution strategies.
+
+UAP extends UPP-1.2 with agent-level abstractions including decoupled execution strategies (ReAct, Plan, Loop), functional state management, sub-agent composition, and middleware pipelines. UAP preserves complete type uniformity with UPP-1.2, using all types from `@providerprotocol/ai` directly without abstraction or re-export.
+
+**Core Philosophy:** UAP is a pipe, not a nanny. The protocol provides orchestration primitives; the developer provides the constraints.
+
+## Specification Status
+
+| Section | Status | Notes |
+|---------|--------|-------|
+| **Agent Interface** | <Badge text="Stable" variant="success" size="small" /> | `agent()`, options, instance methods |
+| **Execution Strategies** | <Badge text="Stable" variant="success" size="small" /> | `react()`, `plan()`, `loop()` |
+| **State Management** | <Badge text="Stable" variant="success" size="small" /> | Functional AgentState, immutability |
+| **Thread Trees** | <Badge text="Stable" variant="success" size="small" /> | Branching conversations |
+| **Sub-Agents** | <Badge text="Stable" variant="success" size="small" /> | `ask()`, `query()` protocol |
+| **Middleware** | <Badge text="Stable" variant="success" size="small" /> | Composable wrappers |
+| **Strategy Hooks** | <Badge text="Stable" variant="success" size="small" /> | Execution customization |
+| **Streaming** | <Badge text="Stable" variant="success" size="small" /> | Agent stream events |
+| **Serialization** | <Badge text="Stable" variant="success" size="small" /> | Checkpointing, persistence |
+
+## Purpose
+
+AI agents require orchestration beyond simple LLM inference. UAP-1.0 establishes a standard protocol that:
+
+- Provides agent abstractions built on UPP-1.2 primitives
+- Decouples execution strategies from agent definitions
+- Uses functional state management with explicit data flow
+- Supports hierarchical agent composition (sub-agents)
+- Provides middleware for cross-cutting concerns
+- Maintains complete type uniformity with the underlying LLM library
+- Places full control and responsibility with the developer
+
+## Scope
+
+This specification covers:
+
+- The `agent()` function interface for defining agents
+- Execution strategies (`react()`, `plan()`, `loop()`)
+- Functional state management with explicit state passing
+- Thread tree structures for branching conversations
+- Sub-agent communication via `ask()` and `query()` methods
+- Middleware composition
+- Agent strategy hooks
+- Serialization format for persistence
+
+## Relationship to UPP-1.2
+
+UAP-1.0 builds on UPP-1.2 and MUST use the following types directly from `@providerprotocol/ai`:
+
+- `llm`, `LLMInstance`, `LLMOptions`
+- `Thread`, `Turn`, `TokenUsage`
+- `Message`, `UserMessage`, `AssistantMessage`, `ToolResultMessage`
+- `Tool`, `ToolCall`, `ToolResult`, `ToolExecution`
+- `ToolUseStrategy` (passed through to `llm()` for tool execution hooks)
+- `StreamResult`, `StreamEvent`, `StreamEventType`
+- `UPPError`, `ErrorCode`
+- All provider factories (`anthropic`, `openai`, `google`, etc.)
+
+UAP MUST NOT re-export, wrap, or abstract these types. Applications import directly from `@providerprotocol/ai` for these types.
+
+## Terminology
+
+| Term | Definition |
+|------|------------|
+| **Agent** | An AI entity with a model, execution strategy, tools, and optional sub-agents |
+| **AgentState** | An immutable snapshot of agent execution state |
+| **Step** | A single cycle of an execution strategy (reason-act-observe in ReAct) |
+| **Sub-Agent** | An agent declared as a tool dependency for another agent |
+| **Middleware** | A composable function that wraps agent execution |
+| **Turn** | A UPP Turn representing the complete result of one LLM inference call |
+| **Thread Tree** | A tree-structured collection of threads with parent-child relationships |
+
+## Requirements Language
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.
+
+## Notation Conventions
+
+This specification uses language-agnostic pseudocode for examples. The pseudocode follows these conventions:
+
+- Function calls: `function_name(arg1, arg2)`
+- Object/map literals: `{key: value, key2: value2}`
+- Array/list literals: `[item1, item2, item3]`
+- Property access: `object.property`
+- Method calls: `object.method(args)`
+- Async operations: `await expression`
+- Iteration: `for item in collection`
+- Type annotations: `variable: Type`
+- Optional values: `Type?` or `Optional&lt;Type&gt;`
+- Comments: `// comment text`
+
+## Code Examples
+
+Code examples in this specification use the placeholder package name `agents`. Implementations MUST choose an appropriate package name for their ecosystem:
+
+| Language | Example Package Name |
+|----------|---------------------|
+| JavaScript/TypeScript | `@providerprotocol/agents` |
+| Python | `providerprotocol-agents` |
+| Go | `github.com/providerprotocol/agents` |
+| Rust | `providerprotocol-agents` |
+
+Import examples throughout this specification use JavaScript-style imports for readability:
+
+```text
+// Agent SDK imports
+import { agent } from "agents"
+import { react, plan, loop } from "agents/execution"
+import { logging } from "agents/middleware"
+
+// UPP-1.2 imports (used directly, never re-exported)
+import { llm, Thread, UserMessage, Tool } from "upp"
+import anthropic from "upp/anthropic"
+```
+
+## What's Next?
+
+<CardGrid>
+  <Card title="Design Principles" icon="open-book">
+    Learn about the [core principles](/uap/design-principles/) that guide UAP's design.
+  </Card>
+  <Card title="Agent Interface" icon="puzzle">
+    Understand the [agent() interface](/uap/agent/interface/).
+  </Card>
+  <Card title="Execution Strategies" icon="rocket">
+    Explore [execution strategies](/uap/agent/strategies/) like react() and plan().
+  </Card>
+  <Card title="State Management" icon="document">
+    Learn about [functional state](/uap/agent/state/) and AgentState.
+  </Card>
+</CardGrid>

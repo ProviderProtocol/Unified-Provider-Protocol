@@ -1,0 +1,68 @@
+---
+title: Design Principles
+description: Core design principles guiding the UPP specification.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Design Principles
+
+<Badge text="UPP-1.2.0" variant="note" />
+
+## Provider Transparency
+
+Configuration passes through to providers unchanged. UPP does not impose its own defaults or transform model parameters. When no config is supplied, provider defaults apply.
+
+<Aside type="tip" title="Rationale">
+Developers should reference provider documentation directly. UPP avoids "morphic magic" that obscures what's actually sent to the API.
+</Aside>
+
+## Explicit Over Magic
+
+UPP favors explicit APIs over implicit behavior:
+
+- Separate entry points per modality—no modal switches or runtime detection
+- `generate()` for complete responses, `stream()` for streaming—no await/non-await magic
+- Users manage their own conversation history—no hidden state mutation
+- System prompts declared at configuration, not buried in message arrays
+
+## Modality-Specific Interfaces
+
+Each modality gets a purpose-built interface optimized for its use case:
+
+- **LLM**: Conversational with messages, turns, streaming, tools
+- **Embedding**: Batch-oriented, returns vectors, no conversation
+- **Image**: Prompt-based, returns images, supports editing/variation
+
+Forcing all modalities through a single interface creates awkward abstractions.
+
+## Shared Infrastructure
+
+While interfaces differ, providers share common infrastructure:
+
+- `ProviderConfig` (apiKey, baseUrl, timeout, retry)
+- `KeyStrategy` (RoundRobin, Weighted, Dynamic)
+- Error handling (`UPPError`, `ErrorCode`)
+- HTTP utilities (SSE parsing, request building)
+
+## Progressive Complexity
+
+Simple use cases require minimal code. Advanced features (tools, custom strategies, provider config) are opt-in.
+
+## Interoperability Where Possible
+
+UPP enables provider switching for common operations. However, provider-specific features may not translate. The protocol does not guarantee feature parity—it guarantees interface consistency.
+
+## HTTP-First Provider Implementation
+
+UPP **strongly recommends** that providers wrap vendor REST APIs directly using native HTTP primitives (e.g., `fetch`, `http.request`, `curl`) rather than depending on first-party vendor SDKs.
+
+<Aside type="tip" title="Rationale">
+- **Minimal dependencies:** Avoid pulling in large SDK packages and their transitive dependencies
+- **Full control:** Direct HTTP access allows providers to manage request/response transformation, streaming, retries, and timeouts without SDK abstractions interfering
+- **Consistency:** All providers follow the same HTTP-based pattern
+- **Transparency:** Developers can inspect exactly what's sent over the wire
+- **Bundle size:** Critical for edge deployments and browser environments
+</Aside>
+
+Providers MAY use vendor SDKs if there's a compelling reason, but this should be the exception.

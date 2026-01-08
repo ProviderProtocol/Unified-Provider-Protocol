@@ -1,15 +1,13 @@
 ---
 title: Provider Implementation Guide
-description: UPP-1.2 guide for implementing custom providers.
+description: Guide for implementing UPP-compliant providers.
 ---
 
-import { Aside, Badge } from '@astrojs/starlight/components';
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 # Provider Implementation Guide
 
-<Badge text="UPP-1.2" variant="note" />
-
-This guide covers implementing UPP-compliant providers for any vendor API.
+<Badge text="UPP-1.2.0" variant="note" />
 
 ## Provider Module Structure
 
@@ -54,77 +52,39 @@ function createProvider(options: CreateProviderOptions) -> Provider {
 
   return provider
 }
+
+CreateProviderOptions = {
+  name: String,
+  version: String,
+  modalities: {
+    llm: LLMHandler?,
+    embedding: EmbeddingHandler?,
+    image: ImageHandler?
+  }
+}
 ```
-
-### CreateProviderOptions Structure
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `name` | String | Yes | Provider name (e.g., "openai", "anthropic") |
-| `version` | String | Yes | Provider version string |
-| `modalities` | ModalityHandlers | Yes | Supported modality handlers |
-
-### ModalityHandlers Structure
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `llm` | LLMHandler | No | Handler for LLM operations |
-| `embedding` | EmbeddingHandler | No | Handler for embedding operations |
-| `image` | ImageHandler | No | Handler for image operations |
-
-<Aside type="note" title="Optional Handlers">
-  At least one modality handler should be provided. Attempting to use an unsupported modality will throw `UPPError` with code `INVALID_REQUEST`.
-</Aside>
 
 ## HTTP-First Approach
 
-Per the [Design Principles](/spec/design-principles/), providers SHOULD use direct HTTP calls rather than vendor SDKs.
-
-**Benefits:**
-
-| Benefit | Description |
-|---------|-------------|
-| Minimal dependencies | Avoid large SDK packages |
-| Full control | Manage transformations, streaming, retries directly |
-| Consistency | All providers follow the same pattern |
-| Transparency | Inspect what's sent over the wire |
-| Bundle size | Critical for edge and browser deployments |
+Per Section 2.7 (HTTP-First Provider Implementation), providers SHOULD use direct HTTP calls rather than vendor SDKs.
 
 ## Shared Utilities
 
 UPP implementations SHOULD provide utilities for provider implementations:
 
-### resolveApiKey
-
-```text
-resolveApiKey(config, envVar?) -> Promise<String>
-```
+**resolveApiKey(config, envVar?) -> Promise&lt;String&gt;**
 
 Resolve API key from ProviderConfig, supporting string, function, or KeyStrategy. If `config.apiKey` is not set, automatically falls back to standard environment variables. MUST throw `UPPError` with `AUTHENTICATION_FAILED` if no key is available.
 
-### doFetch
+**doFetch(url, init, config) -> Promise&lt;Response&gt;**
 
-```text
-doFetch(url, init, config) -> Promise<Response>
-```
+Execute fetch with retry, timeout, and error normalization. Uses `config.retryStrategy` for retry logic, `config.timeout` for request timeout, and `config.fetch` for custom fetch implementation. Automatically normalizes HTTP errors to `UPPError`.
 
-Execute fetch with retry, timeout, and error normalization. Uses `config.retryStrategy` for retry logic, `config.timeout` for request timeout, `config.fetch` for custom fetch implementation, and merges `config.headers` with request headers. Automatically normalizes HTTP errors to `UPPError`.
-
-Custom headers from `config.headers` are merged with the headers provided in the `init` parameter. If a custom header conflicts with a provider-required header, the custom header takes precedence.
-
-### parseSSEStream
-
-```text
-parseSSEStream(body) -> AsyncGenerator<Any>
-```
+**parseSSEStream(body) -> AsyncGenerator&lt;Any&gt;**
 
 Parse Server-Sent Events stream into JSON objects. Handles standard SSE format with "data:" prefix. Yields parsed JSON for each event, terminates on "[DONE]" message.
 
-### normalizeHttpError
-
-```text
-normalizeHttpError(response, provider, modality) -> Promise<UPPError>
-```
+**normalizeHttpError(response, provider, modality) -> Promise&lt;UPPError&gt;**
 
 Normalize HTTP error responses to `UPPError`. Maps HTTP status codes to appropriate `ErrorCode` values. Extracts error message from response body when available.
 
@@ -279,7 +239,7 @@ function createImageHandler() -> ImageHandler {
 
 ## Language-Specific Implementation Notes
 
-### Object-Oriented Languages (Java, C#, PHP)
+#### Object-Oriented Languages (Java, C#, PHP)
 
 ```text
 // Use interfaces/abstract classes for handlers
@@ -297,12 +257,12 @@ class OpenAIBoundLLMModel implements BoundLLMModel {
 }
 ```
 
-### Systems Languages (Rust, Go)
+#### Systems Languages (Rust, Go)
 
 ```text
 // Rust: Use traits
 trait LLMHandler {
-  fn bind(&self, model_id: &str) -> Box<dyn BoundLLMModel>;
+  fn bind(&self, model_id: &str) -> Box&lt;dyn BoundLLMModel&gt;;
 }
 
 // Go: Use interfaces
@@ -311,7 +271,7 @@ type LLMHandler interface {
 }
 ```
 
-### Dynamic Languages (Python, Ruby, JavaScript)
+#### Dynamic Languages (Python, Ruby, JavaScript)
 
 ```text
 // Use duck typing and factory functions
@@ -320,91 +280,3 @@ def create_llm_handler():
     return BoundLLMModel(model_id, ...)
   return {"bind": bind}
 ```
-
-## Request Transformation Example
-
-```text
-function transformMessagesToVendor(messages: List<Message>) -> List<VendorMessage> {
-  return messages.map(msg => {
-    switch (msg.type) {
-      case "user":
-        return {
-          role: "user",
-          content: transformContent(msg.content)
-        }
-      case "assistant":
-        result = {
-          role: "assistant",
-          content: transformContent(msg.content)
-        }
-        if (msg.toolCalls) {
-          result.tool_calls = msg.toolCalls.map(tc => ({
-            id: tc.toolCallId,
-            type: "function",
-            function: {
-              name: tc.toolName,
-              arguments: JSON.stringify(tc.arguments)
-            }
-          }))
-        }
-        return result
-      case "tool_result":
-        return msg.results.map(r => ({
-          role: "tool",
-          tool_call_id: r.toolCallId,
-          content: JSON.stringify(r.result)
-        }))
-    }
-  }).flat()
-}
-```
-
-## Response Transformation Example
-
-```text
-function transformVendorResponse(data: VendorResponse) -> LLMResponse {
-  choice = data.choices[0]
-  message = choice.message
-
-  // Build content blocks
-  content = []
-  if (message.content) {
-    content.push({ type: "text", text: message.content })
-  }
-
-  // Extract tool calls
-  toolCalls = null
-  if (message.tool_calls) {
-    toolCalls = message.tool_calls.map(tc => ({
-      toolCallId: tc.id,
-      toolName: tc.function.name,
-      arguments: JSON.parse(tc.function.arguments)
-    }))
-  }
-
-  return {
-    message: AssistantMessage(content, toolCalls, {
-      metadata: {
-        openai: {
-          finish_reason: choice.finish_reason,
-          model: data.model
-        }
-      }
-    }),
-    usage: {
-      inputTokens: data.usage.prompt_tokens,
-      outputTokens: data.usage.completion_tokens,
-      totalTokens: data.usage.total_tokens
-    },
-    stopReason: choice.finish_reason
-  }
-}
-```
-
-## Testing Recommendations
-
-1. **Unit tests** for transformation functions
-2. **Integration tests** against vendor APIs (with test keys)
-3. **Mock tests** for error handling paths
-4. **Streaming tests** with synthetic SSE data
-5. **Capability tests** verifying accurate declarations

@@ -1,0 +1,204 @@
+---
+title: Serialization
+description: State serialization, checkpointing, and persistence.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Serialization
+
+<Badge text="UAP-1.0.0" variant="note" />
+
+## AgentState Serialization
+
+**AgentStateJSON Structure:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `version` | String | Yes | UAP version |
+| `id` | String | Yes | State ID |
+| `messages` | List&lt;MessageJSON&gt; | Yes | UPP Message serialization |
+| `step` | Integer | Yes | Step number |
+| `metadata` | Map | Yes | User metadata |
+| `reasoning` | List&lt;String&gt; | No | Reasoning traces |
+| `plan` | List&lt;PlanStepJSON&gt; | No | Execution plan |
+| `subagentTraces` | List&lt;SubagentExecutionTraceJSON&gt; | No | Sub-agent execution traces (see Section 8.8) |
+
+## Thread Tree Serialization
+
+**ThreadTreeJSON Structure:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `rootId` | String | Yes | Root node ID |
+| `currentId` | String | Yes | Current node ID |
+| `nodes` | List&lt;ThreadNodeJSON&gt; | Yes | All nodes |
+
+## MUST Requirements
+
+1. All IDs MUST be preserved exactly during round-trip
+2. Message metadata MUST be preserved
+3. Timestamps MUST use ISO 8601 format
+4. Binary data MUST be base64 encoded
+5. Version MUST be checked during deserialization
+
+## Checkpointing
+
+Checkpointing enables step-level persistence for crash recovery and session resume. The SDK provides a pluggable `CheckpointStore` interface with a reference file-based implementation.
+
+#### 12.4.1 CheckpointStore Interface
+
+```text
+interface CheckpointStore {
+  /** Save a checkpoint at the current state */
+  save(sessionId: String, state: AgentStateJSON): Promise&lt;void&gt;
+
+  /** Load the most recent checkpoint for a session */
+  load(sessionId: String): Promise&lt;AgentStateJSON | null&gt;
+
+  /** Load metadata for a session without loading full state */
+  loadMetadata(sessionId: String): Promise&lt;CheckpointMetadata | null&gt;
+
+  /** Delete all checkpoints for a session */
+  delete(sessionId: String): Promise&lt;void&gt;
+
+  /** List all session IDs with checkpoints */
+  list(): Promise&lt;List<String&gt;>
+}
+```
+
+#### 12.4.2 Checkpoint Metadata
+
+Each checkpoint MAY include additional metadata:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `sessionId` | String | Session identifier (UUIDv4 or user-provided) |
+| `checkpointId` | String | Unique checkpoint ID |
+| `timestamp` | String | ISO 8601 timestamp |
+| `step` | Integer | Step number at checkpoint |
+| `agentId` | String | Agent instance ID |
+
+#### 12.4.3 fileCheckpoints() Reference Implementation
+
+```text
+fileCheckpoints(options?: FileCheckpointOptions) -> CheckpointStore
+```
+
+**FileCheckpointOptions Structure:**
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `dir` | String | ".checkpoints" | Directory for checkpoint files |
+
+**File Structure:**
+
+```
+{dir}/
+  {sessionId}/
+    checkpoint.json     # Latest state
+    metadata.json       # Session metadata
+```
+
+**Usage:**
+
+```text
+import { agent, AgentState } from "agents"
+import { fileCheckpoints } from "agents/checkpoint"
+
+// Create checkpoint store
+store = fileCheckpoints({ dir: "./checkpoints" })
+
+// Create agent with checkpointing
+coder = agent({
+  model: anthropic("claude-sonnet-4-20250514"),
+  tools: [Bash, Read, Write],
+  checkpoints: store,         // Enable checkpointing
+  sessionId: "my-session",    // Optional: auto-generated if not provided
+})
+
+// Checkpoints are saved automatically at each step_end
+{ turn, state } = await coder.generate("Fix the bug", AgentState.initial())
+```
+
+#### 12.4.4 Resume from Checkpoint
+
+```text
+// Resume from existing session
+store = fileCheckpoints({ dir: "./checkpoints" })
+saved = await store.load("my-session")
+
+if (saved) {
+  restored = AgentState.fromJSON(saved)
+  { turn, state } = await coder.generate("Continue", restored)
+} else {
+  { turn, state } = await coder.generate("Start fresh", AgentState.initial())
+}
+```
+
+#### 12.4.5 Checkpoint Strategy Integration
+
+When `checkpoints` is provided to `agent()`, execution strategies MUST:
+
+1. Call `store.save(sessionId, state.toJSON())` after each `step_end` event
+2. Generate `sessionId` if not provided (UUIDv4)
+3. Include `sessionId` in returned state metadata
+
+```text
+// Automatic checkpointing in loop strategy
+while (!done) {
+  // ... execute step ...
+
+  strategy.onStepEnd?.(step, { turn, state: currentState })
+
+  // Auto-checkpoint after step completes
+  if (checkpointStore) {
+    await checkpointStore.save(sessionId, currentState.toJSON())
+  }
+}
+```
+
+#### 12.4.6 Custom CheckpointStore Implementations
+
+Developers MAY implement custom stores for different backends:
+
+```text
+// Redis checkpoint store
+redisCheckpoints = (client: RedisClient): CheckpointStore => ({
+  save: async (sessionId, state) => {
+    await client.set(`checkpoint:${sessionId}`, JSON.stringify(state))
+  },
+  load: async (sessionId) => {
+    data = await client.get(`checkpoint:${sessionId}`)
+    return data ? JSON.parse(data) : null
+  },
+  delete: async (sessionId) => {
+    await client.del(`checkpoint:${sessionId}`)
+  },
+  list: async () => {
+    keys = await client.keys("checkpoint:*")
+    return keys.map(k => k.replace("checkpoint:", ""))
+  },
+})
+
+// Usage
+agent({
+  model: anthropic("claude-sonnet-4-20250514"),
+  checkpoints: redisCheckpoints(redisClient),
+  sessionId: "user-123-task-456",
+})
+```
+
+#### 12.4.7 MUST Requirements for Checkpointing
+
+1. Checkpoints MUST be saved after each `step_end` event when a store is configured
+2. Checkpoint saves MUST NOT block execution (fire-and-forget with error logging)
+3. `sessionId` MUST be preserved across checkpoint/restore cycles
+4. Restored state MUST be indistinguishable from live state for execution purposes
+5. Failed checkpoint saves SHOULD log errors but MUST NOT throw
+
+#### 12.4.8 SHOULD Requirements for Checkpointing
+
+1. Implementations SHOULD provide a file-based reference implementation
+2. Checkpoint stores SHOULD handle concurrent access safely
+3. Implementations SHOULD support checkpoint compression for large states

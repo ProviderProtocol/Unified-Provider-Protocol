@@ -1,17 +1,17 @@
 ---
-title: Structured Outputs
-description: UPP-1.2 structured output specification for constrained JSON responses.
+title: Structured Output
+description: Structured output and JSON schema constraints.
 ---
 
-import { Aside, Badge } from '@astrojs/starlight/components';
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
-# Structured Outputs
+# Structured Output
 
-<Badge text="UPP-1.2" variant="note" />
-
-Structured outputs allow you to constrain model responses to a specific JSON schema, ensuring valid, parseable data.
+<Badge text="UPP-1.2.0" variant="note" />
 
 ## Overview
+
+Structured outputs allow you to constrain model responses to a specific JSON schema, ensuring valid, parseable data.
 
 ```text
 claude = llm({
@@ -40,9 +40,9 @@ print(turn.data)
 
 ## Schema Definition
 
-Structured outputs use standard JSON Schema.
+Structured outputs use standard JSON Schema:
 
-### JSONSchema Structure
+**JSONSchema Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -52,7 +52,7 @@ Structured outputs use standard JSON Schema.
 | `additionalProperties` | Boolean? | Allow extra properties |
 | `description` | String? | Schema description |
 
-### JSONSchemaProperty Fields
+**JSONSchemaProperty Fields:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -62,7 +62,7 @@ Structured outputs use standard JSON Schema.
 | `const` | Any? | Constant value |
 | `default` | Any? | Default value |
 
-### String-specific Fields
+**String-specific fields:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -71,7 +71,7 @@ Structured outputs use standard JSON Schema.
 | `pattern` | String? | Regex pattern |
 | `format` | String? | "email", "uri", "date", "date-time", "uuid" |
 
-### Number-specific Fields
+**Number-specific fields:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -81,7 +81,7 @@ Structured outputs use standard JSON Schema.
 | `exclusiveMaximum` | Number? | Maximum value (exclusive) |
 | `multipleOf` | Number? | Must be multiple of this value |
 
-### Array-specific Fields
+**Array-specific fields:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -90,7 +90,7 @@ Structured outputs use standard JSON Schema.
 | `maxItems` | Integer? | Maximum items |
 | `uniqueItems` | Boolean? | Items must be unique |
 
-### Object-specific Fields
+**Object-specific fields:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -110,9 +110,7 @@ Providers with native support handle structured outputs according to vendor APIs
 | OpenAI | Uses response_format with json_schema |
 | Google | Uses responseSchema |
 
-<Aside type="note" title="No Schema Validation">
-  UPP does not validate responses against the schema—only that valid JSON was returned. Schema validation is the application's responsibility if needed.
-</Aside>
+Note: UPP does not validate responses against the schema—only that valid JSON was returned. Schema validation is the application's responsibility if needed.
 
 ## Complex Schema Example
 
@@ -202,92 +200,3 @@ turn = await claude.generate([], "Should I bring an umbrella in Tokyo today?")
 print(turn.data)
 // { summary: "Sunny and warm", temperature: 72, recommendation: "No umbrella needed" }
 ```
-
-## Use Cases
-
-### Data Extraction
-
-```text
-extractorSchema = {
-  type: "object",
-  properties: {
-    entities: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          name: { type: "string" },
-          type: { type: "string", enum: ["person", "organization", "location", "date"] },
-          context: { type: "string" }
-        },
-        required: ["name", "type"]
-      }
-    }
-  },
-  required: ["entities"]
-}
-```
-
-### Classification
-
-```text
-classifierSchema = {
-  type: "object",
-  properties: {
-    category: {
-      type: "string",
-      enum: ["bug", "feature", "question", "documentation"]
-    },
-    priority: {
-      type: "string",
-      enum: ["low", "medium", "high", "critical"]
-    },
-    confidence: {
-      type: "number",
-      minimum: 0,
-      maximum: 1
-    }
-  },
-  required: ["category", "priority", "confidence"]
-}
-```
-
-### API Response Generation
-
-```text
-apiResponseSchema = {
-  type: "object",
-  properties: {
-    success: { type: "boolean" },
-    data: {
-      type: "object",
-      properties: {
-        id: { type: "string", format: "uuid" },
-        status: { type: "string" },
-        createdAt: { type: "string", format: "date-time" }
-      }
-    },
-    errors: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          code: { type: "string" },
-          message: { type: "string" }
-        },
-        required: ["code", "message"]
-      }
-    }
-  },
-  required: ["success"]
-}
-```
-
-## Security Considerations
-
-<Aside type="caution" title="Structured Output Security">
-  - Structured output data comes from the model and should be validated
-  - Applications SHOULD NOT trust structured output for security decisions without validation
-  - Schema validation is the application's responsibility
-  - Like tool arguments, structured output should be treated as potentially untrusted data
-</Aside>

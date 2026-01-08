@@ -1,0 +1,118 @@
+---
+title: Strategy Hooks
+description: Agent strategy hooks for customizing execution.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Strategy Hooks
+
+<Badge text="UAP-1.0.0" variant="note" />
+
+## AgentStrategy Structure
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `stopCondition` | Function | Evaluate if execution should stop |
+| `onStepStart` | Function | Called when step begins |
+| `onReason` | Function | Called during reasoning phase (ReAct) |
+| `onAct` | Function | Called during action phase |
+| `onObserve` | Function | Called during observation phase |
+| `onStepEnd` | Function | Called when step completes |
+| `onComplete` | Function | Called when execution completes |
+| `onError` | Function | Called on execution error |
+
+## Hook Signatures
+
+```text
+interface AgentStrategy {
+  stopCondition?: (state: AgentState) -> Boolean | Promise&lt;Boolean&gt;
+  onStepStart?: (step: Integer, state: AgentState) -> void
+  onReason?: (step: Integer, reasoning: String) -> void
+  onAct?: (step: Integer, actions: List&lt;ToolCall&gt;) -> void
+  onObserve?: (step: Integer, observations: List&lt;ToolResult&gt;) -> void
+  onStepEnd?: (step: Integer, result: { turn: Turn, state: AgentState }) -> void
+  onComplete?: (result: GenerateResult) -> void
+  onError?: (error: Error, state: AgentState) -> void | GenerateResult
+}
+```
+
+## Stop Conditions
+
+Since UAP defaults to infinite execution, `stopCondition` is the primary way to control termination:
+
+```text
+agent({
+  model: anthropic("claude-sonnet-4-20250514"),
+  execution: react(),  // Infinite by default
+  strategy: {
+    stopCondition: (state) => {
+      // Stop on explicit completion signal
+      if (state.metadata.taskComplete) return true
+
+      // Stop on budget
+      if (state.metadata.totalTokens > 50000) return true
+
+      // Stop on time
+      if (Date.now() - state.metadata.startTime > 300000) return true
+
+      return false
+    },
+  },
+})
+```
+
+## ToolUseStrategy (UPP Passthrough)
+
+UAP passes `toolStrategy` directly to the underlying `llm()` instance for UPP-level tool execution hooks. These hooks fire in real-time during tool execution, complementing the UAP-level `AgentStrategy` hooks.
+
+**ToolUseStrategy Structure (from UPP-1.2):**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `maxIterations` | Integer | Maximum tool execution rounds (default: Infinity) |
+| `onToolCall` | Function | Called before each tool execution |
+| `onBeforeCall` | Function | Called before execution, can cancel |
+| `onAfterCall` | Function | Called after successful tool execution |
+| `onError` | Function | Called on tool execution error |
+| `onMaxIterations` | Function | Called when max iterations reached |
+
+**Hook Signatures:**
+
+```text
+interface ToolUseStrategy {
+  maxIterations?: Integer  // Default: Infinity
+  onToolCall?: (tool: Tool, params: Map) -> void
+  onBeforeCall?: (tool: Tool, params: Map) -> Boolean  // Return false to skip
+  onAfterCall?: (tool: Tool, params: Map, result: Any) -> void
+  onError?: (tool: Tool, params: Map, error: Error) -> void
+  onMaxIterations?: (iterations: Integer) -> void
+}
+```
+
+**Usage with UAP:**
+
+```text
+agent({
+  model: anthropic("claude-sonnet-4-20250514"),
+  tools: [Bash, Read, Write],
+  // UAP-level hooks (step lifecycle)
+  strategy: {
+    onStepStart: (step, state) => print(`Step ${step}`),
+    onComplete: (result) => print("Done"),
+  },
+  // UPP-level hooks (real-time tool execution)
+  toolStrategy: {
+    maxIterations: Infinity,  // UAP standard
+    onToolCall: (tool, params) => print(`Calling ${tool.name}`),
+    onAfterCall: (tool, params, result) => print(`${tool.name} completed`),
+  },
+})
+```
+
+**Key Difference from AgentStrategy:**
+
+- `AgentStrategy` hooks fire at step boundaries (after LLM inference completes)
+- `ToolUseStrategy` hooks fire immediately during tool execution (real-time)
+
+This distinction matters for logging and monitoring—`toolStrategy` provides visibility into tool calls as they happen, while `strategy` provides visibility into the agent's reasoning cycle.

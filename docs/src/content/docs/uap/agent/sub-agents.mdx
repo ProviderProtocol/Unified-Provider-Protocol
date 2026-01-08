@@ -1,0 +1,379 @@
+---
+title: Sub-Agent Protocol
+description: Sub-agent communication via ask() and query().
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Sub-Agent Protocol
+
+<Badge text="UAP-1.0.0" variant="note" />
+
+## Sub-Agents Are Tools
+
+Sub-agents are agents used as tools by other agents. They are **not** special—they are regular UPP Tools with an implementation that calls another agent.
+
+**Critical Requirement:** UAP MUST NOT auto-generate tool schemas from agents. All sub-agent tools require explicit schema declaration.
+
+## Explicit Tool Declaration
+
+To use an agent as a sub-agent, the developer MUST create an explicit Tool:
+
+```text
+// Define the sub-agent
+explorer = agent({
+  model: anthropic("claude-haiku-4-20250514"),
+  tools: [Glob, Grep, Read],
+  system: "You explore codebases.",
+})
+
+// Explicitly define the tool interface
+explorerTool: Tool = {
+  name: "explore_codebase",
+  description: "Explores codebase structure and finds relevant files",
+  parameters: {
+    type: "object",
+    properties: {
+      query: {
+        type: "string",
+        description: "What to search for in the codebase",
+      },
+      fileTypes: {
+        type: "array",
+        items: { type: "string" },
+        description: "File extensions to include (e.g., ['.ts', '.js'])",
+      },
+    },
+    required: ["query"],
+  },
+  run: async (params) => {
+    prompt = `Find: ${params.query}`
+    if (params.fileTypes) {
+      prompt += ` in files: ${params.fileTypes.join(", ")}`
+    }
+    turn = await explorer.query(prompt)
+    return turn.response.text
+  },
+}
+
+// Use in parent agent
+coder = agent({
+  model: anthropic("claude-sonnet-4-20250514"),
+  tools: [Bash, Write, explorerTool],
+})
+```
+
+## Why No Auto-Generation
+
+Auto-generating tool schemas from agent definitions violates UAP principles:
+
+1. **Leaky Abstraction**: System prompts may contain instructions not suitable for tool descriptions
+2. **Unpredictable Schema**: No reliable way to infer parameter structure from an agent
+3. **Hidden Coupling**: Changes to sub-agent system prompt would silently change tool interface
+4. **Type Unsafety**: Auto-generated schemas can't be statically verified
+
+The explicit approach ensures:
+
+- Tool interface is intentionally designed
+- Schema matches actual sub-agent capabilities
+- Changes require explicit updates
+- TypeScript/static typing can verify schemas
+
+## LLM Inheritance
+
+Sub-agents inherit parent LLM configuration when not explicitly specified.
+
+**Implementation Note:** UPP `Tool.run` functions receive only `params`. UAP's `ExecutionStrategy` MUST inject execution context when invoking tools. This is done by wrapping tool execution:
+
+```text
+// UAP ExecutionStrategy wraps tool invocation
+async function executeTool(tool: Tool, params: Map, context: ExecutionContext) {
+  // If tool needs context (e.g., for inheritance), wrap the call
+  if (tool.run.length > 1) {
+    // Tool expects context as second argument
+    return tool.run(params, {
+      parentModel: context.agent.model,
+      parentConfig: context.agent.config,
+      agentId: context.agent.id,
+      stateId: context.state.id,
+    })
+  }
+  // Standard UPP tool - params only
+  return tool.run(params)
+}
+```
+
+**Sub-agent tool with inheritance:**
+
+```text
+// Sub-agent without explicit model
+helper = agent({
+  // model not specified
+  tools: [Read],
+  system: "You help with tasks.",
+})
+
+// Tool explicitly handles inheritance via context
+helperTool: Tool = {
+  name: "helper",
+  description: "...",
+  parameters: { ... },
+  run: async (params, context) => {
+    // context injected by UAP ExecutionStrategy
+    effectiveAgent = helper.model
+      ? helper
+      : agent({ ...helper, model: context.parentModel, config: context.parentConfig })
+    return (await effectiveAgent.query(params.task)).response.text
+  },
+}
+```
+
+**MUST Requirements:**
+
+1. If sub-agent has explicit `model`, MUST use that model
+2. If sub-agent has no `model`, MAY inherit from parent execution context
+3. Inheritance is resolved at execution time
+4. ExecutionStrategy MUST inject context for tools that declare a second parameter
+
+## Execution Dependencies
+
+Tools and sub-agents can declare execution dependencies:
+
+**Tool Dependency Options:**
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `sequential` | Boolean | false | Must complete before other tools start |
+| `dependsOn` | List&lt;String&gt; | [] | Tool names that must complete first |
+
+```text
+readTool: Tool = {
+  name: "read_file",
+  description: "Read a file",
+  parameters: { ... },
+  sequential: true,  // Other tools wait for this
+  run: async (params) => { ... },
+}
+
+writeTool: Tool = {
+  name: "write_file",
+  description: "Write a file",
+  parameters: { ... },
+  dependsOn: ["read_file"],  // Only runs after read_file completes
+  run: async (params) => { ... },
+}
+```
+
+## Model-Driven Execution Order
+
+The model MAY signal execution dependencies in tool calls:
+
+```text
+// Model can return structured tool calls with dependencies
+toolCalls = [
+  { id: "call_1", name: "read_file", args: {...} },
+  { id: "call_2", name: "process", args: {...}, after: ["call_1"] },
+  { id: "call_3", name: "write_file", args: {...}, after: ["call_2"] },
+]
+
+// Execution respects declared order:
+// 1. read_file executes
+// 2. process executes (after call_1)
+// 3. write_file executes (after call_2)
+```
+
+If the model does not specify dependencies, tools execute in parallel (default).
+
+## Sub-Agent Event Propagation
+
+When sub-agents execute via streaming, their events SHOULD be propagated to the parent agent's stream. This enables observability into nested agent execution.
+
+**SubagentEvent Structure:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `subagentId` | String | Unique ID of the sub-agent instance |
+| `subagentType` | String | Type/name of the sub-agent (e.g., "explorer", "planner") |
+| `parentToolCallId` | String | The tool call ID that spawned this sub-agent |
+
+**Event Types:**
+
+Sub-agent events use the following `UAPEventType` values:
+
+| Type | Description |
+|------|-------------|
+| `subagent_start` | Sub-agent execution began |
+| `subagent_event` | Forwarded event from sub-agent (wraps inner event) |
+| `subagent_end` | Sub-agent execution completed |
+
+**Event Data Structures:**
+
+```text
+// subagent_start event data
+{
+  subagentId: String,
+  subagentType: String,
+  parentToolCallId: String,
+  prompt: String,           // The task given to the sub-agent
+  timestamp: Integer,       // Start time in milliseconds
+}
+
+// subagent_event event data (forwarded events)
+{
+  subagentId: String,
+  subagentType: String,
+  parentToolCallId: String,
+  innerEvent: AgentStreamEvent,  // The actual event from sub-agent
+}
+
+// subagent_end event data
+{
+  subagentId: String,
+  subagentType: String,
+  parentToolCallId: String,
+  success: Boolean,
+  result?: String,          // Sub-agent's response (if successful)
+  error?: String,           // Error message (if failed)
+  timestamp: Integer,       // End time in milliseconds
+  toolExecutions?: List<{   // Tools used by sub-agent
+    toolName: String,
+    arguments: Map,
+    result: String,
+    duration?: Integer,     // Execution time in milliseconds
+  }>,
+  usage?: TokenUsage,       // Token usage for sub-agent execution
+}
+```
+
+**Implementation Pattern:**
+
+Tools that spawn sub-agents SHOULD accept an event callback and emit events during execution:
+
+```text
+interface SubagentToolOptions {
+  onSubagentEvent?: (event: SubagentEvent) -> void
+}
+
+explorerTool: Tool = {
+  name: "explore",
+  description: "...",
+  parameters: { ... },
+  run: async (params, context) => {
+    subagentId = generateId()
+
+    // Emit start event
+    context.onSubagentEvent?.({
+      type: "subagent_start",
+      subagentId,
+      subagentType: "explorer",
+      parentToolCallId: context.toolCallId,
+      prompt: params.query,
+      timestamp: Date.now(),
+    })
+
+    // Stream sub-agent execution
+    stream = explorer.stream(params.query, AgentState.initial())
+
+    for await (event of stream) {
+      // Forward inner events
+      context.onSubagentEvent?.({
+        type: "subagent_event",
+        subagentId,
+        subagentType: "explorer",
+        parentToolCallId: context.toolCallId,
+        innerEvent: event,
+      })
+    }
+
+    result = await stream.result
+
+    // Emit end event
+    context.onSubagentEvent?.({
+      type: "subagent_end",
+      subagentId,
+      subagentType: "explorer",
+      parentToolCallId: context.toolCallId,
+      success: true,
+      result: result.turn.response.text,
+      timestamp: Date.now(),
+      toolExecutions: result.turn.toolExecutions,
+    })
+
+    return result.turn.response.text
+  },
+}
+```
+
+**MUST Requirements:**
+
+1. Sub-agent events MUST include `subagentId` to correlate events
+2. Sub-agent events MUST include `parentToolCallId` to associate with parent tool call
+3. `subagent_start` MUST be emitted before sub-agent execution begins
+4. `subagent_end` MUST be emitted after sub-agent execution completes (success or failure)
+5. `subagent_event` SHOULD forward all significant inner events (tool executions, text deltas)
+
+**SHOULD Requirements:**
+
+1. Implementations SHOULD provide helper utilities for creating sub-agent tools with event propagation
+2. TUI/CLI implementations SHOULD display nested sub-agent events with visual indentation or hierarchy
+
+## Sub-Agent Trace Persistence
+
+Sub-agent execution traces MUST be persisted in AgentState for checkpoint recovery. This enables full restoration of hierarchical agent execution including nested tool calls, durations, and token usage.
+
+**SubagentExecutionTrace Structure:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `subagentId` | String | Yes | Unique ID of the sub-agent instance |
+| `subagentType` | String | Yes | Type/name of the sub-agent |
+| `parentToolCallId` | String | Yes | Tool call ID that spawned this sub-agent |
+| `prompt` | String | Yes | The task given to the sub-agent |
+| `startTime` | Integer | Yes | Start timestamp (ms since epoch) |
+| `endTime` | Integer | Yes | End timestamp (ms since epoch) |
+| `success` | Boolean | Yes | Whether execution succeeded |
+| `result` | String | No | Sub-agent's response (if successful) |
+| `error` | String | No | Error message (if failed) |
+| `toolExecutions` | List&lt;ToolExecutionTrace&gt; | No | Tools used by sub-agent |
+| `usage` | TokenUsage | No | Token usage for sub-agent |
+
+**ToolExecutionTrace Structure:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `toolName` | String | Yes | Name of the tool |
+| `toolCallId` | String | No | Tool call ID |
+| `arguments` | Map | Yes | Arguments passed to tool |
+| `result` | String | Yes | Tool result |
+| `isError` | Boolean | No | Whether tool errored |
+| `duration` | Integer | No | Execution time in milliseconds |
+
+**AgentState Integration:**
+
+```text
+interface AgentState {
+  // ... existing fields ...
+  subagentTraces?: readonly SubagentExecutionTrace[]
+
+  // Add a sub-agent trace to state
+  withSubagentTrace(trace: SubagentExecutionTrace) -> AgentState
+}
+```
+
+**Serialization:**
+
+Sub-agent traces MUST be included in `AgentStateJSON` for checkpoint persistence:
+
+```text
+interface AgentStateJSON {
+  // ... existing fields ...
+  subagentTraces?: List&lt;SubagentExecutionTraceJSON&gt;
+}
+```
+
+**MUST Requirements:**
+
+1. Sub-agent traces MUST be collected when `subagent_end` events are emitted
+2. Traces MUST include all tool executions from the sub-agent
+3. Traces MUST be serialized in checkpoints
+4. Traces MUST be restored when loading from checkpoint

@@ -1,17 +1,19 @@
 ---
 title: Tools
-description: UPP-1.2 tool definition, execution, and strategies.
+description: Tool definition, execution, and strategies in UPP.
 ---
 
-import { Aside, Badge } from '@astrojs/starlight/components';
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 # Tools
 
-<Badge text="UPP-1.2" variant="note" />
-
-Tools allow LLMs to interact with external systems, execute code, and access real-time information. UPP uses JSON Schema for tool parameter definitions.
+<Badge text="UPP-1.2.0" variant="note" />
 
 ## Tool Definition
+
+Tools use **JSON Schema** for parameter definitions.
+
+**Tool Structure:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -22,7 +24,7 @@ Tools allow LLMs to interact with external systems, execute code, and access rea
 | `run` | Function | Yes | Tool execution function |
 | `approval` | Function | No | Optional approval handler for sensitive operations |
 
-### ToolMetadata Structure
+**ToolMetadata Structure:**
 
 Provider-namespaced metadata for tools. Each provider defines its own metadata shape, enabling provider-specific features like prompt caching or strict schema validation without affecting other providers.
 
@@ -38,11 +40,11 @@ Provider-namespaced metadata for tools. Each provider defines its own metadata s
 | Anthropic | `anthropic` | `cache_control: { type: "ephemeral", ttl?: "5m" \| "1h" }` |
 | OpenAI | `openai` | `strict: boolean` (stricter JSON Schema validation) |
 
-<Aside type="note" title="Provider Namespace Handling">
-  Providers MUST ignore metadata namespaces they don't recognize. Tool metadata is passed through to the provider's native format where supported.
+<Aside type="note">
+Providers MUST ignore metadata namespaces they don't recognize. Tool metadata is passed through to the provider's native format where supported.
 </Aside>
 
-### JSONSchema Structure (for tool parameters)
+**JSONSchema Structure (for tool parameters):**
 
 ```text
 {
@@ -133,23 +135,24 @@ By default, `llm()` handles tool execution automatically:
 4. Result (or error) is sent back to the model as `ToolResultMessage`
 5. Loop continues until model returns without tool calls OR max iterations reached
 
-### Error Handling
-
+**Error handling:**
 - If `approval()` throws an exception, the exception propagates to the caller and aborts the generation
 - If `approval()` returns `false`, an error result is sent to the model
 - If the tool's `run` function throws, the error is caught and sent as an error result to the model
 
-<Aside type="caution" title="No Argument Validation">
-  `llm()` does NOT validate tool arguments against the JSON Schema. The schema is provided to the model to guide its output, but validation and sanitization of LLM-provided arguments is the responsibility of the tool implementation. Always treat tool arguments as untrusted input.
+<Aside type="caution">
+`llm()` does NOT validate tool arguments against the JSON Schema. The schema is provided to the model to guide its output, but validation and sanitization of LLM-provided arguments is the responsibility of the tool implementation. Always treat tool arguments as untrusted input.
 </Aside>
 
-<Aside type="note" title="Structured Output Validation">
-  Similarly, UPP does not validate [structured output](/spec/llm/structured/) responses against their schema. Schemas guide LLM behavior but validation is the application's responsibility in both cases.
+<Aside type="note">
+Similarly, UPP does not validate structured output responses against their schema (see Section 11). Schemas guide LLM behavior but validation is the application's responsibility in both cases.
 </Aside>
 
 ## ToolUseStrategy
 
 For custom control over tool execution, including input/output transformation:
+
+**ToolUseStrategy Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -160,20 +163,20 @@ For custom control over tool execution, including input/output transformation:
 | `onError` | Function | Called on tool execution error |
 | `onMaxIterations` | Function | Called when max iterations reached |
 
-### BeforeCallResult Structure
+**BeforeCallResult Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `proceed` | Boolean | Whether to proceed with tool execution |
 | `params` | Any? | Transformed parameters to use (optional) |
 
-### AfterCallResult Structure
+**AfterCallResult Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `result` | Any | Transformed result to return to the model |
 
-### Hook Return Types
+**Hook Return Types:**
 
 | Hook | Return Type | Behavior |
 |------|-------------|----------|
@@ -183,7 +186,7 @@ For custom control over tool execution, including input/output transformation:
 | `onAfterCall` | `void` | Use original result |
 | `onAfterCall` | `AfterCallResult` | Transform result before returning to model |
 
-### Strategy Example
+## Strategy Example
 
 ```text
 strategy = {
@@ -216,7 +219,7 @@ claude = llm({
 })
 ```
 
-### Input Transformation
+## Input Transformation
 
 Transform tool parameters before execution:
 
@@ -236,7 +239,7 @@ strategy = {
 }
 ```
 
-### Output Transformation
+## Output Transformation
 
 Transform tool results before returning to the model:
 
@@ -256,7 +259,7 @@ strategy = {
 }
 ```
 
-### Combined Transformation
+## Combined Transformation
 
 Input and output transformation can be combined:
 
@@ -344,7 +347,7 @@ Some providers offer **provider-native tools**—built-in capabilities that exec
 - **File Search** - Search through uploaded documents
 - **Computer Use** - Interact with computer interfaces
 
-### Usage Pattern
+#### 10.9.1 Usage Pattern
 
 Provider-native tools are passed through the `params` object, not the `tools` array:
 
@@ -365,7 +368,7 @@ gpt = llm({
 })
 ```
 
-### Output Handling
+#### 10.9.2 Output Handling
 
 Provider-native tool outputs SHOULD be transformed into standard UPP content blocks:
 
@@ -379,11 +382,11 @@ This ensures outputs are accessible via standard message accessors:
 turn = await gpt.generate("Generate an image of a sunset")
 
 // Generated images are standard content blocks
-images = turn.response.images  // List<ImageBlock>
+images = turn.response.images  // List&lt;ImageBlock&gt;
 firstImage = images[0]
 ```
 
-### Provider Implementation
+#### 10.9.3 Provider Implementation
 
 Providers offering native tools SHOULD:
 
@@ -407,7 +410,7 @@ gpt = llm({
 })
 ```
 
-### Combining Tool Types
+#### 10.9.4 Combining Tool Types
 
 UPP function tools and provider-native tools can be used together. The provider is responsible for merging them correctly when sending requests:
 
@@ -427,11 +430,11 @@ turn = await gpt.generate("What's the weather in Paris and save it to my notes")
 
 The `llm()` core handles UPP function tool execution automatically. Provider-native tools execute server-side and their results appear in the response.
 
-## Provider Tool Reference
+#### 10.9.5 Provider Tool Reference
 
 This section documents the built-in tools available for each provider. All tools are passed via the `params.builtInTools` array and have helper constructors in the provider's `tools` namespace.
 
-### Anthropic Built-in Tools
+##### Anthropic Built-in Tools
 
 Anthropic provides server-side tools for Claude models. Import via `import { tools } from "upp/anthropic"`.
 
@@ -516,7 +519,7 @@ claude = llm({
 })
 ```
 
-### Google Built-in Tools
+##### Google Built-in Tools
 
 Google provides server-side tools for Gemini models. Import via `import { tools } from "upp/google"`.
 
@@ -566,11 +569,11 @@ gemini = llm({
 })
 ```
 
-<Aside type="note" title="Tool Limitations">
-  File Search cannot be combined with other built-in tools.
+<Aside type="note">
+File Search cannot be combined with other built-in tools.
 </Aside>
 
-### xAI Built-in Tools
+##### xAI Built-in Tools
 
 xAI provides server-side tools for Grok models via the **Responses API only** (`api: 'responses'`). Import via `import { tools } from "upp/xai"`.
 
@@ -638,7 +641,7 @@ grok = llm({
 })
 ```
 
-### OpenAI Built-in Tools
+##### OpenAI Built-in Tools
 
 OpenAI provides built-in tools for GPT models via the **Responses API**. Import via `import { tools } from "upp/openai"`.
 
@@ -690,114 +693,10 @@ turn = await gpt.generate("Generate an image of a sunset over mountains")
 // turn.response.images contains the generated ImageBlock
 ```
 
-### OpenRouter
+##### OpenRouter
 
 OpenRouter acts as a routing layer and does not provide its own built-in tools. Use the underlying provider's tools based on the model being used.
 
-### Ollama
+##### Ollama
 
 Ollama runs local models and does not provide server-side built-in tools. Use UPP function tools for client-side tool calling with local models.
-
-## Complex Tool Example
-
-```text
-searchDatabase = {
-  name: "searchDatabase",
-  description: "Search the product database",
-  parameters: {
-    type: "object",
-    properties: {
-      query: {
-        type: "string",
-        description: "Search query"
-      },
-      filters: {
-        type: "object",
-        properties: {
-          category: {
-            type: "string",
-            enum: ["electronics", "clothing", "home", "sports"]
-          },
-          minPrice: { type: "number" },
-          maxPrice: { type: "number" },
-          inStock: { type: "boolean" }
-        }
-      },
-      limit: {
-        type: "integer",
-        description: "Maximum results to return",
-        default: 10
-      },
-      sortBy: {
-        type: "string",
-        enum: ["relevance", "price_low", "price_high", "newest"],
-        default: "relevance"
-      }
-    },
-    required: ["query"]
-  },
-  run: async (params) => {
-    results = await db.products.search({
-      query: params.query,
-      filters: params.filters ?? {},
-      limit: params.limit ?? 10,
-      sort: params.sortBy ?? "relevance"
-    })
-    return JSON.stringify(results)
-  }
-}
-```
-
-## Tool Security Considerations
-
-<Aside type="caution" title="Security Warning">
-  Tools execute arbitrary code based on LLM-provided arguments:
-
-  - Tool arguments MUST be treated as untrusted input
-  - Implementations MUST NOT automatically validate arguments against schema
-  - Tool implementations SHOULD validate and sanitize inputs
-  - Sensitive operations SHOULD use approval handlers
-  - File system and network operations SHOULD be sandboxed where possible
-</Aside>
-
-### Safe Tool Implementation
-
-```text
-readFile = {
-  name: "readFile",
-  description: "Read a file from the allowed directory",
-  parameters: {
-    type: "object",
-    properties: {
-      path: { type: "string", description: "Relative file path" }
-    },
-    required: ["path"]
-  },
-  run: async (params) => {
-    // Validate and sanitize path
-    safePath = path.normalize(params.path)
-
-    // Check for path traversal
-    if (safePath.includes("..") || path.isAbsolute(safePath)) {
-      throw new Error("Invalid path: must be relative without traversal")
-    }
-
-    // Restrict to allowed directory
-    fullPath = path.join(ALLOWED_DIR, safePath)
-    if (!fullPath.startsWith(ALLOWED_DIR)) {
-      throw new Error("Path outside allowed directory")
-    }
-
-    // Check file exists and is readable
-    if (!await fs.exists(fullPath)) {
-      throw new Error("File not found")
-    }
-
-    return await fs.readFile(fullPath, "utf-8")
-  }
-}
-```
-
-## Capability Check
-
-Providers that support tools MUST set `capabilities.tools` to `true`. If tools are provided but the capability is `false`, `llm()` MUST throw `UPPError` with code `INVALID_REQUEST`.

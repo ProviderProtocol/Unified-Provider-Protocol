@@ -1,0 +1,53 @@
+---
+title: Conformance
+description: Implementation conformance requirements.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Conformance
+
+<Badge text="UAP-1.0.0" variant="note" />
+
+## Conformance Levels
+
+**Level 1: Core Agent (Required)**
+- `agent()` function
+- `generate()`, `stream()`, `ask()`, `query()` methods
+- `AgentState` immutable state
+- `loop()` execution strategy
+- Returns standard UPP Turn
+
+**Level 2: Advanced Execution (Required)**
+- `react()` strategy
+- `plan()` strategy
+- Custom strategy support
+- Infinite defaults
+
+**Level 3: Thread Trees (Optional)**
+- `ThreadTree` implementation
+- Branching and checkout
+- History traversal
+
+**Level 4: Middleware (Required)**
+- Middleware pipeline
+- `logging()` middleware
+- Custom middleware support
+
+## MUST Requirements Summary
+
+1. **Type Uniformity:** MUST use UPP-1.2 types directly without wrapping
+2. **No Re-exports:** MUST NOT re-export UPP types
+3. **Functional State:** `AgentState` MUST be immutable
+4. **Infinite Defaults:** `maxIterations`/`maxSteps`/`toolStrategy.maxIterations` MUST default to Infinity
+5. **Explicit Sub-Agents:** MUST NOT auto-generate tool schemas from agents
+6. **Identity:** All IDs MUST be UUIDv4
+7. **Serialization:** State MUST be fully serializable
+8. **LLM Passthrough:** `AgentOptions` MUST extend `LLMOptions` for full UPP passthrough
+
+## MUST NOT Requirements
+
+1. MUST NOT impose artificial execution limits by default
+2. MUST NOT mutate state internally
+3. MUST NOT auto-generate sub-agent tool schemas
+4. MUST NOT hide conversation history in implicit state

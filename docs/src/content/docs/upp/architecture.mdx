@@ -1,6 +1,6 @@
 ---
 title: Architecture
-description: UPP architecture overview, data flow, and core concepts.
+description: UPP architecture, provider model, and data flow patterns.
 ---
 
 import { Aside, Badge } from '@astrojs/starlight/components';
@@ -8,8 +8,6 @@ import { Aside, Badge } from '@astrojs/starlight/components';
 # Architecture
 
 <Badge text="UPP-1.2" variant="note" />
-
-This section describes the core architecture of UPP, including the unified provider model, import patterns, provider structure, and data flow.
 
 ## The Unified Provider Model
 
@@ -45,7 +43,7 @@ This section describes the core architecture of UPP, including the unified provi
 
 UPP implementations SHOULD export both a namespace object and individual functions, giving developers flexibility in import style.
 
-### Namespace Style (Recommended)
+**Namespace style (recommended for clarity):**
 
 ```text
 import ai from "upp"
@@ -62,7 +60,7 @@ embedder = ai.embedding({
 })
 ```
 
-### Direct Import Style
+**Direct import style (shorter):**
 
 ```text
 import { llm, embedding } from "upp"
@@ -72,7 +70,7 @@ gpt = llm({ model: openai("gpt-4o") })
 embedder = embedding({ model: openai("text-embedding-3-small") })
 ```
 
-### Mix and Match
+**Mix and match:**
 
 ```text
 import { ai, llm } from "upp"
@@ -86,7 +84,7 @@ imageGen = ai.image({ ... })
 
 ## Provider Structure
 
-A provider exports a single factory function that returns a `ModelReference`. The same factory works with any modality—the model ID determines which handler is used.
+A provider exports a single factory function that returns a `ModelReference`. The same factory works with any modality—the model ID determines which handler is used:
 
 ```text
 import openai from "upp/openai"
@@ -103,8 +101,6 @@ llm({ model: anthropic("claude-sonnet-4-20250514") })
 image({ model: stability("stable-diffusion-xl-1024-v1-0") })
 ```
 
-### Internal Provider Structure
-
 Internally, each provider combines modality handlers:
 
 ```text
@@ -119,100 +115,9 @@ openai_provider = createProvider({
 })
 ```
 
-### ModelReference Structure
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `modelId` | String | The model identifier |
-| `provider` | Provider | The provider that created this reference |
-
-### Provider Structure
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `name` | String | Provider name |
-| `version` | String | Provider version |
-| `modalities` | Map | Supported modality handlers |
-
-The provider is also callable as a function:
-
-### Provider Factory Options
-
-Some providers may offer additional options for vendor-specific operational choices—for example, selecting between different API variants. These options are passed to the **provider factory function**, not to `ProviderConfig`:
-
-```text
-// Provider factory signature with optional options
-providerFactory(modelId: String, options?: ProviderOptions) -> ModelReference
-```
-
-### ProviderOptions Pattern
-
-Provider options are provider-specific and vary by vendor. Each provider that supports options MUST export its options type:
-
-| Provider | Options Type | Description |
-|----------|--------------|-------------|
-| `openai` | `OpenAIProviderOptions` | API variant selection |
-| Others | (none currently) | Most providers need no options |
-
-### OpenAIProviderOptions Structure
-
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `api` | `"responses"` \| `"completions"` | `"responses"` | Which OpenAI API to use |
-
-The `api` option allows selecting between OpenAI's API variants:
-
-- **`"responses"`** (default): Uses the modern Responses API with built-in tool handling
-- **`"completions"`**: Uses the legacy Chat Completions API
-
-**Usage:**
-
-```text
-// Use the modern Responses API (default)
-gpt = llm({
-  model: openai("gpt-4o")
-})
-
-// Explicitly use the legacy Completions API
-gptLegacy = llm({
-  model: openai("gpt-4o", { api: "completions" })
-})
-```
-
-### Provider Options Guidelines
-
-Provider options should be:
-
-| Guideline | Description |
-|-----------|-------------|
-| **Rare** | Most providers need no options beyond the model ID |
-| **Well-documented** | Clearly explain when and why each option is needed |
-| **Defaulted sensibly** | The provider should work without any options |
-| **Typed exports** | Export options types for type-safe usage |
-
-<Aside type="note" title="Separate Providers vs Options">
-  Fundamentally different deployment targets (e.g., Google Vertex AI vs standard Gemini API) should be implemented as **separate providers** rather than options on a single provider.
-</Aside>
-
-<Aside type="tip" title="When to Use Provider Options">
-  Use provider options for operational choices that don't change the fundamental provider identity (e.g., API version selection). Use separate provider modules for distinct services or deployments.
-</Aside>
-
-```text
-// Provider as function
-modelRef = provider(modelId, options?)
-
-// Provider properties
-provider.name      // "openai"
-provider.version   // "1.0.0"
-provider.modalities.llm        // LLMHandler or null
-provider.modalities.embedding  // EmbeddingHandler or null
-provider.modalities.image      // ImageHandler or null
-```
-
 ## Data Flow
 
-### LLM Data Flow
+#### LLM Data Flow
 
 1. Developer calls `llm()` with a provider-bound model
 2. Developer calls `generate()` or `stream()` with message history and new input
@@ -221,7 +126,7 @@ provider.modalities.image      // ImageHandler or null
 5. `llm()` core returns a `Turn` containing all messages from this inference
 6. Developer appends turn messages to their history for future calls
 
-### Embedding Data Flow
+#### Embedding Data Flow
 
 1. Developer calls `embedding()` with a provider-bound model to create an embedder instance
 2. Developer calls `embed()` or `embedBatch()` on the embedder with text/content
@@ -229,7 +134,7 @@ provider.modalities.image      // ImageHandler or null
 4. Provider returns `Embedding` or `EmbeddingBatch` with vectors
 5. Developer uses vectors for search, clustering, etc.
 
-### Image Data Flow
+#### Image Data Flow
 
 1. Developer calls `image()` with a provider-bound model
 2. Developer calls `generate()`, `edit()`, or `vary()` with prompt/images
@@ -277,26 +182,176 @@ imageGen = image({
   config: config,
   params: { size: "1024x1024", quality: "hd" }  // Image params
 })
-```
+```## Provider Protocol
 
-### ProviderConfig Structure
 
-The `ProviderConfig` structure contains infrastructure and connection settings shared across all modalities:
+
+### Shared Provider Infrastructure
+
+All providers share common configuration and error handling.
+
+**ProviderConfig Structure:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `apiKey` | String \| Function \| KeyStrategy | No | API key - string, async function returning string, or key strategy |
+| `apiKey` | String \| Function \| KeyStrategy | No | API key - string, async function, or key strategy |
 | `baseUrl` | String | No | Override the base API URL (for proxies, local models) |
 | `timeout` | Integer | No | Request timeout in milliseconds |
 | `fetch` | Function | No | Custom fetch implementation (for logging, caching, custom TLS) |
 | `apiVersion` | String | No | API version override |
 | `retryStrategy` | RetryStrategy | No | Retry strategy for handling failures and rate limits |
+| `headers` | Map&lt;String, String&gt; | No | Custom HTTP headers to include in API requests |
 
-<Aside type="note" title="API Key Resolution">
-  If `apiKey` is not provided, providers SHOULD fall back to standard environment variables (e.g., `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`). See [Error Handling](/spec/errors/) for key strategy details.
-</Aside>
+**Custom Headers:**
 
-## Handler Interfaces
+Providers MUST support custom headers passed via `config.headers`. Custom headers allow users to:
+- Enable provider beta features (e.g., Anthropic's `anthropic-beta` header)
+- Pass organization/project identifiers (e.g., OpenAI's `OpenAI-Organization`)
+- Provide attribution metadata (e.g., OpenRouter's `HTTP-Referer` and `X-Title`)
+- Configure proxy authentication (e.g., Cloudflare Access headers for Ollama)
+
+Custom headers MUST be merged with provider-required headers (e.g., `Content-Type`, `Authorization`). If a custom header conflicts with a required header, the custom header takes precedence, allowing users to override default behavior when necessary.
+
+**Example configurations:**
+
+```text
+// Simple string key
+config1 = { apiKey: "sk-xxx" }
+
+// Async function key
+config2 = { apiKey: () => fetchKeyFromVault() }
+
+// Key strategy
+config3 = { apiKey: RoundRobinKeys(["sk-1", "sk-2"]) }
+
+// Custom headers for Anthropic beta features
+config4 = {
+  apiKey: "sk-xxx",
+  headers: { "anthropic-beta": "extended-cache-ttl-2025-04-11" }
+}
+
+// Custom headers for OpenRouter attribution
+config5 = {
+  apiKey: "sk-xxx",
+  headers: {
+    "HTTP-Referer": "https://myapp.example.com",
+    "X-Title": "My Application"
+  }
+}
+```
+
+#### Provider-Specific Options
+
+`ProviderConfig` defines common infrastructure settings shared across all providers. However, some providers may offer additional options for vendor-specific operational choices—for example, selecting between different API variants.
+
+These options are passed to the **provider factory function**, not to `ProviderConfig`:
+
+```text
+// Provider factory with optional options
+openai(modelId: String, options?: OpenAIProviderOptions) -> ModelReference
+
+// OpenAIProviderOptions structure
+{
+  api: "responses" | "completions"  // Which API to use
+}
+```
+
+Usage:
+
+```text
+// Use the modern Responses API (default)
+gpt = llm({
+  model: openai("gpt-4o")
+})
+
+// Explicitly use the legacy Completions API
+gptLegacy = llm({
+  model: openai("gpt-4o", { api: "completions" })
+})
+```
+
+Provider options should be:
+- **Rare**: Most providers need no options beyond the model ID
+- **Well-documented**: Clearly explain when and why each option is needed
+- **Defaulted sensibly**: The provider should work without any options
+
+Note: Fundamentally different deployment targets (e.g., Google Vertex AI vs standard Gemini API) should be implemented as **separate providers** rather than options on a single provider.
+
+### Key Strategies
+
+UPP provides built-in key strategies for API key management:
+
+**KeyStrategy Interface:**
+
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `getKey()` | String \| Promise&lt;String&gt; | Get the next API key to use |
+
+**RoundRobinKeys:**
+
+Cycles through a list of API keys in order.
+
+```text
+strategy = RoundRobinKeys(["sk-1", "sk-2", "sk-3"])
+// First call returns "sk-1", second "sk-2", third "sk-3", fourth "sk-1", etc.
+```
+
+**WeightedKeys:**
+
+Random selection with weights.
+
+```text
+strategy = WeightedKeys([
+  { key: "sk-primary", weight: 0.8 },
+  { key: "sk-backup", weight: 0.2 }
+])
+// 80% chance of returning "sk-primary"
+```
+
+**DynamicKey:**
+
+Custom async key selection logic.
+
+```text
+strategy = DynamicKey(() => {
+  return fetchKeyFromSecretManager()
+})
+```
+
+### Provider and ModelReference
+
+A provider is a factory function that returns a `ModelReference`. The modality functions resolve the appropriate handler based on the modality.
+
+**ModelReference Structure:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `modelId` | String | The model identifier |
+| `provider` | Provider | The provider that created this reference |
+
+**Provider Structure:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | String | Provider name |
+| `version` | String | Provider version |
+| `modalities` | Map | Supported modality handlers |
+
+The provider is also callable as a function:
+
+```text
+// Provider as function
+modelRef = provider(modelId, options?)
+
+// Provider properties
+provider.name      // "openai"
+provider.version   // "1.0.0"
+provider.modalities.llm        // LLMHandler or null
+provider.modalities.embedding  // EmbeddingHandler or null
+provider.modalities.image      // ImageHandler or null
+```
+
+**Handler Interfaces:**
 
 Each modality handler has a `bind` method that creates an executable bound model:
 
@@ -308,7 +363,7 @@ interface LLMHandler {
 
 // EmbeddingHandler
 interface EmbeddingHandler {
-  supportedInputs: List<String>  // ["text", "image"]
+  supportedInputs: List&lt;String&gt;  // ["text", "image"]
   bind(modelId: String) -> BoundEmbeddingModel
 }
 
@@ -318,7 +373,7 @@ interface ImageHandler {
 }
 ```
 
-## Provider Registration
+### Provider Registration
 
 Providers are imported from their respective modules:
 
@@ -343,6 +398,7 @@ image({ model: google("imagen-3.0-generate-001") })
 image({ model: stability("stable-diffusion-xl-1024-v1-0") })
 ```
 
-<Aside type="caution" title="Unsupported Modality">
-  When a modality function receives a `ModelReference` for a provider that doesn't support that modality, it MUST throw `UPPError` with code `INVALID_REQUEST`.
-</Aside>
+When a modality function receives a `ModelReference`, it:
+1. Checks if the provider supports that modality
+2. MUST throw `UPPError` with code `INVALID_REQUEST` if not supported
+3. Binds the model ID to create the executable model

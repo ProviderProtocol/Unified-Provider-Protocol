@@ -1,0 +1,101 @@
+---
+title: Streaming
+description: Streaming agent responses and events.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Streaming
+
+<Badge text="UAP-1.0.0" variant="note" />
+
+## AgentStreamResult Interface
+
+```text
+interface AgentStreamResult {
+  [Symbol.asyncIterator](): AsyncIterator&lt;AgentStreamEvent&gt;
+  result: Promise&lt;GenerateResult&gt;  // Resolves after completion
+  abort(): void
+}
+```
+
+## AgentStreamEvent Structure
+
+UAP streaming provides both UAP-level events and UPP-level events:
+
+```text
+interface AgentStreamEvent {
+  source: "uap" | "upp"
+
+  // Present when source === "uap"
+  uap?: {
+    type: UAPEventType
+    step: Integer
+    agentId: String
+    data: Map
+  }
+
+  // Present when source === "upp"
+  upp?: StreamEvent  // Original UPP StreamEvent
+}
+```
+
+**UAPEventType Values:**
+
+| Type | Description |
+|------|-------------|
+| `step_start` | Step beginning |
+| `step_end` | Step completed |
+| `reasoning` | Reasoning output (ReAct) |
+| `action` | Action taken |
+| `observation` | Observation received |
+| `subagent_start` | Sub-agent execution began |
+| `subagent_event` | Forwarded event from sub-agent |
+| `subagent_end` | Sub-agent execution completed |
+
+## Streaming Usage
+
+```text
+stream = agent.stream("Implement a feature", state)
+
+for await (event of stream) {
+  if (event.source === "uap") {
+    // UAP step-level events
+    if (event.uap.type === "step_start") {
+      print(`Step ${event.uap.step}`)
+    }
+  } else {
+    // UPP LLM events
+    if (event.upp.type === "text_delta") {
+      process.stdout.write(event.upp.delta.text ?? "")
+    }
+  }
+}
+
+{ turn, state: newState } = await stream.result
+```
+
+## Streaming State Completeness
+
+**Implementation Note:** The `state` returned by `stream.result` MUST include the complete execution history:
+
+- All messages from all steps (reasoning, actions, observations)
+- All tool call results
+- Updated step counter
+- All reasoning traces (for ReAct)
+- Updated plan status (for Plan strategy)
+
+The returned state MUST be identical to what `generate()` would return for the same execution. Streaming is an observation mechanism, not a different execution path.
+
+```text
+// These must produce equivalent final states:
+{ turn: t1, state: s1 } = await agent.generate(input, state)
+
+stream = agent.stream(input, state)
+for await (event of stream) { /* consume */ }
+{ turn: t2, state: s2 } = await stream.result
+
+// s1 and s2 are structurally equivalent (different IDs, same content)
+assert(s1.messages.length === s2.messages.length)
+assert(s1.step === s2.step)
+```

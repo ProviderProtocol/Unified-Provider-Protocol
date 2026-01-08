@@ -1,0 +1,83 @@
+---
+title: Middleware
+description: Middleware composition for cross-cutting concerns.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Middleware
+
+<Badge text="UAP-1.0.0" variant="note" />
+
+## Middleware Interface
+
+```text
+interface Middleware {
+  name: String
+  before?(context: MiddlewareContext) -> Promise&lt;MiddlewareContext | void&gt;
+  after?(context: MiddlewareContext, result: GenerateResult) -> Promise&lt;GenerateResult&gt;
+  onError?(context: MiddlewareContext, error: Error) -> Promise&lt;GenerateResult | void&gt;
+}
+```
+
+**MiddlewareContext Structure:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `agent` | Agent | The agent |
+| `input` | Message | User input |
+| `state` | AgentState | Current state |
+| `metadata` | Map | Request metadata (mutable within middleware) |
+
+## Middleware Composition
+
+Middleware executes in order for `before`, reverse order for `after`:
+
+```text
+agent({
+  middleware: [first(), second(), third()],
+})
+
+// Execution order:
+// 1. first.before()
+// 2. second.before()
+// 3. third.before()
+// 4. Agent execution
+// 5. third.after()
+// 6. second.after()
+// 7. first.after()
+```
+
+## logging() Middleware (v1)
+
+```text
+logging(options?: LoggingOptions) -> Middleware
+```
+
+**LoggingOptions Structure:**
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `level` | String | "info" | Log level: "debug", "info", "warn", "error" |
+| `logger` | Function | console.log | Custom logger function |
+| `includeMessages` | Boolean | false | Log full message content |
+| `includeTiming` | Boolean | true | Log execution timing |
+
+## Custom Middleware
+
+```text
+timing: Middleware = {
+  name: "timing",
+
+  before: async (context) => {
+    context.metadata.startTime = Date.now()
+    return context
+  },
+
+  after: async (context, result) => {
+    duration = Date.now() - context.metadata.startTime
+    print(`Execution took ${duration}ms`)
+    return result
+  },
+}
+```

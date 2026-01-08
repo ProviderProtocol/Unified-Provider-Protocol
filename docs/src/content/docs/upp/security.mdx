@@ -1,0 +1,402 @@
+---
+title: Security Considerations
+description: Security guidelines for UPP implementations.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Security Considerations
+
+<Badge text="UPP-1.2.0" variant="note" />
+
+## API Key Handling
+
+- API keys MUST NOT be logged
+- API keys SHOULD NOT be included in error messages
+- Implementations SHOULD support secure key storage integration
+- Environment variable fallback SHOULD be clearly documented
+
+## Tool Execution
+
+Tools execute arbitrary code based on LLM-provided arguments:
+
+- Tool arguments MUST be treated as untrusted input
+- Implementations MUST NOT automatically validate arguments against schema
+- Tool implementations SHOULD validate and sanitize inputs
+- Sensitive operations SHOULD use approval handlers
+- File system and network operations SHOULD be sandboxed where possible
+
+## Content Handling
+
+- Binary data (images, audio) may come from untrusted sources
+- Implementations SHOULD validate MIME types
+- Large content SHOULD be size-limited
+- Content filtering errors SHOULD be handled gracefully
+
+## Network Security
+
+- Implementations SHOULD default to TLS/SSL
+- Custom base URLs allow man-in-the-middle if misconfigured
+- Proxy configurations SHOULD be carefully validated
+- Timeout settings prevent resource exhaustion
+
+## Structured Output Security
+
+- Structured output data comes from the model and should be validated
+- Applications SHOULD NOT trust structured output for security decisions without validation
+- Schema validation is the application's responsibility
+
+
+## Appendix A: JSON Schema for UPP Structures
+
+### A.1 Message Schema
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "TextBlock": {
+      "type": "object",
+      "required": ["type", "text"],
+      "properties": {
+        "type": { "const": "text" },
+        "text": { "type": "string" }
+      }
+    },
+    "ImageSource": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["type", "data"],
+          "properties": {
+            "type": { "const": "base64" },
+            "data": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "url"],
+          "properties": {
+            "type": { "const": "url" },
+            "url": { "type": "string", "format": "uri" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "data"],
+          "properties": {
+            "type": { "const": "bytes" },
+            "data": { "type": "string", "contentEncoding": "base64" }
+          }
+        }
+      ]
+    },
+    "ImageBlock": {
+      "type": "object",
+      "required": ["type", "source", "mimeType"],
+      "properties": {
+        "type": { "const": "image" },
+        "source": { "$ref": "#/definitions/ImageSource" },
+        "mimeType": { "type": "string" },
+        "width": { "type": "integer" },
+        "height": { "type": "integer" }
+      }
+    },
+    "AudioBlock": {
+      "type": "object",
+      "required": ["type", "data", "mimeType"],
+      "properties": {
+        "type": { "const": "audio" },
+        "data": { "type": "string", "contentEncoding": "base64" },
+        "mimeType": { "type": "string" },
+        "duration": { "type": "number" }
+      }
+    },
+    "VideoBlock": {
+      "type": "object",
+      "required": ["type", "data", "mimeType"],
+      "properties": {
+        "type": { "const": "video" },
+        "data": { "type": "string", "contentEncoding": "base64" },
+        "mimeType": { "type": "string" },
+        "duration": { "type": "number" },
+        "width": { "type": "integer" },
+        "height": { "type": "integer" }
+      }
+    },
+    "BinaryBlock": {
+      "type": "object",
+      "required": ["type", "data", "mimeType"],
+      "properties": {
+        "type": { "const": "binary" },
+        "data": { "type": "string", "contentEncoding": "base64" },
+        "mimeType": { "type": "string" },
+        "metadata": { "type": "object" }
+      }
+    },
+    "ContentBlock": {
+      "oneOf": [
+        { "$ref": "#/definitions/TextBlock" },
+        { "$ref": "#/definitions/ImageBlock" },
+        { "$ref": "#/definitions/AudioBlock" },
+        { "$ref": "#/definitions/VideoBlock" },
+        { "$ref": "#/definitions/BinaryBlock" }
+      ]
+    },
+    "ToolCall": {
+      "type": "object",
+      "required": ["toolCallId", "toolName", "arguments"],
+      "properties": {
+        "toolCallId": { "type": "string" },
+        "toolName": { "type": "string" },
+        "arguments": { "type": "object" }
+      }
+    },
+    "ToolResult": {
+      "type": "object",
+      "required": ["toolCallId", "result"],
+      "properties": {
+        "toolCallId": { "type": "string" },
+        "result": {},
+        "isError": { "type": "boolean", "default": false }
+      }
+    },
+    "UserMessage": {
+      "type": "object",
+      "required": ["id", "type", "content", "timestamp"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "const": "user" },
+        "content": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ContentBlock" }
+        },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "metadata": { "type": "object" }
+      }
+    },
+    "AssistantMessage": {
+      "type": "object",
+      "required": ["id", "type", "content", "timestamp"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "const": "assistant" },
+        "content": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ContentBlock" }
+        },
+        "toolCalls": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ToolCall" }
+        },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "metadata": { "type": "object" }
+      }
+    },
+    "ToolResultMessage": {
+      "type": "object",
+      "required": ["id", "type", "results", "timestamp"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "const": "tool_result" },
+        "results": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ToolResult" }
+        },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "metadata": { "type": "object" }
+      }
+    },
+    "Message": {
+      "oneOf": [
+        { "$ref": "#/definitions/UserMessage" },
+        { "$ref": "#/definitions/AssistantMessage" },
+        { "$ref": "#/definitions/ToolResultMessage" }
+      ]
+    }
+  }
+}
+```
+
+### A.2 Error Schema
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["message", "code", "provider", "modality"],
+  "properties": {
+    "message": { "type": "string" },
+    "code": {
+      "type": "string",
+      "enum": [
+        "AUTHENTICATION_FAILED",
+        "RATE_LIMITED",
+        "CONTEXT_LENGTH_EXCEEDED",
+        "MODEL_NOT_FOUND",
+        "INVALID_REQUEST",
+        "INVALID_RESPONSE",
+        "CONTENT_FILTERED",
+        "QUOTA_EXCEEDED",
+        "PROVIDER_ERROR",
+        "NETWORK_ERROR",
+        "TIMEOUT",
+        "CANCELLED"
+      ]
+    },
+    "provider": { "type": "string" },
+    "modality": {
+      "type": "string",
+      "enum": ["llm", "embedding", "image", "audio", "video"]
+    },
+    "statusCode": { "type": "integer" },
+    "cause": { "type": "object" }
+  }
+}
+```
+
+### A.3 Turn Schema
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["messages", "response", "toolExecutions", "usage", "cycles"],
+  "properties": {
+    "messages": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Message" }
+    },
+    "response": { "$ref": "#/definitions/AssistantMessage" },
+    "toolExecutions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["toolName", "toolCallId", "arguments", "result", "isError", "duration"],
+        "properties": {
+          "toolName": { "type": "string" },
+          "toolCallId": { "type": "string" },
+          "arguments": { "type": "object" },
+          "result": {},
+          "isError": { "type": "boolean" },
+          "duration": { "type": "integer" },
+          "approved": { "type": "boolean" }
+        }
+      }
+    },
+    "usage": {
+      "type": "object",
+      "required": ["inputTokens", "outputTokens", "totalTokens", "cacheReadTokens", "cacheWriteTokens"],
+      "properties": {
+        "inputTokens": { "type": "integer" },
+        "outputTokens": { "type": "integer" },
+        "totalTokens": { "type": "integer" },
+        "cacheReadTokens": { "type": "integer" },
+        "cacheWriteTokens": { "type": "integer" },
+        "cycles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "inputTokens": { "type": "integer" },
+              "outputTokens": { "type": "integer" },
+              "cacheReadTokens": { "type": "integer" },
+              "cacheWriteTokens": { "type": "integer" }
+            }
+          }
+        }
+      }
+    },
+    "cycles": { "type": "integer" },
+    "data": {}
+  }
+}
+```
+
+
+## Appendix B: Similarity Functions
+
+For embedding operations, implementations MAY provide similarity utilities.
+
+**Cosine Similarity:**
+
+```
+cosine_similarity(a, b) = dot(a, b) / (norm(a) * norm(b))
+
+where:
+  dot(a, b) = sum(a[i] * b[i]) for all i
+  norm(x) = sqrt(sum(x[i]^2)) for all i
+```
+
+Returns a value between -1 and 1, where 1 indicates identical direction.
+
+**Euclidean Distance:**
+
+```
+euclidean_distance(a, b) = sqrt(sum((a[i] - b[i])^2)) for all i
+```
+
+Returns a non-negative value, where 0 indicates identical vectors.
+
+**Dot Product:**
+
+```
+dot_product(a, b) = sum(a[i] * b[i]) for all i
+```
+
+Returns a scalar value. For normalized vectors, equivalent to cosine similarity.
+
+
+## Changelog
+
+### 1.2.0-draft
+
+- **Added** Section 10.9 Provider-Native Tools documenting server-side built-in tools (web search, image generation, code interpreter, etc.)
+- **Added** `images`, `audio`, `video` convenience accessors to base Message structure (Section 6.1) to match existing `text` accessor pattern
+- **Reformatted** specification to be language-agnostic
+- **Replaced** language-specific syntax with pseudocode notation
+- **Added** JSON Schema definitions in appendices
+- **Added** implementation guidance for multiple programming languages
+- **Added** security considerations section
+- **Added** HTTP status code mapping table
+- **Added** `ImageProviderStreamResult` type definition and export
+- **Added** cross-reference note in Section 10.4 linking tool and structured output validation behavior
+- **Added** `EmbeddingInputType` enumeration (`document`/`query`) for provider-specific input type hints
+- **Added** `MessageOptions` structure definition with constructor signatures for all message types
+- **Added** Section 1.7 clarifying package naming conventions and import syntax
+- **Fixed** terminology: "fragments" → "events" in Image conformance (Section 16.1.3)
+- **Fixed** RFC 2119 compliance: "will throw" → "MUST throw" in Section 11.3
+- **Fixed** iterator notation to use language-agnostic `(iterable)` format instead of `[iterator]`
+- **Corrected** Section 16.4 capability declaration wording (1.1 incorrectly stated "no explicit capability interface")
+- **Updated** example model IDs to use dated format (e.g., `claude-haiku-4-20250514`) for accuracy; this is an example update, not a format requirement
+- **Updated** example package name to `upp` as a language-agnostic placeholder (implementations choose their own names)
+- **Clarified** provider implementation patterns across language paradigms
+- **Clarified** `BinaryBlock` constraint: only valid in `UserContent`, not `AssistantContent`
+- **Maintained** semantic compatibility with UPP 1.1 (additive clarifications only, no breaking changes)
+
+### 1.1.0-draft
+
+- **Renamed** from "useAI Provider Protocol" to "Unified Provider Protocol"
+- **Renamed** package from `useAI` to `@providerprotocol/ai`
+- **Renamed** entry points: `useAI()` → `llm()`, `useEmbedding()` → `embedding()`, `useImage()` → `image()`
+- **Added** `ai` namespace export for grouped imports
+- **Added** `embedding()` interface for vector embeddings
+- **Added** `image()` interface for image generation
+- **Added** unified provider factories (single export per provider)
+- **Added** `ModelReference` type for portable model references
+- **Added** `createProvider()` helper for provider implementations
+- **Added** `EmbeddingHandler`, `ImageHandler` interfaces
+- **Added** `BoundEmbeddingModel`, `BoundImageModel` types
+- **Added** `ImageCapabilities` for runtime feature detection
+- **Added** `embedMany()` for large-scale embedding with progress
+- **Added** optional similarity utilities
+- **Added** image editing, variation, and upscaling interfaces
+- **Added** `RetryStrategy` interface for pluggable retry/rate-limit handling
+- **Replaced** `RetryConfig` with `RetryStrategy` for flexibility
+- **Updated** `UPPError` with `modality` field
+- **Updated** provider structure to use unified factories
+- **Added** Conformance section
+
+### 1.0.0-draft
+
+- Initial draft specification (LLM-focused)

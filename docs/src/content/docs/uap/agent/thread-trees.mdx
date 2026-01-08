@@ -1,0 +1,70 @@
+---
+title: Thread Trees
+description: Thread tree structures for branching conversations.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Thread Trees
+
+<Badge text="UAP-1.0.0" variant="note" />
+
+## Thread Tree Structure
+
+Thread trees provide optional tree-structured conversation management. They are built on `AgentState` and provide branching/merging utilities.
+
+**ThreadTree Interface:**
+
+| Property/Method | Type | Description |
+|-----------------|------|-------------|
+| `root` | ThreadNode | Root node |
+| `current` | ThreadNode | Currently active node |
+| `nodes` | Map&lt;String, ThreadNode&gt; | All nodes by ID |
+| `branch(fromId, name?)` | Function | Create branch, returns node ID |
+| `checkout(nodeId)` | Function | Switch active node |
+| `history()` | Function | Get AgentState from root to current |
+| `toJSON()` | Function | Serialize tree |
+
+**ThreadNode Structure:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | String | Node ID (UUIDv4) |
+| `parentId` | String? | Parent node ID (null for root) |
+| `state` | AgentState | State snapshot at this node |
+| `name` | String? | Optional branch name |
+| `children` | List&lt;String&gt; | Child node IDs |
+
+## Thread Tree Usage
+
+```text
+import { ThreadTree, AgentState } from "agents"
+
+// Create tree
+tree = new ThreadTree()
+
+// Generate and update tree
+{ turn: t1, state: s1 } = await agent.generate("First", tree.history())
+tree.current.state = s1
+
+// Branch for alternative
+altId = tree.branch(tree.current.id, "alternative")
+tree.checkout(altId)
+
+{ turn: t2, state: s2 } = await agent.generate("Alternative path", tree.history())
+tree.current.state = s2
+
+// Switch back to main
+tree.checkout(tree.root.id)
+```
+
+## History Traversal
+
+`history()` returns an `AgentState` containing all messages from root to current:
+
+```text
+// Tree: root -> A -> B (current)
+tree.checkout(B.id)
+state = tree.history()
+// state.messages contains messages from root, A, B in order
+```

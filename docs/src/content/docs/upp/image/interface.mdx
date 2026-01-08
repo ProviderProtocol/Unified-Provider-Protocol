@@ -1,15 +1,13 @@
 ---
 title: Image Interface
-description: UPP-1.2 Image Interface specification for image generation.
+description: UPP Image interface for image generation and editing.
 ---
 
-import { Aside, Badge } from '@astrojs/starlight/components';
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 # Image Interface
 
-<Badge text="UPP-1.2" variant="note" />
-
-The `image()` function creates an image generator instance for text-to-image generation, editing, and variations.
+<Badge text="UPP-1.2.0" variant="note" />
 
 ## Function Signature
 
@@ -17,7 +15,9 @@ The `image()` function creates an image generator instance for text-to-image gen
 image(options: ImageOptions) -> ImageInstance
 ```
 
-## ImageOptions
+## Options
+
+**ImageOptions Structure:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -26,6 +26,8 @@ image(options: ImageOptions) -> ImageInstance
 | `params` | Map | No | Model-specific parameters (size, quality, style, etc.) |
 
 ## ImageInstance
+
+**ImageInstance Interface:**
 
 | Method/Property | Type | Description |
 |-----------------|------|-------------|
@@ -38,20 +40,20 @@ image(options: ImageOptions) -> ImageInstance
 | `params` | Map? | Current parameters |
 | `capabilities` | ImageCapabilities | Model capabilities |
 
-### ImagePrompt Type
+**ImagePrompt Type:**
 
 ```text
 ImagePrompt = String | {
   prompt: String,
   negativePrompt: String?,
-  referenceImages: List<Image>?,
+  referenceImages: List&lt;Image&gt;?,
   seed: Integer?
 }
 ```
 
 ## Image Results
 
-### ImageResult Structure
+**ImageResult Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -59,14 +61,14 @@ ImagePrompt = String | {
 | `metadata` | ImageMetadata? | Generation metadata |
 | `usage` | ImageUsage | Usage/billing information |
 
-### GeneratedImage Structure
+**GeneratedImage Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `image` | Image | The generated image |
 | `metadata` | ImageItemMetadata? | Per-image metadata |
 
-### ImageItemMetadata Structure
+**ImageItemMetadata Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -74,14 +76,14 @@ ImagePrompt = String | {
 | `index` | Integer? | Image index in batch |
 | `finishReason` | String? | "success" or "content_filtered" |
 
-### ImageMetadata Structure
+**ImageMetadata Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `seed` | Integer? | Seed used (for reproducibility) |
 | `revisedPrompt` | String? | Model's revised prompt (if applicable) |
 
-### ImageUsage Structure
+**ImageUsage Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -90,7 +92,7 @@ ImagePrompt = String | {
 
 ## Streaming Generation
 
-### ImageStreamResult Interface
+**ImageStreamResult Interface:**
 
 | Property/Method | Type | Description |
 |-----------------|------|-------------|
@@ -98,7 +100,7 @@ ImagePrompt = String | {
 | `result` | Promise&lt;ImageResult&gt; | Final result after streaming |
 | `abort()` | Function | Abort the generation |
 
-### ImageStreamEvent Types
+**ImageStreamEvent Types:**
 
 ```text
 // Progress event
@@ -113,7 +115,7 @@ ImagePrompt = String | {
 
 ## Image Editing
 
-### ImageEditInput Structure
+**ImageEditInput Structure:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -122,7 +124,7 @@ ImagePrompt = String | {
 | `prompt` | String | Yes | Edit instruction |
 | `negativePrompt` | String | No | What to avoid |
 
-### ImageVaryInput Structure
+**ImageVaryInput Structure:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -130,7 +132,7 @@ ImagePrompt = String | {
 | `count` | Integer | No | Number of variations to generate |
 | `strength` | Float | No | Variation strength (0-1, higher = more different) |
 
-### ImageUpscaleInput Structure
+**ImageUpscaleInput Structure:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -139,7 +141,7 @@ ImagePrompt = String | {
 
 ## Capabilities
 
-### ImageCapabilities Structure
+**ImageCapabilities Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -157,17 +159,19 @@ ImagePrompt = String | {
 
 ## BoundImageModel
 
+**BoundImageModel Structure:**
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `modelId` | String | The model identifier |
 | `capabilities` | ImageCapabilities | Model capabilities |
 | `generate(request)` | Function | Generate images |
-| `stream(request)` | Function? | Stream generation progress (optional) |
+| `stream(request)` | Function? | Stream generation progress (optional), returns ImageProviderStreamResult |
 | `edit(request)` | Function? | Edit an image (optional) |
 | `vary(request)` | Function? | Create variations (optional) |
 | `upscale(request)` | Function? | Upscale an image (optional) |
 
-### ImageRequest Structure
+**ImageRequest Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -179,7 +183,7 @@ ImagePrompt = String | {
 | `config` | ProviderConfig | Provider infrastructure config |
 | `signal` | AbortSignal? | Abort signal |
 
-### ImageResponse Structure
+**ImageResponse Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -187,9 +191,7 @@ ImagePrompt = String | {
 | `metadata` | ImageMetadata? | Generation metadata |
 | `usage` | ImageUsage | Usage information |
 
-### ImageEditRequest Structure
-
-Provider-level request for image editing operations:
+**ImageEditRequest Structure:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -201,9 +203,7 @@ Provider-level request for image editing operations:
 | `config` | ProviderConfig | Yes | Provider infrastructure config |
 | `signal` | AbortSignal | No | Abort signal |
 
-### ImageVaryRequest Structure
-
-Provider-level request for image variation operations:
+**ImageVaryRequest Structure:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -214,9 +214,7 @@ Provider-level request for image variation operations:
 | `config` | ProviderConfig | Yes | Provider infrastructure config |
 | `signal` | AbortSignal | No | Abort signal |
 
-### ImageUpscaleRequest Structure
-
-Provider-level request for image upscaling operations:
+**ImageUpscaleRequest Structure:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -226,9 +224,9 @@ Provider-level request for image upscaling operations:
 | `config` | ProviderConfig | Yes | Provider infrastructure config |
 | `signal` | AbortSignal | No | Abort signal |
 
-### ImageProviderStreamResult
+**ImageProviderStreamResult:**
 
-An async iterable of `ImageStreamEvent` objects with a `response` property that resolves to `ImageResponse`. Used by providers implementing streaming generation.
+An async iterable of `ImageStreamEvent` objects with a `response` property that resolves to `ImageResponse`.
 
 ## Basic Usage
 
@@ -386,32 +384,3 @@ if (imageGen.capabilities.streaming && imageGen.stream) {
   // Safe to use streaming
 }
 ```
-
-## Conformance
-
-### Level 1: Core (Required)
-
-- `generate()` method for text-to-image
-- Return `ImageResponse` with `GeneratedImage` array
-- Declare capabilities in `ImageCapabilities`
-- Error normalization with `modality: "image"`
-
-### Level 2: Editing
-
-- `edit()` method for inpainting (if `capabilities.edit`)
-- Mask handling
-
-### Level 3: Variations
-
-- `vary()` method (if `capabilities.vary`)
-- Strength/count parameters
-
-### Level 4: Streaming
-
-- `stream()` method (if `capabilities.streaming`)
-- Progress and preview events
-
-### Level 5: Advanced
-
-- `upscale()` method (if `capabilities.upscale`)
-- Outpainting support (if `capabilities.outpaint`)

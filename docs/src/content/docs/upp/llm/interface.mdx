@@ -3,13 +3,11 @@ title: LLM Interface
 description: UPP-1.2 LLM Interface specification for chat and completion.
 ---
 
-import { Aside, Badge } from '@astrojs/starlight/components';
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 # LLM Interface
 
-<Badge text="UPP-1.2" variant="note" />
-
-The `llm()` function creates an LLM instance for chat and completion with Large Language Models.
+<Badge text="UPP-1.2.0" variant="note" />
 
 ## Function Signature
 
@@ -17,7 +15,9 @@ The `llm()` function creates an LLM instance for chat and completion with Large 
 llm(options: LLMOptions) -> LLMInstance
 ```
 
-## LLMOptions
+## Options
+
+**LLMOptions Structure:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -31,7 +31,7 @@ llm(options: LLMOptions) -> LLMInstance
 
 ## LLMInstance
 
-The returned instance provides the following interface:
+**LLMInstance Interface:**
 
 | Method/Property | Type | Description |
 |-----------------|------|-------------|
@@ -42,20 +42,20 @@ The returned instance provides the following interface:
 | `params` | Map? | Current parameters |
 | `capabilities` | LLMCapabilities | Provider API capabilities |
 
-### generate() Overloads
+**generate() Overloads:**
 
 ```text
 // No history - single input
-generate(input: InferenceInput) -> Promise<Turn>
+generate(input: InferenceInput) -> Promise&lt;Turn&gt;
 
 // No history - multiple inputs
-generate(...inputs: InferenceInput[]) -> Promise<Turn>
+generate(...inputs: InferenceInput[]) -> Promise&lt;Turn&gt;
 
 // With history
-generate(history: List<Message> | Thread, ...inputs: InferenceInput[]) -> Promise<Turn>
+generate(history: List&lt;Message&gt; | Thread, ...inputs: InferenceInput[]) -> Promise&lt;Turn&gt;
 ```
 
-### stream() Overloads
+**stream() Overloads:**
 
 ```text
 // No history - single input
@@ -65,20 +65,19 @@ stream(input: InferenceInput) -> StreamResult
 stream(...inputs: InferenceInput[]) -> StreamResult
 
 // With history
-stream(history: List<Message> | Thread, ...inputs: InferenceInput[]) -> StreamResult
+stream(history: List&lt;Message&gt; | Thread, ...inputs: InferenceInput[]) -> StreamResult
 ```
 
-### InferenceInput Type
+**InferenceInput Type:**
 
 ```text
 InferenceInput = String | Message | ContentBlock
 ```
 
-### History Detection
+**History Detection:**
 
 `llm()` determines if the first argument is history or input:
-
-- `List<Message>` or `Thread` → history
+- `List&lt;Message&gt;` or `Thread` → history
 - `String`, `Message`, or `ContentBlock` → input (no history)
 
 ```text
@@ -97,6 +96,8 @@ await claude.generate(thread, "Continue the conversation")
 
 `LLMCapabilities` declares what the **provider's API** supports, not individual model capabilities. If a user attempts to use a feature with a model that doesn't support it, the provider's API will return an error—this is expected behavior.
 
+**LLMCapabilities Structure:**
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `streaming` | Boolean | Provider API supports streaming responses |
@@ -106,11 +107,11 @@ await claude.generate(thread, "Continue the conversation")
 | `videoInput` | Boolean | Provider API supports video input |
 | `audioInput` | Boolean | Provider API supports audio input |
 
-<Aside type="note" title="Static Capabilities">
-  Capabilities are static. A provider's capabilities are constant for the lifetime of the provider instance and do not vary per-request or per-model. They reflect what the provider's API supports, determined at provider implementation time.
-</Aside>
+**Capabilities are static.** A provider's capabilities are constant for the lifetime of the provider instance and do not vary per-request or per-model. They reflect what the provider's API supports, determined at provider implementation time.
 
 ## BoundLLMModel
+
+**BoundLLMModel Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -119,7 +120,7 @@ await claude.generate(thread, "Continue the conversation")
 | `complete(request)` | Function | Execute a single non-streaming inference request |
 | `stream(request)` | Function | Execute a single streaming inference request |
 
-### LLMRequest Structure
+**LLMRequest Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -131,7 +132,7 @@ await claude.generate(thread, "Continue the conversation")
 | `config` | ProviderConfig | Provider infrastructure config (resolved by llm() core) |
 | `signal` | AbortSignal? | Abort signal for cancellation |
 
-### LLMResponse Structure
+**LLMResponse Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -139,7 +140,7 @@ await claude.generate(thread, "Continue the conversation")
 | `usage` | TokenUsage | Token consumption |
 | `stopReason` | String | Why generation stopped |
 
-### LLMStreamResult
+**LLMStreamResult:**
 
 An async iterable of `StreamEvent` objects with a `response` property that resolves to `LLMResponse`.
 
@@ -187,32 +188,11 @@ claude = llm({
 })
 ```
 
-## Conversation Flow
-
-```text
-claude = llm({
-  model: anthropic("claude-haiku-4-20250514"),
-  config: { apiKey: env.ANTHROPIC_API_KEY },
-  system: "You are a helpful assistant."
-})
-
-// User manages their own history
-history = []
-
-// First turn
-turn1 = await claude.generate(history, "My name is Alice.")
-history.push(...turn1.messages)
-
-// Second turn (history preserved)
-turn2 = await claude.generate(history, "What is my name?")
-history.push(...turn2.messages)
-
-print(turn2.response.text)  // "Your name is Alice."
-```
-
 ## Tool Execution Loop
 
 `llm()` core manages the tool execution loop. Providers only handle single request/response cycles.
+
+**Loop Flow:**
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -279,9 +259,32 @@ print(turn2.response.text)  // "Your name is Alice."
 4. If `maxIterations` is reached, `onMaxIterations` callback fires and an error is thrown
 5. Tool execution order follows provider/model behavior (parallel if model returns multiple calls)
 
+## Conversation Flow
+
+```text
+claude = llm({
+  model: anthropic("claude-haiku-4-20250514"),
+  config: { apiKey: env.ANTHROPIC_API_KEY },
+  system: "You are a helpful assistant."
+})
+
+// User manages their own history
+history = []
+
+// First turn
+turn1 = await claude.generate(history, "My name is Alice.")
+history.push(...turn1.messages)
+
+// Second turn (history preserved)
+turn2 = await claude.generate(history, "What is my name?")
+history.push(...turn2.messages)
+
+print(turn2.response.text)  // "Your name is Alice."
+```
+
 ## Provider Responsibilities
 
-### Request Transformation
+#### 5.10.1 Request Transformation
 
 The provider MUST transform UPP structures to vendor format:
 
@@ -291,7 +294,7 @@ The provider MUST transform UPP structures to vendor format:
 - Convert binary data (images, audio) to vendor-required encoding (e.g., base64)
 - Transform structured output schema to vendor format (if supported)
 
-### Response Transformation
+#### 5.10.2 Response Transformation
 
 The provider MUST transform vendor responses to UPP structures:
 
@@ -300,22 +303,10 @@ The provider MUST transform vendor responses to UPP structures:
 - Preserve vendor-specific metadata in `Message.metadata` under the provider's namespace
 
 <Aside type="note">
-  The provider returns a single `LLMResponse`. `llm()` core handles constructing the full `Turn` including tool loops.
+The provider returns a single `LLMResponse`. `llm()` core handles constructing the full `Turn` including tool loops.
 </Aside>
 
-### System Prompt Handling
-
-The provider MUST handle system prompts according to vendor requirements:
-
-| Provider | System Prompt Handling |
-|----------|----------------------|
-| Anthropic | Top-level `system` parameter |
-| OpenAI | Message with `role: "system"` |
-| Google | `systemInstruction` field |
-
-`llm()` accepts system prompts at the options level and providers transform accordingly.
-
-### Metadata Handling
+#### 5.10.3 Metadata Handling
 
 Providers MUST handle their own metadata namespace in `Message.metadata`:
 
@@ -349,7 +340,19 @@ function transformToVendor(message) {
 
 Providers SHOULD preserve unknown metadata fields during round-trips to support future API additions.
 
-### Structured Output Handling
+#### 5.10.4 System Prompt Handling
+
+The provider MUST handle system prompts according to vendor requirements:
+
+| Provider | System Prompt Handling |
+|----------|----------------------|
+| Anthropic | Top-level `system` parameter |
+| OpenAI | Message with `role: "system"` |
+| Google | `systemInstruction` field |
+
+`llm()` accepts system prompts at the options level and providers transform accordingly.
+
+#### 5.10.5 Structured Output Handling
 
 If `structure` is provided:
 
@@ -360,20 +363,14 @@ If `structure` is provided:
    - Enable structured output mode on the API request
    - Parse the response as JSON and return the parsed object
 
-<Aside type="note" title="No Schema Validation">
-  UPP does NOT validate the response against the schema. Modern LLMs with structured output support reliably produce conformant output. If validation is required, it is the application's responsibility. UPP does NOT automatically retry on schema mismatch.
-</Aside>
+UPP does NOT validate the response against the schema. Modern LLMs with structured output support reliably produce conformant output. If validation is required, it is the application's responsibility. UPP does NOT automatically retry on schema mismatch.
 
-### Capability Checks
-
-`llm()` core checks capabilities before using features:
-
+Similarly, `llm()` core checks capabilities before using other features:
 - `tools` provided but `capabilities.tools` is `false` → MUST throw `INVALID_REQUEST`
 - Image content provided but `capabilities.imageInput` is `false` → MUST throw `INVALID_REQUEST`
 - `stream()` called but `capabilities.streaming` is `false` → MUST throw `INVALID_REQUEST`
-- `structure` provided but `capabilities.structuredOutput` is `false` → MUST throw `INVALID_REQUEST`
 
-### Error Handling
+#### 5.10.6 Error Handling
 
 The provider MUST normalize errors to `UPPError`:
 
@@ -395,5 +392,3 @@ class UPPError extends Error {
   }
 }
 ```
-
-See [Error Handling](/spec/errors/) for full details on error codes, HTTP status mapping, and retry strategies.

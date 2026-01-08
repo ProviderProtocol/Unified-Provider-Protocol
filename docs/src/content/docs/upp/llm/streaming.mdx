@@ -1,19 +1,19 @@
 ---
 title: Streaming
-description: UPP-1.2 streaming response handling and events.
+description: Streaming response handling in UPP.
 ---
 
-import { Aside, Badge } from '@astrojs/starlight/components';
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 # Streaming
 
-<Badge text="UPP-1.2" variant="note" />
-
-Streaming allows receiving partial responses as they are generated, enabling real-time user interfaces and progressive content display.
+<Badge text="UPP-1.2.0" variant="note" />
 
 ## StreamResult
 
 Streaming returns a `StreamResult` that is both an async iterable and provides access to the final `Turn`:
+
+**StreamResult Interface:**
 
 | Property/Method | Type | Description |
 |-----------------|------|-------------|
@@ -25,13 +25,15 @@ Streaming returns a `StreamResult` that is both an async iterable and provides a
 
 During streaming, providers emit `StreamEvent` objects:
 
+**StreamEvent Structure:**
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `type` | StreamEventType | Event type |
 | `index` | Integer | Index of the content block this event belongs to |
 | `delta` | EventDelta | Event data (type-specific) |
 
-### StreamEventType Values
+**StreamEventType Values:**
 
 | Value | Description |
 |-------|-------------|
@@ -48,7 +50,7 @@ During streaming, providers emit `StreamEvent` objects:
 | `content_block_start` | New content block started |
 | `content_block_stop` | Content block complete |
 
-### EventDelta Structure
+**EventDelta Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -61,7 +63,7 @@ During streaming, providers emit `StreamEvent` objects:
 | `isError` | Boolean? | Whether tool execution errored (for `tool_execution_end`) |
 | `timestamp` | Integer? | Timestamp in ms (for `tool_execution_start`/`tool_execution_end`) |
 
-## Basic Streaming Usage
+## Streaming Usage
 
 ```text
 claude = llm({
@@ -133,9 +135,7 @@ try {
 }
 ```
 
-<Aside type="note" title="Abort Behavior with Tools">
-  When a stream is aborted during a tool execution loop, the abort signal propagates to any in-flight tool execution. The current tool's `run` function receives the abort via `AbortSignal` (if it accepts one). Pending tool calls that haven't started execution MUST be skipped. The overall generation MUST throw a `CANCELLED` error.
-</Aside>
+**Abort behavior with tools:** When a stream is aborted during a tool execution loop, the abort signal propagates to any in-flight tool execution. The current tool's `run` function receives the abort via `AbortSignal` (if it accepts one). Pending tool calls that haven't started execution MUST be skipped. The overall generation MUST throw a `CANCELLED` error.
 
 ## Streaming Event Order
 
@@ -172,98 +172,3 @@ message_start
   content_block_stop (index: 0)
 message_stop
 ```
-
-## Complete Streaming Example
-
-```text
-import { llm } from "upp"
-import anthropic from "upp/anthropic"
-
-claude = llm({
-  model: anthropic("claude-haiku-4-20250514"),
-  system: "You are a creative writer."
-})
-
-async function streamResponse(prompt) {
-  stream = claude.stream(prompt)
-  fullText = ""
-
-  for await (event in stream) {
-    switch (event.type) {
-      case "message_start":
-        print("Starting response...")
-        break
-
-      case "content_block_start":
-        print("Block", event.index, "starting")
-        break
-
-      case "text_delta":
-        fullText += event.delta.text
-        print(event.delta.text, end="")
-        break
-
-      case "content_block_stop":
-        print("\nBlock", event.index, "complete")
-        break
-
-      case "message_stop":
-        print("\nResponse complete!")
-        break
-    }
-  }
-
-  // Get final turn with usage stats
-  turn = await stream.turn
-  print("Tokens used:", turn.usage.totalTokens)
-
-  return turn
-}
-
-turn = await streamResponse("Write a poem about the ocean")
-```
-
-## Handling Multiple Content Blocks
-
-Models may produce multiple content blocks in a single response:
-
-```text
-stream = claude.stream("Describe this image:", imageBlock)
-
-currentBlockIndex = -1
-currentBlockContent = ""
-
-for await (event in stream) {
-  if (event.type == "content_block_start") {
-    if (currentBlockIndex >= 0) {
-      print("\n--- End of block", currentBlockIndex, "---\n")
-    }
-    currentBlockIndex = event.index
-    currentBlockContent = ""
-    print("--- Block", event.index, "---")
-  }
-
-  if (event.type == "text_delta") {
-    currentBlockContent += event.delta.text
-    print(event.delta.text, end="")
-  }
-
-  if (event.type == "content_block_stop") {
-    // Block complete, currentBlockContent has full text
-  }
-}
-```
-
-## Streaming Requirements
-
-Providers that support streaming MUST:
-
-1. Set `capabilities.streaming` to `true`
-2. Implement the `stream()` method on `BoundLLMModel`
-3. Return an `LLMStreamResult` (async iterable with `response` promise)
-4. Emit at minimum: `message_start`, `text_delta`, `message_stop`
-5. Handle abort signals and throw `CANCELLED` when aborted
-
-<Aside type="caution" title="Capability Check">
-  If `stream()` is called but `capabilities.streaming` is `false`, `llm()` core MUST throw `UPPError` with code `INVALID_REQUEST`.
-</Aside>

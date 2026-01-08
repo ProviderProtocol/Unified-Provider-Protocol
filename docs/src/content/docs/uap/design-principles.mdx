@@ -1,0 +1,182 @@
+---
+title: Design Principles
+description: Core design principles guiding the UAP specification.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Design Principles
+
+<Badge text="UAP-1.0.0" variant="note" />
+
+## Type Uniformity with UPP-1.2
+
+UAP MUST NOT create abstractions around UPP-1.2 types. All data flows through standard UPP types directly. This ensures:
+
+- No impedance mismatch between agent and LLM layers
+- Full access to provider-specific features
+- No data truncation or morphing
+- Transparent debugging and logging
+
+```text
+// CORRECT: Use UPP types directly
+import { Thread, Turn, UserMessage } from "upp"
+
+{ turn, state } = await agent.generate("Hello", initialState)
+// turn is standard UPP Turn, state is explicit AgentState
+
+// INCORRECT: Creating wrapper types
+import { AgentTurn } from "agents"  // DO NOT DO THIS
+```
+
+<Aside type="tip" title="Rationale">
+Wrapping library types creates maintenance burden, obscures debugging, and prevents access to provider-specific metadata. UAP agents operate on the same data structures as raw LLM calls.
+</Aside>
+
+## Functional State Management
+
+UAP adopts a functional state pattern. Agent execution is a pure transformation:
+
+```
+(Input, State) -> (Turn, NewState)
+```
+
+**Core Requirements:**
+
+- `AgentState` is immutable—each operation returns a new state
+- State is explicitly passed and returned, never mutated internally
+- No "ghost history" from hidden state accumulation
+- Developer controls what state persists between calls
+
+```text
+// Explicit state flow
+state0 = AgentState.initial()
+
+{ turn: turn1, state: state1 } = await agent.generate("First message", state0)
+{ turn: turn2, state: state2 } = await agent.generate("Second message", state1)
+
+// State is explicit and inspectable
+print(state2.messages.length)  // Developer knows exactly what's there
+print(state2.step)             // Current step count
+
+// Branching is trivial—just use different states
+{ turn: turn3a, state: state3a } = await agent.generate("Option A", state1)
+{ turn: turn3b, state: state3b } = await agent.generate("Option B", state1)
+```
+
+<Aside type="tip" title="Rationale">
+Implicit state mutation violates UPP's "Explicit Over Magic" principle. Functional state makes data flow visible, debugging tractable, and serialization trivial.
+</Aside>
+
+## Decoupled Execution
+
+Execution strategies are separate from agent definitions:
+
+- Agents define WHAT (model, tools, system prompt)
+- Strategies define HOW (ReAct loop, plan-then-execute, simple loop)
+- Strategies are interchangeable without changing agent definition
+
+```text
+// Same agent definition, different execution strategies
+const coder = agent({
+  model: anthropic("claude-sonnet-4-20250514"),
+  tools: [Bash, Read, Write],
+  system: "You are a coding assistant.",
+})
+
+// Use ReAct for complex reasoning
+const reactCoder = agent({ ...coder, execution: react() })
+
+// Use simple loop for straightforward tasks
+const loopCoder = agent({ ...coder, execution: loop() })
+```
+
+<Aside type="tip" title="Rationale">
+Separating execution from definition mirrors UPP's separation of model binding from inference. It enables experimentation with different strategies without redefining agents.
+</Aside>
+
+## Infinite by Default
+
+UAP SHALL NOT impose artificial execution limits. Default behavior is unbounded execution:
+
+- `maxIterations`: `Infinity` (not 10)
+- `maxSteps`: `Infinity` (not 10)
+- `toolStrategy.maxIterations`: `Infinity` (UPP tool loop limit)
+- `timeout`: `undefined` (no timeout)
+
+<Aside type="tip" title="Rationale">
+UAP is a pipe, not a nanny. The model should complete tasks based on its own internal logic. Artificial ceilings create unexpected truncation and incomplete results.
+</Aside>
+
+Developers who want limits MUST explicitly configure them:
+
+```text
+// No limits - model runs until it decides to stop
+agent({
+  model: anthropic("claude-sonnet-4-20250514"),
+  execution: react(),  // maxSteps: Infinity by default
+  // toolStrategy.maxIterations: Infinity by default (UPP level)
+})
+
+// Developer explicitly sets limits
+agent({
+  model: anthropic("claude-sonnet-4-20250514"),
+  execution: react({ maxSteps: 20 }),  // Explicit UAP step limit
+  toolStrategy: {
+    maxIterations: 50,  // Explicit UPP tool iteration limit
+  },
+  strategy: {
+    stopCondition: (state) => state.metadata.budget > 10000,  // Custom limit
+  },
+})
+```
+
+## Developer Responsibility
+
+UAP places full control and full responsibility with the developer:
+
+- The protocol provides orchestration primitives
+- The developer provides safety constraints
+- Runaway agents are a developer concern, not a protocol concern
+- Resource exhaustion is a deployment concern, not a protocol concern
+
+This is analogous to how operating systems provide `fork()` without limiting process count—the administrator manages resources.
+
+## Explicit Sub-Agent Declaration
+
+Sub-agents are tools. Tools require explicit schemas. Therefore, sub-agents require explicit schemas.
+
+UAP MUST NOT auto-generate tool schemas from agent definitions. This prevents:
+
+- Leaky abstractions from system prompt inference
+- Unpredictable behavior from schema guessing
+- Hidden coupling between parent and child agents
+
+```text
+// CORRECT: Explicit sub-agent tool declaration
+explorer = agent({
+  model: anthropic("claude-haiku-4-20250514"),
+  tools: [Glob, Grep, Read],
+})
+
+// Must explicitly define the tool interface
+explorerTool: Tool = {
+  name: "explore_codebase",
+  description: "Explores and analyzes codebase structure",
+  parameters: {
+    type: "object",
+    properties: {
+      query: { type: "string", description: "What to explore" },
+      depth: { type: "number", description: "Search depth" },
+    },
+    required: ["query"],
+  },
+  run: async (params) => {
+    { turn } = await explorer.generate(params.query, AgentState.initial())
+    return turn.response.text
+  },
+}
+
+// INCORRECT: Magic schema generation
+explorerTool = explorer.toTool()  // DO NOT DO THIS
+```

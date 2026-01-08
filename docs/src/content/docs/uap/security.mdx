@@ -1,0 +1,150 @@
+---
+title: Security Considerations
+description: Security guidelines for UAP implementations.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Security Considerations
+
+<Badge text="UAP-1.0.0" variant="note" />
+
+## Developer Responsibility
+
+UAP explicitly places security responsibility with the developer:
+
+- **Runaway Agents:** Developer must implement `stopCondition` or explicit limits
+- **Resource Exhaustion:** Developer must implement budget middleware or limits
+- **Cost Control:** Developer must track token usage via state metadata
+
+The protocol provides the pipe; the developer provides the valves.
+
+## Sub-Agent Security
+
+- Sub-agent tools execute with whatever permissions their `run` function has
+- Nested sub-agent calls can amplify access—developer must audit tool chains
+- Stop conditions in parent do not automatically propagate to sub-agents
+
+## Serialization Security
+
+- Serialized state may contain sensitive conversation data
+- State SHOULD be encrypted at rest in production
+- Deserialization MUST validate structure
+- Untrusted serialized data SHOULD NOT be deserialized
+
+## Tool Execution Security
+
+All UPP-1.2 tool security considerations apply. Additionally:
+
+- Tools with `sequential: true` or `dependsOn` create execution ordering that may have security implications
+- Model-driven execution order gives the model control over execution flow
+
+
+## Appendix A: Migration from Previous Draft
+
+### A.1 Breaking Changes
+
+| Previous | Current | Rationale |
+|----------|---------|-----------|
+| `run()` | `generate()` | Consistency with UPP `llm.generate()` |
+| `ask(agent, input)` | `agent.ask(input, state)` | Method on agent, explicit state |
+| `query(agent, input)` | `agent.query(input)` | Method on agent |
+| `session()` | Removed | Replaced by functional `AgentState` |
+| `maxIterations: 10` | `maxIterations: Infinity` | Pipe not nanny |
+| `agent.toTool()` | Explicit Tool | No magic schema generation |
+
+### A.2 State Migration
+
+```text
+// Previous (implicit state)
+session = session(agent)
+turn1 = await session.run("Hello")
+turn2 = await session.run("Continue")
+
+// Current (explicit state)
+s0 = AgentState.initial()
+{ turn: t1, state: s1 } = await agent.generate("Hello", s0)
+{ turn: t2, state: s2 } = await agent.generate("Continue", s1)
+```
+
+
+## Appendix B: Complete Example
+
+```text
+import { agent, AgentState } from "agents"
+import { react } from "agents/execution"
+import { logging } from "agents/middleware"
+import { Tool } from "upp"
+import anthropic from "upp/anthropic"
+
+// Define a sub-agent
+explorer = agent({
+  model: anthropic("claude-haiku-4-20250514"),
+  tools: [Glob, Grep, Read],
+  system: "You explore codebases and report findings.",
+})
+
+// Explicitly define sub-agent as tool
+explorerTool: Tool = {
+  name: "explore",
+  description: "Explore codebase to find relevant files and code",
+  parameters: {
+    type: "object",
+    properties: {
+      query: { type: "string", description: "What to find" },
+    },
+    required: ["query"],
+  },
+  run: async (params) => {
+    turn = await explorer.query(params.query)
+    return turn.response.text
+  },
+}
+
+// Main agent with explicit limits (developer's choice)
+coder = agent({
+  model: anthropic("claude-sonnet-4-20250514"),
+  execution: react(),  // Infinite by default
+  tools: [Bash, Read, Write, explorerTool],
+  system: "You are an expert software engineer.",
+  middleware: [logging({ level: "info" })],
+  // UAP-level hooks (step lifecycle)
+  strategy: {
+    // Developer implements their own limits
+    stopCondition: (state) => {
+      if (state.metadata.taskComplete) return true
+      if (state.step > 50) return true  // Explicit step limit
+      return false
+    },
+    onStepStart: (step, state) => print(`Step ${step}`),
+    onComplete: (result) => print(`Done: ${result.turn.usage.totalTokens} tokens`),
+  },
+  // UPP-level hooks (real-time tool execution)
+  toolStrategy: {
+    maxIterations: Infinity,  // UAP standard - no artificial limits
+    onToolCall: (tool, params) => print(`🔧 ${tool.name}`),
+    onAfterCall: (tool, params, result) => print(`✓ ${tool.name} completed`),
+  },
+})
+
+// Functional execution
+s0 = AgentState.initial()
+s0 = s0.withMetadata("startTime", Date.now())
+
+{ turn, state } = await coder.generate(
+  "Find and fix all TypeScript errors",
+  s0
+)
+
+// Save state for later
+json = state.toJSON()
+await storage.save("my-task", JSON.stringify(json))
+
+// Restore and continue
+saved = JSON.parse(await storage.load("my-task"))
+restored = AgentState.fromJSON(saved)
+{ turn: t2, state: s2 } = await coder.generate("Now add tests", restored)
+```
+
+
+*End of UAP-1.0 Specification*

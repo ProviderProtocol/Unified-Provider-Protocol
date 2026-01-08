@@ -1,15 +1,13 @@
 ---
 title: Embedding Interface
-description: UPP-1.2 Embedding Interface specification for vector embeddings.
+description: UPP Embedding interface for vector embeddings.
 ---
 
-import { Aside, Badge } from '@astrojs/starlight/components';
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 # Embedding Interface
 
-<Badge text="UPP-1.2" variant="note" />
-
-The `embedding()` function creates an embedder instance for generating vector embeddings from text and other content.
+<Badge text="UPP-1.2.0" variant="note" />
 
 ## Function Signature
 
@@ -17,7 +15,9 @@ The `embedding()` function creates an embedder instance for generating vector em
 embedding(options: EmbeddingOptions) -> EmbeddingInstance
 ```
 
-## EmbeddingOptions
+## Options
+
+**EmbeddingOptions Structure:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -27,6 +27,8 @@ embedding(options: EmbeddingOptions) -> EmbeddingInstance
 
 ## EmbeddingInstance
 
+**EmbeddingInstance Interface:**
+
 | Method/Property | Type | Description |
 |-----------------|------|-------------|
 | `embed(input)` | Function | Embed a single input |
@@ -35,13 +37,13 @@ embedding(options: EmbeddingOptions) -> EmbeddingInstance
 | `model` | BoundEmbeddingModel | The bound model |
 | `params` | Map? | Current parameters |
 
-### EmbeddingInput Type
+**EmbeddingInput Type:**
 
 ```text
 EmbeddingInput = String | TextBlock | ImageBlock
 ```
 
-### EmbedManyOptions Structure
+**EmbedManyOptions Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -51,7 +53,7 @@ EmbeddingInput = String | TextBlock | ImageBlock
 
 ## Embedding Results
 
-### Embedding Structure
+**Embedding Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -60,20 +62,20 @@ EmbeddingInput = String | TextBlock | ImageBlock
 | `input` | EmbeddingInput | The input that was embedded |
 | `tokens` | Integer? | Token count (if available) |
 
-### EmbeddingBatch Structure
+**EmbeddingBatch Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `embeddings` | List&lt;Embedding&gt; | Embeddings in same order as inputs |
 | `usage` | EmbeddingUsage | Aggregate usage |
 
-### EmbeddingUsage Structure
+**EmbeddingUsage Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `totalTokens` | Integer | Total tokens processed |
 
-### EmbeddingProgress Structure
+**EmbeddingProgress Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -81,7 +83,7 @@ EmbeddingInput = String | TextBlock | ImageBlock
 | `progress` | ProgressInfo | Progress information |
 | `done` | Boolean | True when all complete |
 
-### ProgressInfo Structure
+**ProgressInfo Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -91,6 +93,8 @@ EmbeddingInput = String | TextBlock | ImageBlock
 
 ## BoundEmbeddingModel
 
+**BoundEmbeddingModel Structure:**
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `modelId` | String | The model identifier |
@@ -99,7 +103,7 @@ EmbeddingInput = String | TextBlock | ImageBlock
 | `dimensions` | Integer | Output dimensions (may be configurable) |
 | `embed(request)` | Function | Execute embedding request |
 
-### EmbeddingRequest Structure
+**EmbeddingRequest Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -108,14 +112,14 @@ EmbeddingInput = String | TextBlock | ImageBlock
 | `config` | ProviderConfig | Provider infrastructure config |
 | `signal` | AbortSignal? | Abort signal |
 
-### EmbeddingResponse Structure
+**EmbeddingResponse Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `embeddings` | List&lt;EmbeddingVector&gt; | Embedding vectors with optional token counts |
 | `usage` | EmbeddingUsage | Aggregate usage |
 
-### EmbeddingVector Structure
+**EmbeddingVector Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -180,7 +184,7 @@ for await (progress in embedder.embedMany(documents, {
 
 Each provider exports its own parameter types (e.g., `OpenAIEmbedParams`, `VoyageEmbedParams`). Consult provider documentation for available options such as output dimensions, encoding formats, and task type hints.
 
-### EmbeddingInputType
+**EmbeddingInputType:**
 
 Some providers distinguish between embeddings optimized for different use cases:
 
@@ -208,103 +212,30 @@ Providers that support input type hints (e.g., Voyage, Cohere) MAY produce diffe
 
 UPP implementations SHOULD provide optional utilities for working with embeddings:
 
-### Cosine Similarity
+**Cosine Similarity:**
 
 ```text
-cosineSimilarity(a: List<Float>, b: List<Float>) -> Float
+cosineSimilarity(a: List&lt;Float&gt;, b: List&lt;Float&gt;) -> Float
 // Returns value between -1 and 1
 ```
 
-**Formula:**
-```
-cosine_similarity(a, b) = dot(a, b) / (norm(a) * norm(b))
-
-where:
-  dot(a, b) = sum(a[i] * b[i]) for all i
-  norm(x) = sqrt(sum(x[i]^2)) for all i
-```
-
-Returns a value between -1 and 1, where 1 indicates identical direction.
-
-### Euclidean Distance
+**Euclidean Distance:**
 
 ```text
-euclideanDistance(a: List<Float>, b: List<Float>) -> Float
+euclideanDistance(a: List&lt;Float&gt;, b: List&lt;Float&gt;) -> Float
 // Returns non-negative value
 ```
 
-**Formula:**
-```
-euclidean_distance(a, b) = sqrt(sum((a[i] - b[i])^2)) for all i
-```
-
-Returns a non-negative value, where 0 indicates identical vectors.
-
-### Dot Product
+**Dot Product:**
 
 ```text
-dotProduct(a: List<Float>, b: List<Float>) -> Float
+dotProduct(a: List&lt;Float&gt;, b: List&lt;Float&gt;) -> Float
 ```
 
-**Formula:**
-```
-dot_product(a, b) = sum(a[i] * b[i]) for all i
-```
-
-Returns a scalar value. For normalized vectors, equivalent to cosine similarity.
-
-### Usage Example
+Usage:
 
 ```text
 import { cosineSimilarity } from "upp/similarity"
 
-// Embed two texts
-emb1 = await embedder.embed("What is machine learning?")
-emb2 = await embedder.embed("How does AI work?")
-
-// Calculate similarity
-similarity = cosineSimilarity(emb1.vector, emb2.vector)
-print("Similarity:", similarity)  // e.g., 0.87
+similarity = cosineSimilarity(embedding1.vector, embedding2.vector)
 ```
-
-## Semantic Search Example
-
-```text
-// Index documents
-documents = ["doc1 content", "doc2 content", "doc3 content"]
-embeddings = await embedder.embedBatch(documents)
-
-// Store in vector database
-for (i, doc) in enumerate(documents) {
-  await vectorDB.insert({
-    id: "doc_" + i,
-    content: doc,
-    vector: embeddings.embeddings[i].vector
-  })
-}
-
-// Search
-query = "find relevant information"
-queryEmb = await embedder.embed(query)
-results = await vectorDB.search(queryEmb.vector, topK=5)
-```
-
-## Conformance
-
-### Level 1: Core (Required)
-
-- `embed()` method for single inputs
-- Return `EmbeddingResponse` with vectors and usage
-- Text input support
-- Error normalization with `modality: "embedding"`
-
-### Level 2: Batch
-
-- Batch embedding via provider's batch API
-- Respect `maxBatchSize` limits
-- Aggregate usage reporting
-
-### Level 3: Multimodal
-
-- Image embedding support (if vendor supports)
-- Declare supported inputs in `supportedInputs`

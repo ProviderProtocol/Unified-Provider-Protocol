@@ -10,7 +10,11 @@ import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 <Badge text="Version 1.2.0-draft" variant="note" />
 <Badge text="Status: Draft" variant="caution" />
 
-The Unified Provider Protocol (UPP) is a **language-agnostic specification** for interacting with AI inference services. This document defines the protocol semantics, data structures, and implementation requirements for building UPP-compliant clients and providers in any programming language.
+The Unified Provider Protocol (UPP) is a language-agnostic specification for interacting with AI inference services. This document defines the protocol semantics, data structures, and implementation requirements for building UPP-compliant clients and providers in any programming language.
+
+UPP establishes uniform interfaces for Large Language Models (LLM), Embedding Models, and Image Generation Models. The protocol enables multi-provider interoperability while preserving provider-native configuration and avoiding abstraction leakage.
+
+UPP provides separate entry points for each modality—`llm()`, `embedding()`, `image()`—while sharing common provider infrastructure, configuration patterns, and design principles.
 
 ## Specification Status
 
@@ -38,12 +42,6 @@ The following table indicates the maturity level of each section in UPP 1.2:
   While individual sections are marked "Stable" to indicate they are complete and internally consistent, the overall specification remains in **Draft** status until 1.2.0 is finalized. Stable sections may still receive minor clarifications before the final release.
 </Aside>
 
-## Abstract
-
-UPP establishes uniform interfaces for Large Language Models (LLM), Embedding Models, and Image Generation Models. The protocol enables multi-provider interoperability while preserving provider-native configuration and avoiding abstraction leakage.
-
-UPP provides separate entry points for each modality—`llm()`, `embedding()`, `image()`—while sharing common provider infrastructure, configuration patterns, and design principles.
-
 ## Purpose
 
 Modern AI development requires interacting with multiple providers (Anthropic, OpenAI, Google, Stability, Voyage, etc.), each with distinct APIs, authentication schemes, and response formats. UPP-1.2 establishes a standard protocol that:
@@ -58,42 +56,14 @@ Modern AI development requires interacting with multiple providers (Anthropic, O
 
 This specification covers:
 
-| Area | Description |
-|------|-------------|
-| **LLM Interface** | The `llm()` function for chat/completion |
-| **Embedding Interface** | The `embedding()` function for vector embeddings |
-| **Image Interface** | The `image()` function for image generation |
-| **Provider Adapters** | Requirements for each modality |
-| **Shared Infrastructure** | ProviderConfig, KeyStrategy, error handling |
-| **Data Structures** | Message, Turn, and Thread (LLM-specific) |
-| **Streaming** | Response streaming handling |
-| **Tools** | Tool definition and execution |
-
-## Modality Overview
-
-<CardGrid>
-  <Card title="llm()" icon="comment-alt">
-    Chat, completion, and reasoning with Large Language Models like Claude, GPT-4, and Gemini.
-  </Card>
-  <Card title="embedding()" icon="list">
-    Vector embeddings for semantic search with models like text-embedding-3 and Voyage.
-  </Card>
-  <Card title="image()" icon="document">
-    Image generation and editing with DALL-E, Stable Diffusion, and Imagen.
-  </Card>
-</CardGrid>
-
-| Entry Point | Purpose | Example Models |
-|-------------|---------|----------------|
-| `llm()` | Chat, completion, reasoning | Claude, GPT-4, Gemini |
-| `embedding()` | Vector embeddings | text-embedding-3, Voyage, Cohere |
-| `image()` | Image generation/editing | DALL-E, Stable Diffusion, Imagen |
-
-<Aside type="tip" title="Future Modalities">
-  Future modalities may include:
-  - `audio()` — Speech-to-text, text-to-speech
-  - `video()` — Video generation
-</Aside>
+- The `llm()` function interface (chat/completion)
+- The `embedding()` function interface (vector embeddings)
+- The `image()` function interface (image generation)
+- Provider adapter requirements for each modality
+- Shared infrastructure (ProviderConfig, KeyStrategy, error handling)
+- Message, Turn, and Thread data structures (LLM-specific)
+- Streaming response handling
+- Tool definition and execution
 
 ## Terminology
 
@@ -113,26 +83,36 @@ This specification covers:
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
+## Modality Overview
+
+| Entry Point | Purpose | Example Models |
+|-------------|---------|----------------|
+| `llm()` | Chat, completion, reasoning | Claude, GPT-4, Gemini |
+| `embedding()` | Vector embeddings | text-embedding-3, Voyage, Cohere |
+| `image()` | Image generation/editing | DALL-E, Stable Diffusion, Imagen |
+
+Future modalities may include:
+- `audio()` - Speech-to-text, text-to-speech
+- `video()` - Video generation
+
 ## Notation Conventions
 
 This specification uses language-agnostic pseudocode for examples. The pseudocode follows these conventions:
 
-| Notation | Meaning |
-|----------|---------|
-| `function_name(arg1, arg2)` | Function calls |
-| `{key: value, key2: value2}` | Object/map literals |
-| `[item1, item2, item3]` | Array/list literals |
-| `object.property` | Property access |
-| `object.method(args)` | Method calls |
-| `await expression` | Async operations |
-| `for item in collection` | Iteration |
-| `variable: Type` | Type annotations |
-| `Type?` or `Optional<Type>` | Optional values |
-| `// comment text` | Comments |
+- Function calls: `function_name(arg1, arg2)`
+- Object/map literals: `{key: value, key2: value2}`
+- Array/list literals: `[item1, item2, item3]`
+- Property access: `object.property`
+- Method calls: `object.method(args)`
+- Async operations: `await expression`
+- Iteration: `for item in collection`
+- Type annotations: `variable: Type`
+- Optional values: `Type?` or `Optional&lt;Type&gt;`
+- Comments: `// comment text`
 
-## Package Naming
+## Code Examples
 
-Code examples in this specification use the placeholder package name `upp`. Implementations MUST choose an appropriate package name for their ecosystem:
+Code examples in this specification use the placeholder package name `upp`. Implementations MUST choose an appropriate package name for their ecosystem. Examples:
 
 | Language | Example Package Name |
 |----------|---------------------|
@@ -157,15 +137,15 @@ Implementations SHOULD provide both styles where the language supports them. The
 
 <CardGrid>
   <Card title="Design Principles" icon="open-book">
-    Learn about the [core principles](/spec/design-principles/) that guide UPP's design.
+    Learn about the [core principles](/upp/design-principles/) that guide UPP's design.
   </Card>
   <Card title="Architecture" icon="puzzle">
-    Understand the [architecture](/spec/architecture/) and data flow.
+    Understand the [architecture](/upp/architecture/) and data flow.
   </Card>
   <Card title="LLM Interface" icon="rocket">
-    Dive into the [LLM specification](/spec/llm/interface/).
+    Dive into the [LLM specification](/upp/llm/interface/).
   </Card>
   <Card title="Conformance" icon="approve-check">
-    Review [conformance requirements](/spec/providers/conformance/) for providers.
+    Review [conformance requirements](/upp/providers/conformance/) for providers.
   </Card>
 </CardGrid>

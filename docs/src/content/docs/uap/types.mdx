@@ -1,0 +1,175 @@
+---
+title: Data Types
+description: Complete type definitions for UAP.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Data Types
+
+<Badge text="UAP-1.0.0" variant="note" />
+
+## Types from UPP-1.2 (Used Directly)
+
+- `llm`, `LLMInstance`, `LLMOptions`, `ProviderConfig`, `ModelReference`
+- `Message`, `UserMessage`, `AssistantMessage`, `ToolResultMessage`
+- `Turn`, `TokenUsage`
+- `Tool`, `ToolCall`, `ToolResult`, `ToolExecution`
+- `StreamResult`, `StreamEvent`, `StreamEventType`
+- `UPPError`, `ErrorCode`
+- `Thread`, `ThreadJSON`
+
+## UAP-Specific Types
+
+**Agent Types:**
+
+```text
+// AgentOptions extends LLMOptions for full UPP passthrough
+interface AgentOptions extends Partial&lt;LLMOptions&gt; {
+  // Required
+  model: ModelReference
+
+  // UAP-specific options
+  execution?: ExecutionStrategy      // Default: loop()
+  middleware?: List&lt;Middleware&gt;      // Ordered middleware pipeline
+  strategy?: AgentStrategy           // Agent lifecycle hooks
+
+  // Inherited from LLMOptions (passthrough to llm())
+  // params?: Map                    // Model-specific parameters
+  // config?: ProviderConfig         // Provider infrastructure
+  // tools?: List&lt;Tool&gt;              // Available tools
+  // system?: String                 // System prompt
+  // structure?: JSONSchema          // Structured output schema
+  // toolStrategy?: ToolUseStrategy  // Tool execution hooks
+}
+
+interface Agent {
+  id: String
+  model: ModelReference
+  tools: List&lt;Tool&gt;
+  system?: String
+  generate(input, state): Promise&lt;GenerateResult&gt;
+  stream(input, state): AgentStreamResult
+  ask(input, state): Promise&lt;GenerateResult&gt;
+  query(input): Promise&lt;Turn&gt;
+}
+
+interface GenerateResult {
+  turn: Turn
+  state: AgentState
+}
+```
+
+**State Types:**
+
+```text
+interface AgentState {
+  id: String
+  messages: List&lt;Message&gt;
+  step: Integer
+  metadata: Map
+  reasoning: List&lt;String&gt;
+  plan?: List&lt;PlanStep&gt;
+
+  static initial(): AgentState
+  withMessage(message): AgentState
+  withMessages(messages): AgentState
+  withContext(messages): AgentState
+  withStep(step): AgentState
+  withMetadata(key, value): AgentState
+  withReasoning(reasoning): AgentState
+  withPlan(plan): AgentState
+  toJSON(): AgentStateJSON
+  static fromJSON(json): AgentState
+}
+```
+
+**Execution Types:**
+
+```text
+interface ExecutionStrategy {
+  name: String
+  execute(context): Promise&lt;ExecutionResult&gt;
+  stream(context): AgentStreamResult
+}
+
+interface LoopOptions {
+  maxIterations?: Integer  // Default: Infinity
+}
+
+interface ReactOptions {
+  maxSteps?: Integer  // Default: Infinity
+  reasoningPrompt?: String
+}
+
+interface PlanOptions {
+  maxPlanSteps?: Integer  // Default: Infinity
+  allowReplan?: Boolean
+  planSchema?: JSONSchema
+}
+```
+
+**Tool Dependency Types:**
+
+```text
+interface ToolDependencyOptions {
+  sequential?: Boolean      // Must complete before others
+  dependsOn?: List&lt;String&gt;  // Tool names to wait for
+}
+
+// Extends UPP Tool
+interface Tool {
+  name: String
+  description: String
+  parameters: JSONSchema
+  run: Function
+  sequential?: Boolean
+  dependsOn?: List&lt;String&gt;
+}
+```
+
+**Checkpoint Types:**
+
+```text
+interface CheckpointStore {
+  save(sessionId: String, state: AgentStateJSON): Promise&lt;void&gt;
+  load(sessionId: String): Promise&lt;AgentStateJSON | null&gt;
+  loadMetadata(sessionId: String): Promise&lt;CheckpointMetadata | null&gt;
+  delete(sessionId: String): Promise&lt;void&gt;
+  list(): Promise&lt;List<String&gt;>
+}
+
+interface FileCheckpointOptions {
+  dir?: String  // Default: ".checkpoints"
+}
+
+interface CheckpointMetadata {
+  sessionId: String
+  checkpointId: String
+  timestamp: String        // ISO 8601
+  step: Integer
+  agentId: String
+}
+```
+
+## Export List
+
+**Entry Points:**
+- `agent`
+- `AgentState`
+
+**Execution Strategies (from agents/execution):**
+- `loop`
+- `react`
+- `plan`
+
+**Middleware (from agents/middleware):**
+- `logging`
+
+**Checkpointing (from agents/checkpoint):**
+- `fileCheckpoints`
+- `CheckpointStore` (type)
+
+**Classes:**
+- `ThreadTree`
+- `ThreadNode`

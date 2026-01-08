@@ -1,0 +1,129 @@
+---
+title: Core Concepts
+description: UAP architecture, agent model, and execution patterns.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Core Concepts
+
+<Badge text="UAP-1.0.0" variant="note" />
+
+## The Agent Architecture
+
+```
++-----------------------------------------------------------------------+
+|                        Application Code                                |
++-----------------------------------------------------------------------+
+            |
+            v
+     +-------------+
+     |   agent()   |  generate(input, state) -> { turn, state }
+     +-------------+
+            |
+            v
++-----------------------------------------------------------------------+
+|                       Middleware Pipeline                              |
+|    +----------+  +------------+  +---------+                          |
+|    | logging  |->| guardrails |->| budget  |  (ordered, composable)   |
+|    +----------+  +------------+  +---------+                          |
++-----------------------------------------------------------------------+
+            |
+            v
++-----------------------------------------------------------------------+
+|                     Execution Strategy                                 |
+|    +----------+      +--------+      +--------+                       |
+|    |  react() |      | plan() |      | loop() |                       |
+|    +----------+      +--------+      +--------+                       |
++-----------------------------------------------------------------------+
+            |
+            v
++-----------------------------------------------------------------------+
+|                    @providerprotocol/ai (UPP-1.2)                      |
+|    +-------+  +--------+  +--------+  +------+  +--------+            |
+|    | llm() |  | Thread |  |  Turn  |  | Tool |  | Stream |            |
+|    +-------+  +--------+  +--------+  +------+  +--------+            |
++-----------------------------------------------------------------------+
+            |
+            v
++-----------------------------------------------------------------------+
+|                       Provider Adapters                                |
+|    +----------+  +--------+  +--------+  +--------+                   |
+|    | anthropic|  | openai |  | google |  | ollama |                   |
+|    +----------+  +--------+  +--------+  +--------+                   |
++-----------------------------------------------------------------------+
+```
+
+## Import Patterns
+
+UAP implementations MUST provide separate entry points for different functionality:
+
+```text
+// Main entry point - agent factory
+import { agent, AgentState } from "agents"
+
+// Execution strategies
+import { loop, react, plan } from "agents/execution"
+
+// Middleware (v1: logging only)
+import { logging } from "agents/middleware"
+
+// UPP imports remain unchanged
+import { llm, Thread, Turn, UserMessage, Tool } from "upp"
+import anthropic from "upp/anthropic"
+import openai from "upp/openai"
+```
+
+## Data Flow
+
+The functional data flow:
+
+```
+Input + State₀  →  Agent.generate()  →  Turn + State₁
+                        │
+                        ├── Middleware.before(context)
+                        │
+                        ├── Strategy.execute()
+                        │       │
+                        │       ├── llm.generate() [UPP]
+                        │       │
+                        │       ├── Tool execution (parallel/sequential)
+                        │       │
+                        │       └── Step hooks
+                        │
+                        └── Middleware.after(context, turn)
+```
+
+Each call is stateless from the agent's perspective—all state is passed in and returned explicitly.
+
+## Identity Model
+
+All agent entities MUST have UUIDv4 identifiers:
+
+| Entity | ID Field | Description |
+|--------|----------|-------------|
+| Agent | `agent.id` | Unique agent instance ID |
+| AgentState | `state.id` | State snapshot ID (changes on mutation) |
+| Session | `sessionId` | Session identifier for checkpointing |
+| Checkpoint | `checkpointId` | Unique checkpoint snapshot ID |
+
+<Aside type="note">
+Step numbers (`step`) are integers representing sequential execution order, not UUIDs.
+</Aside>
+
+**Session ID Generation:**
+- When `checkpoints` is provided to `agent()`, a `sessionId` MUST be generated if not provided
+- Session IDs MUST be UUIDv4
+- The `sessionId` MUST be included in `state.metadata.sessionId` after execution
+
+Turn identity comes from UPP. UAP tracks execution context separately:
+
+```text
+// Execution context tracks lineage
+context = {
+  agentId: agent.id,
+  stateId: state.id,
+  sessionId?: sessionId,         // For checkpointing
+  parentContext?: parentContext,  // For sub-agent calls
+}
+```

@@ -1,0 +1,216 @@
+---
+title: Agent Interface
+description: UAP agent() function interface and options.
+---
+
+import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
+
+# Agent Interface
+
+<Badge text="UAP-1.0.0" variant="note" />
+
+## Function Signature
+
+```text
+agent(options: AgentOptions) -> Agent
+```
+
+## AgentOptions Structure
+
+`AgentOptions` extends `LLMOptions` from UPP-1.2 for full passthrough of LLM configuration. This ensures complete type uniformity—any option valid for `llm()` is valid for `agent()`.
+
+**UAP-Specific Fields:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | ModelReference | Yes | A model reference from a UPP provider factory |
+| `execution` | ExecutionStrategy | No | Execution strategy (default: loop()) |
+| `middleware` | List&lt;Middleware&gt; | No | Ordered middleware pipeline |
+| `strategy` | AgentStrategy | No | Agent lifecycle hooks |
+| `checkpoints` | CheckpointStore | No | Checkpoint store for step-level persistence |
+| `sessionId` | String | No | Session identifier (auto-generated if not provided) |
+
+**LLM Passthrough Fields (from LLMOptions):**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `params` | Map | No | Model-specific parameters (passed to llm()) |
+| `config` | ProviderConfig | No | Provider infrastructure configuration |
+| `tools` | List&lt;Tool&gt; | No | Tools available to the agent |
+| `system` | String | No | System prompt |
+| `structure` | JSONSchema | No | Structured output schema |
+| `toolStrategy` | ToolUseStrategy | No | Tool execution hooks (passed to llm()) |
+
+<Aside type="note">
+The `tools` field accepts only `Tool` objects. Sub-agents must be explicitly converted to tools with defined schemas (see Section 8).
+</Aside>
+
+<Aside type="note">
+The `toolStrategy` field is passed directly to the underlying `llm()` instance. Per Section 2.4, `toolStrategy.maxIterations` defaults to `Infinity` when not specified.
+</Aside>
+
+## Agent Interface
+
+| Property/Method | Type | Description |
+|-----------------|------|-------------|
+| `id` | String | Unique agent identifier (UUIDv4) |
+| `model` | ModelReference | The bound model |
+| `tools` | List&lt;Tool&gt; | Available tools |
+| `system` | String? | System prompt |
+| `generate(input, state)` | Function | Execute agent, return Turn and new state |
+| `stream(input, state)` | Function | Execute agent with streaming |
+| `ask(input, state)` | Function | Multi-turn execution, history preserved |
+| `query(input)` | Function | Stateless single-turn execution |
+
+## generate() Method
+
+The primary execution method. Follows the functional pattern `(Input, State) -> (Turn, NewState)`.
+
+**Signature:**
+
+```text
+generate(input: String | Message, state: AgentState) -> Promise&lt;GenerateResult&gt;
+```
+
+**GenerateResult Structure:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `turn` | Turn | Standard UPP Turn |
+| `state` | AgentState | New immutable state |
+
+**Usage:**
+
+```text
+import { agent, AgentState } from "agents"
+import anthropic from "upp/anthropic"
+
+coder = agent({
+  model: anthropic("claude-sonnet-4-20250514"),
+  tools: [Bash, Read, Write],
+  system: "You are a coding assistant.",
+})
+
+// Initialize state
+state0 = AgentState.initial()
+
+// First generation
+{ turn: turn1, state: state1 } = await coder.generate(
+  "Create a hello world program",
+  state0
+)
+print(turn1.response.text)
+
+// Second generation with updated state
+{ turn: turn2, state: state2 } = await coder.generate(
+  "Add error handling",
+  state1
+)
+```
+
+## stream() Method
+
+Streaming execution with the same functional pattern.
+
+**Signature:**
+
+```text
+stream(input: String | Message, state: AgentState) -> AgentStreamResult
+```
+
+**AgentStreamResult:**
+
+- Async iterable of `AgentStreamEvent`
+- `result: Promise&lt;GenerateResult&gt;` - resolves after completion
+- `abort(): void` - cancel the stream
+
+```text
+stream = coder.stream("Implement a feature", state0)
+
+for await (event of stream) {
+  // Process events
+}
+
+{ turn, state: newState } = await stream.result
+```
+
+## ask() Method
+
+Multi-turn execution where history is preserved in state. This is a convenience method that:
+1. Appends input to state history
+2. Calls generate()
+3. Appends response to returned state
+
+**Signature:**
+
+```text
+ask(input: String | Message, state: AgentState) -> Promise&lt;GenerateResult&gt;
+```
+
+**Usage:**
+
+```text
+state0 = AgentState.initial()
+
+// ask() automatically manages conversation history
+{ turn: t1, state: s1 } = await agent.ask("My name is Alice", state0)
+{ turn: t2, state: s2 } = await agent.ask("What is my name?", s1)
+// t2.response.text contains "Alice" - context preserved
+```
+
+**Equivalence:**
+
+```text
+// ask() is equivalent to:
+ask(input, state) {
+  newState = state.withMessage(UserMessage(input))
+  result = await this.generate(input, newState)
+  return {
+    turn: result.turn,
+    state: result.state.withMessages(result.turn.messages),
+  }
+}
+```
+
+**Implementation Note:** The pseudocode above describes the *conceptual* behavior of `ask()`. In practice, execution strategies typically add input to state internally (see Section 5). Implementations where strategies handle message addition MAY implement `ask()` as a simple delegation to `generate()`:
+
+```text
+// Alternative implementation when strategies add input:
+ask(input, state) {
+  return this.generate(input, state)
+}
+```
+
+The key requirement is that the returned state contains the complete conversation history (input + response). Implementations MUST NOT duplicate messages regardless of approach.
+
+## query() Method
+
+Stateless single-turn execution. Creates ephemeral state, executes, and discards state. Useful for one-off questions that don't need context.
+
+**Signature:**
+
+```text
+query(input: String | Message) -> Promise&lt;Turn&gt;
+```
+
+**Usage:**
+
+```text
+// No state management needed
+turn = await agent.query("What is 2 + 2?")
+print(turn.response.text)  // "4"
+
+// State is not preserved - each query is independent
+turn2 = await agent.query("What did I just ask?")
+// turn2 has no context from turn1
+```
+
+**Equivalence:**
+
+```text
+// query() is equivalent to:
+query(input) {
+  { turn } = await this.generate(input, AgentState.initial())
+  return turn
+}
+```
