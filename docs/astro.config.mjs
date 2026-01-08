@@ -42,7 +42,7 @@ export default defineConfig({
 					tag: 'meta',
 					attrs: {
 						property: 'og:title',
-						content: 'Provider Protocol - Terminal Docs',
+						content: 'Provider Protocol',
 					},
 				},
 				{
