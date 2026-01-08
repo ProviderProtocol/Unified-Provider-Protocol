@@ -37,6 +37,9 @@ interface ProviderConfig {
 
   /** Retry strategy for handling failures and rate limits */
   retryStrategy?: RetryStrategy;
+
+  /** Custom HTTP headers to include in API requests */
+  headers?: Record<string, string>;
 }
 ```
 
@@ -295,6 +298,74 @@ const claude = llm({
   },
 });
 ```
+
+## Custom Headers
+
+Add custom HTTP headers to API requests:
+
+```typescript
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  config: {
+    headers: {
+      'anthropic-beta': 'extended-cache-ttl-2025-04-11',
+    },
+  },
+});
+```
+
+Custom headers allow you to:
+- Enable provider beta features (e.g., Anthropic's `anthropic-beta` header)
+- Pass organization/project identifiers (e.g., OpenAI's `OpenAI-Organization`)
+- Provide attribution metadata (e.g., OpenRouter's `HTTP-Referer` and `X-Title`)
+- Configure proxy authentication (e.g., Cloudflare Access headers for Ollama)
+
+<Tabs>
+  <TabItem label="Anthropic Beta">
+```typescript
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  config: {
+    apiKey: process.env.ANTHROPIC_API_KEY,
+    headers: {
+      'anthropic-beta': 'extended-cache-ttl-2025-04-11',
+    },
+  },
+});
+```
+  </TabItem>
+  <TabItem label="OpenRouter Attribution">
+```typescript
+const model = llm({
+  model: openrouter('anthropic/claude-sonnet-4'),
+  config: {
+    apiKey: process.env.OPENROUTER_API_KEY,
+    headers: {
+      'HTTP-Referer': 'https://myapp.example.com',
+      'X-Title': 'My Application',
+    },
+  },
+});
+```
+  </TabItem>
+  <TabItem label="OpenAI Organization">
+```typescript
+const gpt = llm({
+  model: openai('gpt-4o'),
+  config: {
+    apiKey: process.env.OPENAI_API_KEY,
+    headers: {
+      'OpenAI-Organization': 'org-xxx',
+    },
+  },
+});
+```
+  </TabItem>
+</Tabs>
+
+<Aside type="note">
+Custom headers are merged with provider-required headers (e.g., `Content-Type`, `Authorization`). If a custom header conflicts with a required header, the custom header takes precedence, allowing you to override default behavior when necessary.
+</Aside>
 
 ## Full Configuration Example
 

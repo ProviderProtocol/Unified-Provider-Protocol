@@ -108,7 +108,9 @@ Resolve API key from ProviderConfig, supporting string, function, or KeyStrategy
 doFetch(url, init, config) -> Promise<Response>
 ```
 
-Execute fetch with retry, timeout, and error normalization. Uses `config.retryStrategy` for retry logic, `config.timeout` for request timeout, and `config.fetch` for custom fetch implementation. Automatically normalizes HTTP errors to `UPPError`.
+Execute fetch with retry, timeout, and error normalization. Uses `config.retryStrategy` for retry logic, `config.timeout` for request timeout, `config.fetch` for custom fetch implementation, and merges `config.headers` with request headers. Automatically normalizes HTTP errors to `UPPError`.
+
+Custom headers from `config.headers` are merged with the headers provided in the `init` parameter. If a custom header conflicts with a provider-required header, the custom header takes precedence.
 
 ### parseSSEStream
 

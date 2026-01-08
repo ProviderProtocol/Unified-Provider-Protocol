@@ -103,7 +103,8 @@ UPP provides utilities for provider implementations from `@providerprotocol/ai/h
 function resolveApiKey(config: ProviderConfig, envVar?: string): Promise<string>;
 
 /**
- * Execute fetch with retry, timeout, and error normalization.
+ * Execute fetch with retry, timeout, error normalization, and custom headers.
+ * Custom headers from config.headers are merged with init.headers.
  */
 function doFetch(url: string, init: RequestInit, config: ProviderConfig): Promise<Response>;
 
