@@ -10,7 +10,7 @@ title: "Interface: AnthropicLLMParams"
 
 # Interface: AnthropicLLMParams
 
-Defined in: [src/providers/anthropic/types.ts:23](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/providers/anthropic/types.ts#L23)
+Defined in: [src/providers/anthropic/types.ts:23](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/anthropic/types.ts#L23)
 
 Provider-specific parameters for Anthropic Claude models.
 
@@ -29,11 +29,56 @@ const params: AnthropicLLMParams = {
 
 ## Properties
 
+### builtInTools?
+
+> `optional` **builtInTools**: [`AnthropicBuiltInTool`](../type-aliases/anthropicbuiltintool.md)[]
+
+Defined in: [src/providers/anthropic/types.ts:86](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/anthropic/types.ts#L86)
+
+Built-in tools for server-side execution.
+
+Use the tool helper constructors from the `tools` namespace:
+- `tools.webSearch()` - Web search capability
+- `tools.computer()` - Computer use (mouse, keyboard, screenshots)
+- `tools.textEditor()` - File viewing and editing
+- `tools.bash()` - Shell command execution
+- `tools.codeExecution()` - Sandboxed Python/Bash execution
+- `tools.toolSearch()` - Dynamic tool catalog search
+
+#### Example
+
+```typescript
+import { anthropic, tools } from 'provider-protocol/anthropic';
+
+const model = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  params: {
+    builtInTools: [
+      tools.webSearch({ max_uses: 5 }),
+      tools.codeExecution(),
+    ],
+  },
+});
+```
+
+***
+
+### container?
+
+> `optional` **container**: `string`
+
+Defined in: [src/providers/anthropic/types.ts:92](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/anthropic/types.ts#L92)
+
+Container ID for code execution tool reuse.
+Pass the container ID from a previous response to reuse the same environment.
+
+***
+
 ### max\_tokens?
 
 > `optional` **max\_tokens**: `number`
 
-Defined in: [src/providers/anthropic/types.ts:25](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/providers/anthropic/types.ts#L25)
+Defined in: [src/providers/anthropic/types.ts:25](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/anthropic/types.ts#L25)
 
 Maximum number of tokens to generate. Defaults to model maximum if not specified.
 
@@ -43,7 +88,7 @@ Maximum number of tokens to generate. Defaults to model maximum if not specified
 
 > `optional` **metadata**: `object`
 
-Defined in: [src/providers/anthropic/types.ts:40](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/providers/anthropic/types.ts#L40)
+Defined in: [src/providers/anthropic/types.ts:40](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/anthropic/types.ts#L40)
 
 Request metadata for tracking and analytics.
 
@@ -59,7 +104,7 @@ Unique identifier for the end user making the request.
 
 > `optional` **service\_tier**: `"auto"` \| `"standard_only"`
 
-Defined in: [src/providers/anthropic/types.ts:58](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/providers/anthropic/types.ts#L58)
+Defined in: [src/providers/anthropic/types.ts:58](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/anthropic/types.ts#L58)
 
 Service tier selection for capacity routing.
 - `auto`: Automatically select based on availability (default)
@@ -71,7 +116,7 @@ Service tier selection for capacity routing.
 
 > `optional` **stop\_sequences**: `string`[]
 
-Defined in: [src/providers/anthropic/types.ts:37](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/providers/anthropic/types.ts#L37)
+Defined in: [src/providers/anthropic/types.ts:37](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/anthropic/types.ts#L37)
 
 Custom sequences that will cause the model to stop generating.
 
@@ -81,7 +126,7 @@ Custom sequences that will cause the model to stop generating.
 
 > `optional` **temperature**: `number`
 
-Defined in: [src/providers/anthropic/types.ts:28](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/providers/anthropic/types.ts#L28)
+Defined in: [src/providers/anthropic/types.ts:28](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/anthropic/types.ts#L28)
 
 Sampling temperature from 0.0 (deterministic) to 1.0 (maximum randomness).
 
@@ -91,7 +136,7 @@ Sampling temperature from 0.0 (deterministic) to 1.0 (maximum randomness).
 
 > `optional` **thinking**: `object`
 
-Defined in: [src/providers/anthropic/types.ts:46](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/providers/anthropic/types.ts#L46)
+Defined in: [src/providers/anthropic/types.ts:46](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/anthropic/types.ts#L46)
 
 Extended thinking configuration for complex reasoning tasks.
 
@@ -113,7 +158,7 @@ Must be 'enabled' to activate extended thinking.
 
 > `optional` **top\_k**: `number`
 
-Defined in: [src/providers/anthropic/types.ts:34](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/providers/anthropic/types.ts#L34)
+Defined in: [src/providers/anthropic/types.ts:34](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/anthropic/types.ts#L34)
 
 Top-k sampling. Only the k most likely tokens are considered at each step.
 
@@ -123,6 +168,6 @@ Top-k sampling. Only the k most likely tokens are considered at each step.
 
 > `optional` **top\_p**: `number`
 
-Defined in: [src/providers/anthropic/types.ts:31](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/providers/anthropic/types.ts#L31)
+Defined in: [src/providers/anthropic/types.ts:31](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/anthropic/types.ts#L31)
 
 Nucleus sampling threshold. Only tokens with cumulative probability <= top_p are considered.

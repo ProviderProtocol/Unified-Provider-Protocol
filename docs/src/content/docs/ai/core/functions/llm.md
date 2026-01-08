@@ -12,7 +12,7 @@ title: "Function: llm()"
 
 > **llm**\<`TParams`\>(`options`): [`LLMInstance`](../interfaces/llminstance.md)\<`TParams`\>
 
-Defined in: [src/core/llm.ts:74](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/core/llm.ts#L74)
+Defined in: [src/core/llm.ts:74](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/core/llm.ts#L74)
 
 Creates an LLM instance configured with the specified options.
 

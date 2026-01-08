@@ -12,7 +12,7 @@ title: "Type Alias: OpenAIAPIMode"
 
 > **OpenAIAPIMode** = `"responses"` \| `"completions"`
 
-Defined in: [src/providers/openai/types.ts:407](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/providers/openai/types.ts#L407)
+Defined in: [src/providers/openai/types.ts:407](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/openai/types.ts#L407)
 
 The API mode for the OpenAI provider.
 

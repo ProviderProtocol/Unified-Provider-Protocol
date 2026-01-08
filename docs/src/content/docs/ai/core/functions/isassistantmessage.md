@@ -12,7 +12,7 @@ title: "Function: isAssistantMessage()"
 
 > **isAssistantMessage**(`msg`): `msg is AssistantMessage`
 
-Defined in: [src/types/messages.ts:319](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/types/messages.ts#L319)
+Defined in: [src/types/messages.ts:319](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/messages.ts#L319)
 
 Type guard for AssistantMessage.
 

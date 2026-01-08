@@ -12,7 +12,7 @@ title: "Function: statusToErrorCode()"
 
 > **statusToErrorCode**(`status`): [`ErrorCode`](../../core/type-aliases/errorcode.md)
 
-Defined in: [src/http/errors.ts:32](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/http/errors.ts#L32)
+Defined in: [src/http/errors.ts:32](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/http/errors.ts#L32)
 
 Maps HTTP status codes to standardized UPP error codes.
 

@@ -12,7 +12,7 @@ title: "Variable: ai"
 
 > `const` **ai**: `object`
 
-Defined in: [src/index.ts:58](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/index.ts#L58)
+Defined in: [src/index.ts:58](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/index.ts#L58)
 
 UPP namespace object providing alternative import style.
 

@@ -35,8 +35,29 @@ console.log(turn.response.text);
 
 ## Interfaces
 
+- [CacheCreateOptions](interfaces/cachecreateoptions.md)
+- [CacheListOptions](interfaces/cachelistoptions.md)
+- [GoogleCacheCreateRequest](interfaces/googlecachecreaterequest.md)
+- [GoogleCacheListResponse](interfaces/googlecachelistresponse.md)
+- [GoogleCacheResponse](interfaces/googlecacheresponse.md)
+- [GoogleCacheUpdateRequest](interfaces/googlecacheupdaterequest.md)
+- [GoogleCodeExecutionResult](interfaces/googlecodeexecutionresult.md)
+- [GoogleCodeExecutionTool](interfaces/googlecodeexecutiontool.md)
+- [GoogleFileSearchTool](interfaces/googlefilesearchtool.md)
+- [GoogleGroundingMetadata](interfaces/googlegroundingmetadata.md)
+- [GoogleHeaders](interfaces/googleheaders.md)
 - [GoogleLLMParams](interfaces/googlellmparams.md)
+- [GoogleMapsTool](interfaces/googlemapstool.md)
+- [GoogleSearchTool](interfaces/googlesearchtool.md)
+- [GoogleToolConfig](interfaces/googletoolconfig.md)
+- [GoogleUrlContextTool](interfaces/googleurlcontexttool.md)
+
+## Type Aliases
+
+- [GoogleBuiltInTool](type-aliases/googlebuiltintool.md)
 
 ## Variables
 
+- [cache](variables/cache.md)
 - [google](variables/google.md)
+- [tools](variables/tools.md)

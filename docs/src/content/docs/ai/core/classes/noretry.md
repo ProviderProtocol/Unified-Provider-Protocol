@@ -10,7 +10,7 @@ title: "Class: NoRetry"
 
 # Class: NoRetry
 
-Defined in: [src/http/retry.ts:218](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/http/retry.ts#L218)
+Defined in: [src/http/retry.ts:218](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/http/retry.ts#L218)
 
 Disables all retry behavior, failing immediately on any error.
 
@@ -51,7 +51,7 @@ const provider = createOpenAI({
 
 > **onRetry**(): `null`
 
-Defined in: [src/http/retry.ts:224](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/http/retry.ts#L224)
+Defined in: [src/http/retry.ts:224](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/http/retry.ts#L224)
 
 Always returns null to indicate no retry should be attempted.
 

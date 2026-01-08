@@ -12,7 +12,7 @@ title: "Function: isUserMessage()"
 
 > **isUserMessage**(`msg`): `msg is UserMessage`
 
-Defined in: [src/types/messages.ts:299](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/types/messages.ts#L299)
+Defined in: [src/types/messages.ts:299](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/messages.ts#L299)
 
 Type guard for UserMessage.
 

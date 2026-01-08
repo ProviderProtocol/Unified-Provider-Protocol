@@ -12,7 +12,7 @@ title: "Function: isTextBlock()"
 
 > **isTextBlock**(`block`): `block is TextBlock`
 
-Defined in: [src/types/content.ts:255](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/types/content.ts#L255)
+Defined in: [src/types/content.ts:255](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/content.ts#L255)
 
 Type guard for TextBlock.
 

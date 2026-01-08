@@ -34,9 +34,13 @@ console.log(turn.response.text);
 
 ## Interfaces
 
-- [XAIAgentTool](interfaces/xaiagenttool.md)
+- [~~XAIAgentTool~~](interfaces/xaiagenttool.md)
+- [XAICodeExecutionTool](interfaces/xaicodeexecutiontool.md)
 - [XAICompletionsParams](interfaces/xaicompletionsparams.md)
 - [XAIConfig](interfaces/xaiconfig.md)
+- [XAIFileSearchTool](interfaces/xaifilesearchtool.md)
+- [XAIHeaders](interfaces/xaiheaders.md)
+- [XAIMcpTool](interfaces/xaimcptool.md)
 - [XAIMessagesParams](interfaces/xaimessagesparams.md)
 - [XAIModelOptions](interfaces/xaimodeloptions.md)
 - [XAIModelReference](interfaces/xaimodelreference.md)
@@ -44,11 +48,16 @@ console.log(turn.response.text);
 - [XAIProviderOptions](interfaces/xaiprovideroptions.md)
 - [XAIResponsesParams](interfaces/xairesponsesparams.md)
 - [~~XAISearchParameters~~](interfaces/xaisearchparameters.md)
+- [XAIServerSideToolUsage](interfaces/xaiserversidetoolusage.md)
+- [XAIWebSearchTool](interfaces/xaiwebsearchtool.md)
+- [XAIXSearchTool](interfaces/xaixsearchtool.md)
 
 ## Type Aliases
 
 - [XAIAPIMode](type-aliases/xaiapimode.md)
+- [XAIBuiltInTool](type-aliases/xaibuiltintool.md)
 
 ## Variables
 
+- [tools](variables/tools.md)
 - [xai](variables/xai.md)

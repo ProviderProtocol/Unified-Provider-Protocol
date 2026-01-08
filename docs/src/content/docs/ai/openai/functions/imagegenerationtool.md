@@ -12,7 +12,7 @@ title: "Function: imageGenerationTool()"
 
 > **imageGenerationTool**(`options?`): [`OpenAIImageGenerationTool`](../interfaces/openaiimagegenerationtool.md)
 
-Defined in: [src/providers/openai/types.ts:1404](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/providers/openai/types.ts#L1404)
+Defined in: [src/providers/openai/types.ts:1404](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/openai/types.ts#L1404)
 
 Creates an image generation tool configuration for the Responses API.
 

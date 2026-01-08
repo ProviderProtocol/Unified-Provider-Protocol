@@ -12,7 +12,7 @@ title: "Type Alias: Modality"
 
 > **Modality** = `"llm"` \| `"embedding"` \| `"image"` \| `"audio"` \| `"video"`
 
-Defined in: [src/types/errors.ts:65](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/types/errors.ts#L65)
+Defined in: [src/types/errors.ts:65](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/types/errors.ts#L65)
 
 Modality types supported by UPP.
 

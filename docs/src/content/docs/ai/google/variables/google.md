@@ -12,7 +12,7 @@ title: "Variable: google"
 
 > `const` **google**: [`Provider`](../../core/interfaces/provider.md)\<`unknown`\> & `object`
 
-Defined in: [src/providers/google/index.ts:72](https://github.com/ProviderProtocol/ai/blob/974e5220fcaeb4809e60044f5211b3c7497a622e/src/providers/google/index.ts#L72)
+Defined in: [src/providers/google/index.ts:72](https://github.com/ProviderProtocol/ai/blob/d8822e616c93b29c40348dd5810b9019d53886d4/src/providers/google/index.ts#L72)
 
 Google Gemini provider for the Unified Provider Protocol (UPP).
 
@@ -61,7 +61,7 @@ await google.cache.delete(cache.name, apiKey);
 
 #### cache.create()
 
-> **create**: (`options`) => `Promise`\<`GoogleCacheResponse`\>
+> **create**: (`options`) => `Promise`\<[`GoogleCacheResponse`](../interfaces/googlecacheresponse.md)\>
 
 Creates a new cached content entry.
 
@@ -73,13 +73,13 @@ token costs and processing time for repeated context.
 
 ###### options
 
-`CacheCreateOptions`
+[`CacheCreateOptions`](../interfaces/cachecreateoptions.md)
 
 Cache creation options
 
 ##### Returns
 
-`Promise`\<`GoogleCacheResponse`\>
+`Promise`\<[`GoogleCacheResponse`](../interfaces/googlecacheresponse.md)\>
 
 The created cache entry with its name/ID for use in requests
 
@@ -139,7 +139,7 @@ await google.cache.delete('cachedContents/abc123', apiKey);
 
 #### cache.get()
 
-> **get**: (`name`, `apiKey`) => `Promise`\<`GoogleCacheResponse`\>
+> **get**: (`name`, `apiKey`) => `Promise`\<[`GoogleCacheResponse`](../interfaces/googlecacheresponse.md)\>
 
 Retrieves a cached content entry by name.
 
@@ -159,7 +159,7 @@ API key for authentication
 
 ##### Returns
 
-`Promise`\<`GoogleCacheResponse`\>
+`Promise`\<[`GoogleCacheResponse`](../interfaces/googlecacheresponse.md)\>
 
 The cache entry details
 
@@ -172,7 +172,7 @@ console.log(`Cache expires at: ${cache.expireTime}`);
 
 #### cache.list()
 
-> **list**: (`options`) => `Promise`\<`GoogleCacheListResponse`\>
+> **list**: (`options`) => `Promise`\<[`GoogleCacheListResponse`](../interfaces/googlecachelistresponse.md)\>
 
 Lists all cached content entries.
 
@@ -180,13 +180,13 @@ Lists all cached content entries.
 
 ###### options
 
-`CacheListOptions`
+[`CacheListOptions`](../interfaces/cachelistoptions.md)
 
 List options including API key and pagination
 
 ##### Returns
 
-`Promise`\<`GoogleCacheListResponse`\>
+`Promise`\<[`GoogleCacheListResponse`](../interfaces/googlecachelistresponse.md)\>
 
 Array of cache entries and optional next page token
 
@@ -205,7 +205,7 @@ for (const cache of cachedContents ?? []) {
 
 #### cache.update()
 
-> **update**: (`name`, `updateRequest`, `apiKey`) => `Promise`\<`GoogleCacheResponse`\>
+> **update**: (`name`, `updateRequest`, `apiKey`) => `Promise`\<[`GoogleCacheResponse`](../interfaces/googlecacheresponse.md)\>
 
 Updates a cached content entry's expiration time.
 
@@ -222,7 +222,7 @@ The cache name (format: "cachedContents/{id}")
 
 ###### updateRequest
 
-`GoogleCacheUpdateRequest`
+[`GoogleCacheUpdateRequest`](../interfaces/googlecacheupdaterequest.md)
 
 ###### apiKey
 
@@ -232,7 +232,7 @@ API key for authentication
 
 ##### Returns
 
-`Promise`\<`GoogleCacheResponse`\>
+`Promise`\<[`GoogleCacheResponse`](../interfaces/googlecacheresponse.md)\>
 
 The updated cache entry
 
@@ -299,4 +299,4 @@ await google.cache.delete(cacheEntry.name, apiKey);
 ## See
 
  - [GoogleLLMParams](../interfaces/googlellmparams.md) for provider-specific configuration options
- - cache for caching utilities
+ - [cache](cache.md) for caching utilities

@@ -35,8 +35,21 @@ console.log(turn.response.text);
 
 ## Interfaces
 
+- [AnthropicBashTool](interfaces/anthropicbashtool.md)
+- [AnthropicCodeExecutionTool](interfaces/anthropiccodeexecutiontool.md)
+- [AnthropicComputerTool](interfaces/anthropiccomputertool.md)
+- [AnthropicHeaders](interfaces/anthropicheaders.md)
 - [AnthropicLLMParams](interfaces/anthropicllmparams.md)
+- [AnthropicTextEditorTool](interfaces/anthropictexteditortool.md)
+- [AnthropicToolSearchTool](interfaces/anthropictoolsearchtool.md)
+- [AnthropicUserLocation](interfaces/anthropicuserlocation.md)
+- [AnthropicWebSearchTool](interfaces/anthropicwebsearchtool.md)
+
+## Type Aliases
+
+- [AnthropicBuiltInTool](type-aliases/anthropicbuiltintool.md)
 
 ## Variables
 
 - [anthropic](variables/anthropic.md)
+- [tools](variables/tools.md)
