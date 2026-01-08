@@ -18,8 +18,29 @@ Tools allow LLMs to interact with external systems, execute code, and access rea
 | `name` | String | Yes | Tool name (must be unique within an llm() instance) |
 | `description` | String | Yes | Human-readable description for the model |
 | `parameters` | JSONSchema | Yes | JSON Schema defining parameters |
+| `metadata` | ToolMetadata | No | Provider-specific metadata (e.g., cache control) |
 | `run` | Function | Yes | Tool execution function |
 | `approval` | Function | No | Optional approval handler for sensitive operations |
+
+### ToolMetadata Structure
+
+Provider-namespaced metadata for tools. Each provider defines its own metadata shape, enabling provider-specific features like prompt caching or strict schema validation without affecting other providers.
+
+```text
+{
+  anthropic: { cache_control: { type: "ephemeral", ttl: "1h" } },
+  openai: { strict: true }
+}
+```
+
+| Provider | Namespace | Supported Options |
+|----------|-----------|-------------------|
+| Anthropic | `anthropic` | `cache_control: { type: "ephemeral", ttl?: "5m" \| "1h" }` |
+| OpenAI | `openai` | `strict: boolean` (stricter JSON Schema validation) |
+
+<Aside type="note" title="Provider Namespace Handling">
+  Providers MUST ignore metadata namespaces they don't recognize. Tool metadata is passed through to the provider's native format where supported.
+</Aside>
 
 ### JSONSchema Structure (for tool parameters)
 
