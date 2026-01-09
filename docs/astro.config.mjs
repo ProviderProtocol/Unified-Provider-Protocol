@@ -22,27 +22,11 @@ export default defineConfig({
 			],
 			customCss: ['./src/styles/custom.css'],
 			head: [
-				// Terminal theme meta
-				{
-					tag: 'meta',
-					attrs: {
-						name: 'theme-color',
-						content: '#0a0a0a',
-					},
-				},
-				{
-					tag: 'meta',
-					attrs: {
-						name: 'color-scheme',
-						content: 'dark',
-					},
-				},
-				// Open Graph
 				{
 					tag: 'meta',
 					attrs: {
 						property: 'og:title',
-						content: 'Provider Protocol',
+						content: 'UPP-1.2 - Unified Provider Protocol',
 					},
 				},
 				{
@@ -52,35 +36,7 @@ export default defineConfig({
 						content: 'A first-generation standard for simplifying AI inference and enabling multi-provider interoperability.',
 					},
 				},
-				{
-					tag: 'meta',
-					attrs: {
-						property: 'og:type',
-						content: 'website',
-					},
-				},
-				// Preconnect to Google Fonts
-				{
-					tag: 'link',
-					attrs: {
-						rel: 'preconnect',
-						href: 'https://fonts.googleapis.com',
-					},
-				},
-				{
-					tag: 'link',
-					attrs: {
-						rel: 'preconnect',
-						href: 'https://fonts.gstatic.com',
-						crossorigin: true,
-					},
-				},
 			],
-			components: {
-				// Override components for terminal styling
-				Head: './src/components/Head.astro',
-				Footer: './src/components/Footer.astro',
-			},
 			sidebar: [
 				{ label: 'Introduction', slug: 'introduction' },
 				{
@@ -116,10 +72,6 @@ export default defineConfig({
 					autogenerate: { directory: 'uap' },
 				},
 			],
-			// Disable default favicon to use terminal-themed one
-			favicon: '/favicon.svg',
-			// Disable theme toggle UI but keep dark mode
-			// (terminal is always dark - switching to light gives amber theme)
 		}),
 	],
 });
