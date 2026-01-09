@@ -3,7 +3,10 @@ title: Provider Protocol
 description: A first-generation standard for simplifying AI inference and enabling multi-provider interoperability.
 template: splash
 hero:
-  tagline: Provider Protocol provides uniform interfaces for interacting with LLMs, Embeddings, and Image Generation across providers.
+  tagline: One interface. Every AI provider. Unified access to LLMs, embeddings, and image generation.
+  image:
+    file: ../../assets/logo.png
+    alt: Provider Protocol Logo
   actions:
     - text: Get Started
       link: /introduction/
@@ -16,83 +19,63 @@ hero:
 
 import { Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
-## Why Provider Protocol?
-
-Modern AI development requires interacting with multiple providers—Anthropic, OpenAI, Google, Stability, and more—each with distinct APIs, authentication schemes, and response formats. **Provider Protocol** solves this by providing a unified protocol.
-
-<CardGrid stagger>
-	<Card title="Multi-Provider Support" icon="rocket">
-		Switch between Anthropic, OpenAI, Google, and other providers without changing your application code.
+<CardGrid>
+	<Card title="Multi-Provider" icon="rocket">
+		Switch between Anthropic, OpenAI, Google, and other providers without changing your code.
 	</Card>
-	<Card title="Modality-Specific APIs" icon="puzzle">
-		Purpose-built interfaces for LLM (`llm()`), embeddings (`embedding()`), and image generation (`image()`).
+	<Card title="Type-Safe" icon="approve-check">
+		Full TypeScript support with intelligent autocompletion and compile-time checks.
 	</Card>
-	<Card title="Provider Transparency" icon="open-book">
-		Configuration passes through unchanged—reference provider docs directly with no hidden transformations.
+	<Card title="Transparent" icon="open-book">
+		Configuration passes through unchanged—reference provider docs directly.
 	</Card>
-	<Card title="Shared Infrastructure" icon="setting">
-		Common patterns for authentication, retry strategies, error handling, and HTTP utilities.
+	<Card title="Modular" icon="puzzle">
+		Purpose-built interfaces for `llm()`, `embedding()`, and `image()`.
 	</Card>
 </CardGrid>
 
-## Quick Example
+## Quick Start
 
 ```typescript
-import { llm, embedding, image } from '@providerprotocol/ai';
+import { llm, embedding } from '@providerprotocol/ai';
 import { anthropic } from '@providerprotocol/ai/anthropic';
 import { openai } from '@providerprotocol/ai/openai';
 
-// LLM inference
+// LLM inference with Claude
 const claude = llm({
   model: anthropic('claude-sonnet-4-20250514'),
   system: 'You are a helpful assistant.',
 });
-const turn = await claude.generate('What is the capital of France?');
-console.log(turn.response.text);
 
-// Embeddings
+const response = await claude.generate('Explain quantum computing');
+console.log(response.text);
+
+// Generate embeddings with OpenAI
 const embedder = embedding({
   model: openai('text-embedding-3-large'),
 });
-const result = await embedder.embed('Hello, world!');
-console.log(result.vector.length);
 
-// Image generation
-const dalle = image({
-  model: openai('dall-e-3'),
-});
-const img = await dalle.generate('A sunset over mountains');
+const vector = await embedder.embed('Hello, world!');
 ```
 
-## Specification Status
+## Specification
 
-<Badge text="UPP-1.2.0-draft" variant="note" /> <Badge text="Current" variant="success" />
+<Badge text="UPP-1.2" variant="note" /> <Badge text="Current" variant="success" />
 
-| Section | Status | Description |
-|---------|--------|-------------|
-| **Core Architecture** | <Badge text="Stable" variant="success" size="small" /> | Provider model, configuration, entry points |
-| **LLM Interface** | <Badge text="Stable" variant="success" size="small" /> | `llm()`, generate/stream, tools, structured output |
-| **Embedding Interface** | <Badge text="Stable" variant="success" size="small" /> | `embedding()`, batch processing, similarity utilities |
-| **Image Interface** | <Badge text="Stable" variant="success" size="small" /> | `image()`, generation, editing, variations |
-| **Error Handling** | <Badge text="Stable" variant="success" size="small" /> | UPPError, error codes, retry strategies |
-| Audio Interface | <Badge text="Planned" variant="default" size="small" /> | Future: `audio()` for speech-to-text, TTS |
-| Video Interface | <Badge text="Planned" variant="default" size="small" /> | Future: `video()` for video generation |
-
-### Version History
-
-| Version | Status | Description |
-|---------|--------|-------------|
-| **UPP-1.2** | Draft | Language-agnostic reformat, security section, clarifications |
-| UPP-1.1 | Draft | Multi-modality support (LLM, Embedding, Image) |
-| UPP-1.0 | Draft | Initial LLM-focused specification |
+| Interface | Status | Description |
+|-----------|--------|-------------|
+| **LLM** | <Badge text="Stable" variant="success" size="small" /> | Text generation, streaming, tools, structured output |
+| **Embedding** | <Badge text="Stable" variant="success" size="small" /> | Vector embeddings, batch processing, similarity |
+| **Image** | <Badge text="Stable" variant="success" size="small" /> | Generation, editing, variations |
+| Audio | <Badge text="Planned" variant="default" size="small" /> | Speech-to-text, text-to-speech |
 
 ---
 
 <CardGrid>
-	<Card title="Read the Spec" icon="document">
-		Dive into the [full introduction](/introduction/) to understand UPP's goals and terminology.
+	<Card title="Introduction" icon="document">
+		Learn about [Provider Protocol's goals and architecture](/introduction/).
 	</Card>
-	<Card title="Start Building" icon="laptop">
-		Follow the [Quick Start guide](/quick-start/) to integrate UPP into your project.
+	<Card title="Quick Start" icon="laptop">
+		Follow the [Quick Start guide](/guide/quick-start/) to begin building.
 	</Card>
 </CardGrid>

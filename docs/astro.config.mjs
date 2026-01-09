@@ -14,14 +14,34 @@ export default defineConfig({
 				}),
 			],
 			title: 'Provider Protocol',
+			logo: {
+				src: './src/assets/logo.png',
+				alt: 'Provider Protocol',
+			},
 			description: 'Unified Provider Protocol - A standard for multi-provider AI interoperability',
+			favicon: '/favicon.ico',
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/ProviderProtocol' },
 				{ icon: 'rocket', label: 'AI SDK', href: 'https://www.npmjs.com/package/@providerprotocol/ai' },
 				{ icon: 'puzzle', label: 'Agents SDK', href: 'https://www.npmjs.com/package/@providerprotocol/agents' },
 			],
-			customCss: ['./src/styles/custom.css'],
+			customCss: [
+				'@fontsource/inter/400.css',
+				'@fontsource/inter/500.css',
+				'@fontsource/inter/600.css',
+				'@fontsource/inter/700.css',
+				'@fontsource/jetbrains-mono/400.css',
+				'@fontsource/jetbrains-mono/500.css',
+				'./src/styles/custom.css',
+			],
 			head: [
+				{
+					tag: 'link',
+					attrs: {
+						rel: 'apple-touch-icon',
+						href: '/apple-touch-icon.png',
+					},
+				},
 				{
 					tag: 'meta',
 					attrs: {
