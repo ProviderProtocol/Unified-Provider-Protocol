@@ -12,7 +12,7 @@ title: "Type Alias: ImageProvider"
 
 > **ImageProvider**\<`TParams`, `TOptions`\> = [`Provider`](../interfaces/provider.md)\<`TOptions`\> & `object`
 
-Defined in: [src/types/provider.ts:472](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/provider.ts#L472)
+Defined in: [src/types/provider.ts:481](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/provider.ts#L481)
 
 Provider with Image modality support.
 

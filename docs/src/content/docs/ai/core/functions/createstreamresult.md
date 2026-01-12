@@ -10,9 +10,9 @@ title: "Function: createStreamResult()"
 
 # Function: createStreamResult()
 
-> **createStreamResult**\<`TData`\>(`generator`, `turnPromise`, `abortController`): [`StreamResult`](../interfaces/streamresult.md)\<`TData`\>
+> **createStreamResult**\<`TData`\>(`generator`, `turnPromiseOrFactory`, `abortController`): [`StreamResult`](../interfaces/streamresult.md)\<`TData`\>
 
-Defined in: [src/types/stream.ts:160](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/stream.ts#L160)
+Defined in: [src/types/stream.ts:162](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/stream.ts#L162)
 
 Creates a StreamResult from an async generator and completion promise.
 
@@ -32,11 +32,11 @@ Type of the structured output data
 
 Async generator that yields stream events
 
-### turnPromise
+### turnPromiseOrFactory
 
-`Promise`\<[`Turn`](../interfaces/turn.md)\<`TData`\>\>
+Promise or factory that resolves to the complete Turn
 
-Promise that resolves to the complete Turn
+`Promise`\<[`Turn`](../interfaces/turn.md)\<`TData`\>\> | () => `Promise`\<[`Turn`](../interfaces/turn.md)\<`TData`\>\>
 
 ### abortController
 

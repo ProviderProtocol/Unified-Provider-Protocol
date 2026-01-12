@@ -10,7 +10,7 @@ title: "Interface: EmbeddingStream"
 
 # Interface: EmbeddingStream
 
-Defined in: [src/types/embedding.ts:133](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L133)
+Defined in: [src/types/embedding.ts:135](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L135)
 
 Async iterable stream with final result accessor.
 Returned when embed() is called with { chunked: true }.
@@ -25,7 +25,7 @@ Returned when embed() is called with { chunked: true }.
 
 > `readonly` **result**: `Promise`\<[`EmbeddingResult`](embeddingresult.md)\>
 
-Defined in: [src/types/embedding.ts:135](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L135)
+Defined in: [src/types/embedding.ts:137](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L137)
 
 Promise resolving to complete result after iteration
 
@@ -51,7 +51,7 @@ Defined in: node\_modules/typescript/lib/lib.es2018.asynciterable.d.ts:38
 
 > **abort**(): `void`
 
-Defined in: [src/types/embedding.ts:138](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L138)
+Defined in: [src/types/embedding.ts:140](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L140)
 
 Abort the operation
 

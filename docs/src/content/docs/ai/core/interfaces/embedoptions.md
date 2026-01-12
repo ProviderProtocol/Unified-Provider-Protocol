@@ -10,7 +10,7 @@ title: "Interface: EmbedOptions"
 
 # Interface: EmbedOptions
 
-Defined in: [src/types/embedding.ts:61](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L61)
+Defined in: [src/types/embedding.ts:63](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L63)
 
 Options for embed() calls.
 
@@ -20,7 +20,7 @@ Options for embed() calls.
 
 > `optional` **batchSize**: `number`
 
-Defined in: [src/types/embedding.ts:69](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L69)
+Defined in: [src/types/embedding.ts:71](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L71)
 
 Inputs per batch when chunked (default: provider max)
 
@@ -30,7 +30,7 @@ Inputs per batch when chunked (default: provider max)
 
 > `optional` **chunked**: `boolean`
 
-Defined in: [src/types/embedding.ts:66](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L66)
+Defined in: [src/types/embedding.ts:68](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L68)
 
 Enable chunked processing with progress for large input sets.
 When true, returns EmbeddingStream instead of Promise.
@@ -41,7 +41,7 @@ When true, returns EmbeddingStream instead of Promise.
 
 > `optional` **concurrency**: `number`
 
-Defined in: [src/types/embedding.ts:72](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L72)
+Defined in: [src/types/embedding.ts:74](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L74)
 
 Concurrent batch limit when chunked (default: 1)
 
@@ -51,6 +51,6 @@ Concurrent batch limit when chunked (default: 1)
 
 > `optional` **signal**: `AbortSignal`
 
-Defined in: [src/types/embedding.ts:75](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L75)
+Defined in: [src/types/embedding.ts:77](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L77)
 
 Abort signal for cancellation

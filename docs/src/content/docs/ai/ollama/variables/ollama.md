@@ -12,7 +12,7 @@ title: "Variable: ollama"
 
 > `const` **ollama**: [`Provider`](../../core/interfaces/provider.md)\<`unknown`\>
 
-Defined in: [src/providers/ollama/index.ts:79](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/ollama/index.ts#L79)
+Defined in: [src/providers/ollama/index.ts:79](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/ollama/index.ts#L79)
 
 Ollama provider for local LLM inference.
 

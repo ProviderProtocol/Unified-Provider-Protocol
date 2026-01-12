@@ -10,7 +10,7 @@ title: "Interface: CacheListOptions"
 
 # Interface: CacheListOptions
 
-Defined in: [src/providers/google/cache.ts:49](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/cache.ts#L49)
+Defined in: [src/providers/google/cache.ts:64](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L64)
 
 Options for listing cached content entries.
 
@@ -20,9 +20,19 @@ Options for listing cached content entries.
 
 > **apiKey**: `string`
 
-Defined in: [src/providers/google/cache.ts:51](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/cache.ts#L51)
+Defined in: [src/providers/google/cache.ts:66](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L66)
 
 API key for authentication
+
+***
+
+### config?
+
+> `optional` **config**: [`ProviderConfig`](../../core/interfaces/providerconfig.md)
+
+Defined in: [src/providers/google/cache.ts:68](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L68)
+
+Provider configuration (timeout, retry strategy, custom fetch)
 
 ***
 
@@ -30,7 +40,7 @@ API key for authentication
 
 > `optional` **pageSize**: `number`
 
-Defined in: [src/providers/google/cache.ts:53](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/cache.ts#L53)
+Defined in: [src/providers/google/cache.ts:72](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L72)
 
 Maximum number of caches to return per page
 
@@ -40,6 +50,16 @@ Maximum number of caches to return per page
 
 > `optional` **pageToken**: `string`
 
-Defined in: [src/providers/google/cache.ts:55](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/cache.ts#L55)
+Defined in: [src/providers/google/cache.ts:74](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L74)
 
 Token for fetching the next page of results
+
+***
+
+### signal?
+
+> `optional` **signal**: `AbortSignal`
+
+Defined in: [src/providers/google/cache.ts:70](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L70)
+
+Abort signal for cancellation

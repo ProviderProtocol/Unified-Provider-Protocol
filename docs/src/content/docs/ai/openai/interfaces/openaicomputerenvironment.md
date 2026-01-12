@@ -10,7 +10,7 @@ title: "Interface: OpenAIComputerEnvironment"
 
 # Interface: OpenAIComputerEnvironment
 
-Defined in: [src/providers/openai/types.ts:1152](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/openai/types.ts#L1152)
+Defined in: [src/providers/openai/types.ts:1153](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/openai/types.ts#L1153)
 
 Computer tool environment configuration
 
@@ -20,6 +20,6 @@ Computer tool environment configuration
 
 > **type**: `"browser"` \| `"mac"` \| `"windows"` \| `"linux"` \| `"ubuntu"`
 
-Defined in: [src/providers/openai/types.ts:1154](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/openai/types.ts#L1154)
+Defined in: [src/providers/openai/types.ts:1155](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/openai/types.ts#L1155)
 
 Environment type

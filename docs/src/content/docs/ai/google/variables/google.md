@@ -12,7 +12,7 @@ title: "Variable: google"
 
 > `const` **google**: [`Provider`](../../core/interfaces/provider.md)\<`unknown`\> & `object`
 
-Defined in: [src/providers/google/index.ts:73](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/index.ts#L73)
+Defined in: [src/providers/google/index.ts:73](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/index.ts#L73)
 
 Google Gemini provider for the Unified Provider Protocol (UPP).
 
@@ -109,7 +109,7 @@ const response = await model.complete({
 
 #### cache.delete()
 
-> **delete**: (`name`, `apiKey`) => `Promise`\<`void`\> = `deleteCache`
+> **delete**: (`name`, `apiKey`, `config?`, `signal?`) => `Promise`\<`void`\> = `deleteCache`
 
 Deletes a cached content entry.
 
@@ -127,6 +127,18 @@ The cache name (format: "cachedContents/{id}")
 
 API key for authentication
 
+###### config?
+
+[`ProviderConfig`](../../core/interfaces/providerconfig.md)
+
+Provider configuration (timeout, retry strategy, custom fetch)
+
+###### signal?
+
+`AbortSignal`
+
+Abort signal for cancellation
+
 ##### Returns
 
 `Promise`\<`void`\>
@@ -139,7 +151,7 @@ await google.cache.delete('cachedContents/abc123', apiKey);
 
 #### cache.get()
 
-> **get**: (`name`, `apiKey`) => `Promise`\<[`GoogleCacheResponse`](../interfaces/googlecacheresponse.md)\>
+> **get**: (`name`, `apiKey`, `config?`, `signal?`) => `Promise`\<[`GoogleCacheResponse`](../interfaces/googlecacheresponse.md)\>
 
 Retrieves a cached content entry by name.
 
@@ -156,6 +168,18 @@ The cache name (format: "cachedContents/{id}")
 `string`
 
 API key for authentication
+
+###### config?
+
+[`ProviderConfig`](../../core/interfaces/providerconfig.md)
+
+Provider configuration (timeout, retry strategy, custom fetch)
+
+###### signal?
+
+`AbortSignal`
+
+Abort signal for cancellation
 
 ##### Returns
 
@@ -205,7 +229,7 @@ for (const cache of cachedContents ?? []) {
 
 #### cache.update()
 
-> **update**: (`name`, `updateRequest`, `apiKey`) => `Promise`\<[`GoogleCacheResponse`](../interfaces/googlecacheresponse.md)\>
+> **update**: (`name`, `updateRequest`, `apiKey`, `config?`, `signal?`) => `Promise`\<[`GoogleCacheResponse`](../interfaces/googlecacheresponse.md)\>
 
 Updates a cached content entry's expiration time.
 
@@ -229,6 +253,18 @@ The cache name (format: "cachedContents/{id}")
 `string`
 
 API key for authentication
+
+###### config?
+
+[`ProviderConfig`](../../core/interfaces/providerconfig.md)
+
+Provider configuration (timeout, retry strategy, custom fetch)
+
+###### signal?
+
+`AbortSignal`
+
+Abort signal for cancellation
 
 ##### Returns
 

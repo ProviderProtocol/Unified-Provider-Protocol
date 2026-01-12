@@ -10,7 +10,7 @@ title: "Interface: OllamaEmbedParams"
 
 # Interface: OllamaEmbedParams
 
-Defined in: [src/providers/ollama/embed.ts:29](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/ollama/embed.ts#L29)
+Defined in: [src/providers/ollama/embed.ts:30](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/ollama/embed.ts#L30)
 
 Ollama embedding parameters.
 Passed through to the API.
@@ -21,7 +21,7 @@ Passed through to the API.
 
 > `optional` **keep\_alive**: `string`
 
-Defined in: [src/providers/ollama/embed.ts:33](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/ollama/embed.ts#L33)
+Defined in: [src/providers/ollama/embed.ts:34](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/ollama/embed.ts#L34)
 
 Controls how long the model stays loaded in memory (e.g., '5m', '1h')
 
@@ -31,7 +31,7 @@ Controls how long the model stays loaded in memory (e.g., '5m', '1h')
 
 > `optional` **options**: `Record`\<`string`, `unknown`\>
 
-Defined in: [src/providers/ollama/embed.ts:35](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/ollama/embed.ts#L35)
+Defined in: [src/providers/ollama/embed.ts:36](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/ollama/embed.ts#L36)
 
 Additional model options
 
@@ -41,6 +41,6 @@ Additional model options
 
 > `optional` **truncate**: `boolean`
 
-Defined in: [src/providers/ollama/embed.ts:31](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/ollama/embed.ts#L31)
+Defined in: [src/providers/ollama/embed.ts:32](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/ollama/embed.ts#L32)
 
 Truncates the end of each input to fit within context length (default: true)

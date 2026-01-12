@@ -10,7 +10,7 @@ title: "Interface: CacheCreateOptions"
 
 # Interface: CacheCreateOptions
 
-Defined in: [src/providers/google/cache.ts:27](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/cache.ts#L27)
+Defined in: [src/providers/google/cache.ts:38](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L38)
 
 Options for creating a cached content entry.
 
@@ -20,9 +20,19 @@ Options for creating a cached content entry.
 
 > **apiKey**: `string`
 
-Defined in: [src/providers/google/cache.ts:29](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/cache.ts#L29)
+Defined in: [src/providers/google/cache.ts:40](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L40)
 
 API key for authentication
+
+***
+
+### config?
+
+> `optional` **config**: [`ProviderConfig`](../../core/interfaces/providerconfig.md)
+
+Defined in: [src/providers/google/cache.ts:42](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L42)
+
+Provider configuration (timeout, retry strategy, custom fetch)
 
 ***
 
@@ -30,7 +40,7 @@ API key for authentication
 
 > `optional` **contents**: `GoogleContent`[]
 
-Defined in: [src/providers/google/cache.ts:35](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/cache.ts#L35)
+Defined in: [src/providers/google/cache.ts:50](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L50)
 
 Content messages to cache
 
@@ -40,7 +50,7 @@ Content messages to cache
 
 > `optional` **displayName**: `string`
 
-Defined in: [src/providers/google/cache.ts:33](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/cache.ts#L33)
+Defined in: [src/providers/google/cache.ts:48](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L48)
 
 Optional display name for the cache (max 128 chars)
 
@@ -50,7 +60,7 @@ Optional display name for the cache (max 128 chars)
 
 > `optional` **expireTime**: `string`
 
-Defined in: [src/providers/google/cache.ts:43](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/cache.ts#L43)
+Defined in: [src/providers/google/cache.ts:58](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L58)
 
 Absolute expiration time (RFC 3339 format, alternative to ttl)
 
@@ -60,9 +70,19 @@ Absolute expiration time (RFC 3339 format, alternative to ttl)
 
 > **model**: `string`
 
-Defined in: [src/providers/google/cache.ts:31](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/cache.ts#L31)
+Defined in: [src/providers/google/cache.ts:46](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L46)
 
 Model to associate with this cache (e.g., "gemini-3-flash-preview")
+
+***
+
+### signal?
+
+> `optional` **signal**: `AbortSignal`
+
+Defined in: [src/providers/google/cache.ts:44](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L44)
+
+Abort signal for cancellation
 
 ***
 
@@ -70,7 +90,7 @@ Model to associate with this cache (e.g., "gemini-3-flash-preview")
 
 > `optional` **systemInstruction**: `string`
 
-Defined in: [src/providers/google/cache.ts:37](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/cache.ts#L37)
+Defined in: [src/providers/google/cache.ts:52](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L52)
 
 System instruction text to cache
 
@@ -80,7 +100,7 @@ System instruction text to cache
 
 > `optional` **tools**: `GoogleTool`[]
 
-Defined in: [src/providers/google/cache.ts:39](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/cache.ts#L39)
+Defined in: [src/providers/google/cache.ts:54](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L54)
 
 Tool declarations to cache
 
@@ -90,6 +110,6 @@ Tool declarations to cache
 
 > `optional` **ttl**: `string`
 
-Defined in: [src/providers/google/cache.ts:41](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/google/cache.ts#L41)
+Defined in: [src/providers/google/cache.ts:56](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/google/cache.ts#L56)
 
 Time-to-live duration (e.g., "3600s" for 1 hour)

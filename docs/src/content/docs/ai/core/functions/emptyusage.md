@@ -12,7 +12,7 @@ title: "Function: emptyUsage()"
 
 > **emptyUsage**(): [`TokenUsage`](../interfaces/tokenusage.md)
 
-Defined in: [src/types/turn.ts:180](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/turn.ts#L180)
+Defined in: [src/types/turn.ts:188](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/turn.ts#L188)
 
 Creates an empty TokenUsage object.
 

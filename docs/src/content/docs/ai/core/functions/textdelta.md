@@ -12,7 +12,7 @@ title: "Function: textDelta()"
 
 > **textDelta**(`text`, `index`): [`StreamEvent`](../interfaces/streamevent.md)
 
-Defined in: [src/types/stream.ts:183](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/stream.ts#L183)
+Defined in: [src/types/stream.ts:201](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/stream.ts#L201)
 
 Creates a text delta stream event.
 

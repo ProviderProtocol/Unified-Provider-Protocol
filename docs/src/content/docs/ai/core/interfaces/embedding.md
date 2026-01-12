@@ -10,7 +10,7 @@ title: "Interface: Embedding"
 
 # Interface: Embedding
 
-Defined in: [src/types/embedding.ts:81](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L81)
+Defined in: [src/types/embedding.ts:83](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L83)
 
 Single embedding vector result.
 
@@ -20,7 +20,7 @@ Single embedding vector result.
 
 > **dimensions**: `number`
 
-Defined in: [src/types/embedding.ts:86](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L86)
+Defined in: [src/types/embedding.ts:88](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L88)
 
 Vector dimensionality
 
@@ -30,7 +30,7 @@ Vector dimensionality
 
 > **index**: `number`
 
-Defined in: [src/types/embedding.ts:89](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L89)
+Defined in: [src/types/embedding.ts:91](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L91)
 
 Index corresponding to input array position
 
@@ -40,7 +40,7 @@ Index corresponding to input array position
 
 > `optional` **metadata**: `Record`\<`string`, `unknown`\>
 
-Defined in: [src/types/embedding.ts:95](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L95)
+Defined in: [src/types/embedding.ts:97](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L97)
 
 Provider-specific per-embedding metadata
 
@@ -50,7 +50,7 @@ Provider-specific per-embedding metadata
 
 > `optional` **tokens**: `number`
 
-Defined in: [src/types/embedding.ts:92](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L92)
+Defined in: [src/types/embedding.ts:94](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L94)
 
 Token count for this input (if provider reports)
 
@@ -60,6 +60,6 @@ Token count for this input (if provider reports)
 
 > **vector**: `number`[]
 
-Defined in: [src/types/embedding.ts:83](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/embedding.ts#L83)
+Defined in: [src/types/embedding.ts:85](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/embedding.ts#L85)
 
 The embedding vector

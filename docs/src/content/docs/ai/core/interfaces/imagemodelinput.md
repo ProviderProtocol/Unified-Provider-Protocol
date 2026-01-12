@@ -10,7 +10,7 @@ title: "Interface: ImageModelInput"
 
 # Interface: ImageModelInput
 
-Defined in: [src/types/image.ts:23](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/image.ts#L23)
+Defined in: [src/types/image.ts:23](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/image.ts#L23)
 
 Structural type for image model input.
 Uses structural typing to avoid generic variance issues with Provider generics.
@@ -30,7 +30,7 @@ ModelReference
 
 > `readonly` **modelId**: `string`
 
-Defined in: [src/types/image.ts:24](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/image.ts#L24)
+Defined in: [src/types/image.ts:24](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/image.ts#L24)
 
 ***
 
@@ -38,4 +38,14 @@ Defined in: [src/types/image.ts:24](https://github.com/ProviderProtocol/ai/blob/
 
 > `readonly` **provider**: [`ProviderIdentity`](provideridentity.md)
 
-Defined in: [src/types/image.ts:25](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/image.ts#L25)
+Defined in: [src/types/image.ts:25](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/image.ts#L25)
+
+***
+
+### providerConfig?
+
+> `readonly` `optional` **providerConfig**: `Partial`\<[`ProviderConfig`](providerconfig.md)\>
+
+Defined in: [src/types/image.ts:27](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/image.ts#L27)
+
+Optional provider configuration merged into requests

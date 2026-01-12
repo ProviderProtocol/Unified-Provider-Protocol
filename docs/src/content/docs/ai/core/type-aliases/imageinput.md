@@ -12,6 +12,6 @@ title: "Type Alias: ImageInput"
 
 > **ImageInput** = `string` \| \{ `prompt`: `string`; \}
 
-Defined in: [src/types/image.ts:64](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/image.ts#L64)
+Defined in: [src/types/image.ts:66](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/image.ts#L66)
 
 Input type for generate() - either a string prompt or object with prompt.

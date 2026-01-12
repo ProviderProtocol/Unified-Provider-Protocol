@@ -12,7 +12,7 @@ title: "Variable: openai"
 
 > `const` **openai**: [`Provider`](../../core/interfaces/provider.md)\<`OpenAIProviderOptions`\>
 
-Defined in: [src/providers/openai/index.ts:79](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/openai/index.ts#L79)
+Defined in: [src/providers/openai/index.ts:79](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/openai/index.ts#L79)
 
 The OpenAI provider instance.
 

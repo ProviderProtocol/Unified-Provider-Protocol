@@ -12,7 +12,7 @@ title: "Type Alias: LLMProvider"
 
 > **LLMProvider**\<`TParams`, `TOptions`\> = [`Provider`](../interfaces/provider.md)\<`TOptions`\> & `object`
 
-Defined in: [src/types/provider.ts:446](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/provider.ts#L446)
+Defined in: [src/types/provider.ts:455](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/provider.ts#L455)
 
 Provider with LLM modality support.
 

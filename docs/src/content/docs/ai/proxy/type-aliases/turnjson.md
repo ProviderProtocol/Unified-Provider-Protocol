@@ -12,7 +12,7 @@ title: "Type Alias: TurnJSON"
 
 > **TurnJSON** = `Omit`\<[`Turn`](../../core/interfaces/turn.md), `"messages"` \| `"response"`\> & `object`
 
-Defined in: [src/types/turn.ts:118](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/turn.ts#L118)
+Defined in: [src/types/turn.ts:126](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/turn.ts#L126)
 
 Turn serialized to JSON format.
 Messages are converted to MessageJSON, response is omitted (computed from messages).
@@ -22,3 +22,7 @@ Messages are converted to MessageJSON, response is omitted (computed from messag
 ### messages
 
 > **messages**: [`MessageJSON`](../../core/type-aliases/messagejson.md)[]
+
+## Remarks
+
+This type is derived from [Turn](../../core/interfaces/turn.md) and should stay in sync with it.

@@ -10,7 +10,7 @@ title: "Class: RetryAfterStrategy"
 
 # Class: RetryAfterStrategy
 
-Defined in: [src/http/retry.ts:395](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/http/retry.ts#L395)
+Defined in: [src/http/retry.ts:412](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/http/retry.ts#L412)
 
 Respects server-provided Retry-After headers for optimal retry timing.
 
@@ -55,7 +55,7 @@ const provider = createOpenAI({
 
 > **new RetryAfterStrategy**(`options`): `RetryAfterStrategy`
 
-Defined in: [src/http/retry.ts:407](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/http/retry.ts#L407)
+Defined in: [src/http/retry.ts:424](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/http/retry.ts#L424)
 
 Creates a new RetryAfterStrategy instance.
 
@@ -83,11 +83,25 @@ Maximum number of retry attempts (default: 3)
 
 ## Methods
 
+### fork()
+
+> **fork**(): `RetryAfterStrategy`
+
+Defined in: [src/http/retry.ts:435](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/http/retry.ts#L435)
+
+Creates a request-scoped copy of this strategy.
+
+#### Returns
+
+`RetryAfterStrategy`
+
+***
+
 ### onRetry()
 
 > **onRetry**(`error`, `attempt`): `number` \| `null`
 
-Defined in: [src/http/retry.ts:434](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/http/retry.ts#L434)
+Defined in: [src/http/retry.ts:461](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/http/retry.ts#L461)
 
 Determines retry delay using Retry-After header or fallback.
 
@@ -121,7 +135,7 @@ Delay from Retry-After header or fallback, null to stop
 
 > **setRetryAfter**(`seconds`): `void`
 
-Defined in: [src/http/retry.ts:423](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/http/retry.ts#L423)
+Defined in: [src/http/retry.ts:450](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/http/retry.ts#L450)
 
 Sets the retry delay from a Retry-After header value.
 

@@ -10,7 +10,7 @@ title: "Interface: BoundImageModel"
 
 # Interface: BoundImageModel\<TParams\>
 
-Defined in: [src/types/image.ts:293](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/image.ts#L293)
+Defined in: [src/types/image.ts:295](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/image.ts#L295)
 
 Bound image model - full definition.
 
@@ -31,7 +31,7 @@ Provider-specific parameter type
 
 > `readonly` **capabilities**: [`ImageCapabilities`](imagecapabilities.md)
 
-Defined in: [src/types/image.ts:301](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/image.ts#L301)
+Defined in: [src/types/image.ts:303](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/image.ts#L303)
 
 Model capabilities
 
@@ -41,7 +41,7 @@ Model capabilities
 
 > `readonly` **modelId**: `string`
 
-Defined in: [src/types/image.ts:295](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/image.ts#L295)
+Defined in: [src/types/image.ts:297](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/image.ts#L297)
 
 The model identifier
 
@@ -51,7 +51,7 @@ The model identifier
 
 > `readonly` **provider**: [`ImageProvider`](../type-aliases/imageprovider.md)\<`TParams`\>
 
-Defined in: [src/types/image.ts:298](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/image.ts#L298)
+Defined in: [src/types/image.ts:300](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/image.ts#L300)
 
 Reference to the parent provider
 
@@ -61,7 +61,7 @@ Reference to the parent provider
 
 > `optional` **edit**(`request`): `Promise`\<[`ImageResponse`](imageresponse.md)\>
 
-Defined in: [src/types/image.ts:325](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/image.ts#L325)
+Defined in: [src/types/image.ts:327](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/image.ts#L327)
 
 Edit an image (optional).
 
@@ -85,7 +85,7 @@ Promise resolving to the response
 
 > **generate**(`request`): `Promise`\<[`ImageResponse`](imageresponse.md)\>
 
-Defined in: [src/types/image.ts:309](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/image.ts#L309)
+Defined in: [src/types/image.ts:311](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/image.ts#L311)
 
 Generate images from a prompt.
 
@@ -109,7 +109,7 @@ Promise resolving to the response
 
 > `optional` **stream**(`request`): [`ImageProviderStreamResult`](imageproviderstreamresult.md)
 
-Defined in: [src/types/image.ts:317](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/image.ts#L317)
+Defined in: [src/types/image.ts:319](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/image.ts#L319)
 
 Stream image generation (optional).
 

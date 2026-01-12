@@ -12,7 +12,7 @@ title: "Type Alias: EmbeddingProvider"
 
 > **EmbeddingProvider**\<`TParams`, `TOptions`\> = [`Provider`](../interfaces/provider.md)\<`TOptions`\> & `object`
 
-Defined in: [src/types/provider.ts:459](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/provider.ts#L459)
+Defined in: [src/types/provider.ts:468](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/provider.ts#L468)
 
 Provider with Embedding modality support.
 

@@ -12,12 +12,12 @@ title: "Function: doFetch()"
 
 > **doFetch**(`url`, `init`, `config`, `provider`, `modality`): `Promise`\<`Response`\>
 
-Defined in: [src/http/fetch.ts:57](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/http/fetch.ts#L57)
+Defined in: [src/http/fetch.ts:67](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/http/fetch.ts#L67)
 
 Executes an HTTP fetch request with automatic retry, timeout handling, and error normalization.
 
 This function wraps the standard fetch API with additional capabilities:
-- Configurable timeout with automatic request cancellation
+- Configurable timeout with automatic request cancellation (per attempt)
 - Retry strategy support (exponential backoff, linear, token bucket, etc.)
 - Pre-request delay support for rate limiting strategies
 - Automatic Retry-After header parsing and handling

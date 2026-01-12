@@ -12,7 +12,7 @@ title: "Variable: anthropic"
 
 > `const` **anthropic**: [`Provider`](../../core/interfaces/provider.md)\<[`AnthropicModelOptions`](../interfaces/anthropicmodeloptions.md)\>
 
-Defined in: [src/providers/anthropic/index.ts:97](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/anthropic/index.ts#L97)
+Defined in: [src/providers/anthropic/index.ts:97](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/anthropic/index.ts#L97)
 
 Anthropic provider for the Universal Provider Protocol.
 

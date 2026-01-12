@@ -12,7 +12,7 @@ title: "Function: mcpTool()"
 
 > **mcpTool**(`options`): [`OpenAIMcpTool`](../interfaces/openaimcptool.md)
 
-Defined in: [src/providers/openai/types.ts:1439](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/openai/types.ts#L1439)
+Defined in: [src/providers/openai/types.ts:1440](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/openai/types.ts#L1440)
 
 Creates an MCP (Model Context Protocol) tool configuration for the Responses API.
 

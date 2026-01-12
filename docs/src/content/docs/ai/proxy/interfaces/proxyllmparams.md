@@ -10,7 +10,7 @@ title: "Interface: ProxyLLMParams"
 
 # Interface: ProxyLLMParams
 
-Defined in: [src/providers/proxy/types.ts:16](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/proxy/types.ts#L16)
+Defined in: [src/providers/proxy/types.ts:16](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/proxy/types.ts#L16)
 
 Proxy-specific LLM parameters.
 

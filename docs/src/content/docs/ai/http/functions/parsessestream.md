@@ -12,7 +12,7 @@ title: "Function: parseSSEStream()"
 
 > **parseSSEStream**(`body`): `AsyncGenerator`\<`unknown`, `void`, `unknown`\>
 
-Defined in: [src/http/sse.ts:37](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/http/sse.ts#L37)
+Defined in: [src/http/sse.ts:39](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/http/sse.ts#L39)
 
 Parses a Server-Sent Events stream into JSON objects.
 

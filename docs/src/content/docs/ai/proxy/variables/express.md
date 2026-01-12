@@ -12,7 +12,7 @@ title: "Variable: express"
 
 > `const` **express**: `object`
 
-Defined in: [src/providers/proxy/server/express.ts:161](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/providers/proxy/server/express.ts#L161)
+Defined in: [src/providers/proxy/server/express.ts:161](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/providers/proxy/server/express.ts#L161)
 
 Express adapter utilities.
 

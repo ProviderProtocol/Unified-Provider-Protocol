@@ -12,7 +12,7 @@ title: "Function: aggregateUsage()"
 
 > **aggregateUsage**(`usages`): [`TokenUsage`](../interfaces/tokenusage.md)
 
-Defined in: [src/types/turn.ts:205](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/turn.ts#L205)
+Defined in: [src/types/turn.ts:213](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/turn.ts#L213)
 
 Aggregates token usage from multiple inference cycles.
 

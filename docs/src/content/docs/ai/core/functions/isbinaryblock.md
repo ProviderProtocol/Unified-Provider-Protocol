@@ -12,7 +12,7 @@ title: "Function: isBinaryBlock()"
 
 > **isBinaryBlock**(`block`): `block is BinaryBlock`
 
-Defined in: [src/types/content.ts:323](https://github.com/ProviderProtocol/ai/blob/4c8c9341d87bac66988c6f38db5be70a018d036e/src/types/content.ts#L323)
+Defined in: [src/types/content.ts:323](https://github.com/ProviderProtocol/ai/blob/ad6923294c4b613e141878e1142aaea0e84551ed/src/types/content.ts#L323)
 
 Type guard for BinaryBlock.
 
