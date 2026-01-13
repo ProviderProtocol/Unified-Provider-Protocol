@@ -12,7 +12,7 @@ title: "Function: reasoning()"
 
 > **reasoning**(`content`): [`ReasoningBlock`](../interfaces/reasoningblock.md)
 
-Defined in: [src/types/content.ts:346](https://github.com/ProviderProtocol/ai/blob/94111b2134ab64c6a897065c214032fc433bd2e7/src/types/content.ts#L346)
+Defined in: [src/types/content.ts:346](https://github.com/ProviderProtocol/ai/blob/bc1a2ea6935894ca3de99156bbd00bacf469006e/src/types/content.ts#L346)
 
 Creates a reasoning content block from a string.
 

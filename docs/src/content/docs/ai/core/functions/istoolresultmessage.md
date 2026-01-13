@@ -12,7 +12,7 @@ title: "Function: isToolResultMessage()"
 
 > **isToolResultMessage**(`msg`): `msg is ToolResultMessage`
 
-Defined in: [src/types/messages.ts:390](https://github.com/ProviderProtocol/ai/blob/94111b2134ab64c6a897065c214032fc433bd2e7/src/types/messages.ts#L390)
+Defined in: [src/types/messages.ts:390](https://github.com/ProviderProtocol/ai/blob/bc1a2ea6935894ca3de99156bbd00bacf469006e/src/types/messages.ts#L390)
 
 Type guard for ToolResultMessage.
 

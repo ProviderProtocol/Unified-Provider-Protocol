@@ -47,6 +47,7 @@ console.log(turn.response.text);
 - [GoogleFileSearchTool](interfaces/googlefilesearchtool.md)
 - [GoogleGroundingMetadata](interfaces/googlegroundingmetadata.md)
 - [GoogleHeaders](interfaces/googleheaders.md)
+- [GoogleImageConfig](interfaces/googleimageconfig.md)
 - [GoogleLLMParams](interfaces/googlellmparams.md)
 - [GoogleMapsTool](interfaces/googlemapstool.md)
 - [GoogleSearchTool](interfaces/googlesearchtool.md)
@@ -56,6 +57,7 @@ console.log(turn.response.text);
 ## Type Aliases
 
 - [GoogleBuiltInTool](type-aliases/googlebuiltintool.md)
+- [GoogleResponseModality](type-aliases/googleresponsemodality.md)
 - [GoogleTaskType](type-aliases/googletasktype.md)
 
 ## Variables

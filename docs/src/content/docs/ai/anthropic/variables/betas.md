@@ -12,7 +12,7 @@ title: "Variable: betas"
 
 > `const` **betas**: `object`
 
-Defined in: [src/providers/anthropic/types.ts:33](https://github.com/ProviderProtocol/ai/blob/94111b2134ab64c6a897065c214032fc433bd2e7/src/providers/anthropic/types.ts#L33)
+Defined in: [src/providers/anthropic/types.ts:33](https://github.com/ProviderProtocol/ai/blob/bc1a2ea6935894ca3de99156bbd00bacf469006e/src/providers/anthropic/types.ts#L33)
 
 Known Anthropic beta header values.
 

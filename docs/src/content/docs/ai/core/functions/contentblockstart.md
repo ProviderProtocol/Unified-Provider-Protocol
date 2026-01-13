@@ -12,7 +12,7 @@ title: "Function: contentBlockStart()"
 
 > **contentBlockStart**(`index`): [`StreamEvent`](../interfaces/streamevent.md)
 
-Defined in: [src/types/stream.ts:286](https://github.com/ProviderProtocol/ai/blob/94111b2134ab64c6a897065c214032fc433bd2e7/src/types/stream.ts#L286)
+Defined in: [src/types/stream.ts:286](https://github.com/ProviderProtocol/ai/blob/bc1a2ea6935894ca3de99156bbd00bacf469006e/src/types/stream.ts#L286)
 
 Creates a content block start stream event.
 
