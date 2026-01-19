@@ -304,6 +304,7 @@ const claude = llm({
 | Google | `GoogleLLMParams` | `GoogleEmbedParams` | `GoogleImageParams` |
 | xAI | `XAILLMParams` | - | `XAIImageParams` |
 | Ollama | `OllamaLLMParams` | `OllamaEmbedParams` | - |
+| Responses | `ResponsesParams` | - | - |
 
 ## Environment Variables
 
@@ -315,6 +316,7 @@ OPENAI_API_KEY=sk-...
 GOOGLE_API_KEY=...
 XAI_API_KEY=...
 OPENROUTER_API_KEY=...
+OPENRESPONSES_API_KEY=...  # For responses provider (or use apiKeyEnv option)
 ```
 
 You can also provide keys explicitly in the config:
