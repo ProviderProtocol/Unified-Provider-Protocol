@@ -10,7 +10,7 @@ title: "Interface: GoogleHeaders"
 
 # Interface: GoogleHeaders
 
-Defined in: [src/providers/google/types.ts:621](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/google/types.ts#L621)
+Defined in: [src/providers/google/types.ts:625](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/google/types.ts#L625)
 
 Google Gemini-specific HTTP headers for API requests.
 
@@ -32,7 +32,7 @@ const headers: GoogleHeaders = {
 
 > `optional` **x-goog-api-client**: `string`
 
-Defined in: [src/providers/google/types.ts:623](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/google/types.ts#L623)
+Defined in: [src/providers/google/types.ts:627](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/google/types.ts#L627)
 
 Client identification header for partners and libraries.
 
@@ -42,6 +42,6 @@ Client identification header for partners and libraries.
 
 > `optional` **x-goog-user-project**: `string`
 
-Defined in: [src/providers/google/types.ts:625](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/google/types.ts#L625)
+Defined in: [src/providers/google/types.ts:629](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/google/types.ts#L629)
 
 Quota project ID for Vertex AI billing.

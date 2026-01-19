@@ -12,7 +12,7 @@ title: "Function: toEmbeddingJSON()"
 
 > **toEmbeddingJSON**(`result`): `Response`
 
-Defined in: [src/providers/proxy/server/webapi.ts:222](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/proxy/server/webapi.ts#L222)
+Defined in: [src/providers/proxy/server/webapi.ts:222](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/proxy/server/webapi.ts#L222)
 
 Create a JSON Response from an embedding result.
 

@@ -24,6 +24,7 @@ This module provides comprehensive HTTP infrastructure including:
 - [cancelledError](functions/cancellederror.md)
 - [doFetch](functions/dofetch.md)
 - [doStreamFetch](functions/dostreamfetch.md)
+- [maskApiKey](functions/maskapikey.md)
 - [networkError](functions/networkerror.md)
 - [normalizeHttpError](functions/normalizehttperror.md)
 - [parseSimpleTextStream](functions/parsesimpletextstream.md)
@@ -31,6 +32,7 @@ This module provides comprehensive HTTP infrastructure including:
 - [resolveApiKey](functions/resolveapikey.md)
 - [statusToErrorCode](functions/statustoerrorcode.md)
 - [timeoutError](functions/timeouterror.md)
+- [warnInsecureUrl](functions/warninsecureurl.md)
 
 ## References
 

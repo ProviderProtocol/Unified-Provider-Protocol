@@ -10,7 +10,7 @@ title: "Interface: XAIMessagesParams"
 
 # Interface: XAIMessagesParams
 
-Defined in: [src/providers/xai/types.ts:205](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L205)
+Defined in: [src/providers/xai/types.ts:193](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L193)
 
 xAI Messages API parameters (Anthropic-compatible).
 
@@ -39,7 +39,7 @@ const params: XAIMessagesParams = {
 
 > `optional` **max\_tokens**: `number`
 
-Defined in: [src/providers/xai/types.ts:207](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L207)
+Defined in: [src/providers/xai/types.ts:195](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L195)
 
 Maximum number of tokens to generate
 
@@ -49,7 +49,7 @@ Maximum number of tokens to generate
 
 > `optional` **metadata**: `object`
 
-Defined in: [src/providers/xai/types.ts:222](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L222)
+Defined in: [src/providers/xai/types.ts:210](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L210)
 
 Metadata for the request
 
@@ -63,7 +63,7 @@ Metadata for the request
 
 > `optional` **stop\_sequences**: `string`[]
 
-Defined in: [src/providers/xai/types.ts:219](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L219)
+Defined in: [src/providers/xai/types.ts:207](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L207)
 
 Custom stop sequences
 
@@ -73,7 +73,7 @@ Custom stop sequences
 
 > `optional` **temperature**: `number`
 
-Defined in: [src/providers/xai/types.ts:210](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L210)
+Defined in: [src/providers/xai/types.ts:198](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L198)
 
 Temperature for randomness (0.0 - 1.0)
 
@@ -83,7 +83,7 @@ Temperature for randomness (0.0 - 1.0)
 
 > `optional` **thinking**: `object`
 
-Defined in: [src/providers/xai/types.ts:227](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L227)
+Defined in: [src/providers/xai/types.ts:215](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L215)
 
 Extended thinking configuration
 
@@ -97,11 +97,33 @@ Extended thinking configuration
 
 ***
 
+### tool\_choice?
+
+> `optional` **tool\_choice**: `object`
+
+Defined in: [src/providers/xai/types.ts:227](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L227)
+
+Tool selection strategy.
+
+- `auto`: Model decides when to use tools
+- `any`: Model must use at least one tool
+- `tool`: Model must use the specific tool named in `name`
+
+#### name?
+
+> `optional` **name**: `string`
+
+#### type
+
+> **type**: `"auto"` \| `"tool"` \| `"any"`
+
+***
+
 ### top\_k?
 
 > `optional` **top\_k**: `number`
 
-Defined in: [src/providers/xai/types.ts:216](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L216)
+Defined in: [src/providers/xai/types.ts:204](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L204)
 
 Top-k sampling
 
@@ -111,6 +133,6 @@ Top-k sampling
 
 > `optional` **top\_p**: `number`
 
-Defined in: [src/providers/xai/types.ts:213](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L213)
+Defined in: [src/providers/xai/types.ts:201](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L201)
 
 Top-p (nucleus) sampling (0.0 - 1.0)

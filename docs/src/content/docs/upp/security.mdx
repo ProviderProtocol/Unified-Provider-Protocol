@@ -7,363 +7,49 @@ import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 # Security Considerations
 
-<Badge text="UPP-1.2.0" variant="note" />
+<Badge text="UPP-1.3.0" variant="note" />
 
 ## API Key Handling
 
 - API keys MUST NOT be logged
-- API keys SHOULD NOT be included in error messages
-- Implementations SHOULD support secure key storage integration
-- Environment variable fallback SHOULD be clearly documented
+- API keys SHOULD NOT appear in error messages
+- Implementations SHOULD support secure key storage
 
 ## Tool Execution
 
-Tools execute arbitrary code based on LLM-provided arguments:
-
 - Tool arguments MUST be treated as untrusted input
-- Implementations MUST NOT automatically validate arguments against schema
+- Implementations MUST NOT validate arguments against schema automatically
 - Tool implementations SHOULD validate and sanitize inputs
 - Sensitive operations SHOULD use approval handlers
-- File system and network operations SHOULD be sandboxed where possible
 
 ## Content Handling
 
-- Binary data (images, audio) may come from untrusted sources
+- Binary data may come from untrusted sources
 - Implementations SHOULD validate MIME types
 - Large content SHOULD be size-limited
-- Content filtering errors SHOULD be handled gracefully
 
 ## Network Security
 
 - Implementations SHOULD default to TLS/SSL
-- Custom base URLs allow man-in-the-middle if misconfigured
-- Proxy configurations SHOULD be carefully validated
+- Custom base URLs allow MITM if misconfigured
 - Timeout settings prevent resource exhaustion
-
-## Structured Output Security
-
-- Structured output data comes from the model and should be validated
-- Applications SHOULD NOT trust structured output for security decisions without validation
-- Schema validation is the application's responsibility
-
-
-## Appendix A: JSON Schema for UPP Structures
-
-### A.1 Message Schema
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "definitions": {
-    "TextBlock": {
-      "type": "object",
-      "required": ["type", "text"],
-      "properties": {
-        "type": { "const": "text" },
-        "text": { "type": "string" }
-      }
-    },
-    "ReasoningBlock": {
-      "type": "object",
-      "required": ["type", "text"],
-      "properties": {
-        "type": { "const": "reasoning" },
-        "text": { "type": "string" }
-      },
-      "description": "Model reasoning/thinking content from extended thinking models"
-    },
-    "ImageSource": {
-      "oneOf": [
-        {
-          "type": "object",
-          "required": ["type", "data"],
-          "properties": {
-            "type": { "const": "base64" },
-            "data": { "type": "string" }
-          }
-        },
-        {
-          "type": "object",
-          "required": ["type", "url"],
-          "properties": {
-            "type": { "const": "url" },
-            "url": { "type": "string", "format": "uri" }
-          }
-        },
-        {
-          "type": "object",
-          "required": ["type", "data"],
-          "properties": {
-            "type": { "const": "bytes" },
-            "data": { "type": "string", "contentEncoding": "base64" }
-          }
-        }
-      ]
-    },
-    "ImageBlock": {
-      "type": "object",
-      "required": ["type", "source", "mimeType"],
-      "properties": {
-        "type": { "const": "image" },
-        "source": { "$ref": "#/definitions/ImageSource" },
-        "mimeType": { "type": "string" },
-        "width": { "type": "integer" },
-        "height": { "type": "integer" }
-      }
-    },
-    "DocumentSource": {
-      "oneOf": [
-        {
-          "type": "object",
-          "required": ["type", "data"],
-          "properties": {
-            "type": { "const": "base64" },
-            "data": { "type": "string" }
-          }
-        },
-        {
-          "type": "object",
-          "required": ["type", "url"],
-          "properties": {
-            "type": { "const": "url" },
-            "url": { "type": "string", "format": "uri" }
-          }
-        },
-        {
-          "type": "object",
-          "required": ["type", "data"],
-          "properties": {
-            "type": { "const": "text" },
-            "data": { "type": "string" }
-          }
-        }
-      ]
-    },
-    "DocumentBlock": {
-      "type": "object",
-      "required": ["type", "source", "mimeType"],
-      "properties": {
-        "type": { "const": "document" },
-        "source": { "$ref": "#/definitions/DocumentSource" },
-        "mimeType": { "type": "string" },
-        "title": { "type": "string" }
-      }
-    },
-    "AudioBlock": {
-      "type": "object",
-      "required": ["type", "data", "mimeType"],
-      "properties": {
-        "type": { "const": "audio" },
-        "data": { "type": "string", "contentEncoding": "base64" },
-        "mimeType": { "type": "string" },
-        "duration": { "type": "number" }
-      }
-    },
-    "VideoBlock": {
-      "type": "object",
-      "required": ["type", "data", "mimeType"],
-      "properties": {
-        "type": { "const": "video" },
-        "data": { "type": "string", "contentEncoding": "base64" },
-        "mimeType": { "type": "string" },
-        "duration": { "type": "number" },
-        "width": { "type": "integer" },
-        "height": { "type": "integer" }
-      }
-    },
-    "BinaryBlock": {
-      "type": "object",
-      "required": ["type", "data", "mimeType"],
-      "properties": {
-        "type": { "const": "binary" },
-        "data": { "type": "string", "contentEncoding": "base64" },
-        "mimeType": { "type": "string" },
-        "metadata": { "type": "object" }
-      }
-    },
-    "ContentBlock": {
-      "oneOf": [
-        { "$ref": "#/definitions/TextBlock" },
-        { "$ref": "#/definitions/ReasoningBlock" },
-        { "$ref": "#/definitions/ImageBlock" },
-        { "$ref": "#/definitions/DocumentBlock" },
-        { "$ref": "#/definitions/AudioBlock" },
-        { "$ref": "#/definitions/VideoBlock" },
-        { "$ref": "#/definitions/BinaryBlock" }
-      ]
-    },
-    "ToolCall": {
-      "type": "object",
-      "required": ["toolCallId", "toolName", "arguments"],
-      "properties": {
-        "toolCallId": { "type": "string" },
-        "toolName": { "type": "string" },
-        "arguments": { "type": "object" }
-      }
-    },
-    "ToolResult": {
-      "type": "object",
-      "required": ["toolCallId", "result"],
-      "properties": {
-        "toolCallId": { "type": "string" },
-        "result": {},
-        "isError": { "type": "boolean", "default": false }
-      }
-    },
-    "UserMessage": {
-      "type": "object",
-      "required": ["id", "type", "content", "timestamp"],
-      "properties": {
-        "id": { "type": "string" },
-        "type": { "const": "user" },
-        "content": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/ContentBlock" }
-        },
-        "timestamp": { "type": "string", "format": "date-time" },
-        "metadata": { "type": "object" }
-      }
-    },
-    "AssistantMessage": {
-      "type": "object",
-      "required": ["id", "type", "content", "timestamp"],
-      "properties": {
-        "id": { "type": "string" },
-        "type": { "const": "assistant" },
-        "content": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/ContentBlock" }
-        },
-        "toolCalls": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/ToolCall" }
-        },
-        "timestamp": { "type": "string", "format": "date-time" },
-        "metadata": { "type": "object" }
-      }
-    },
-    "ToolResultMessage": {
-      "type": "object",
-      "required": ["id", "type", "results", "timestamp"],
-      "properties": {
-        "id": { "type": "string" },
-        "type": { "const": "tool_result" },
-        "results": {
-          "type": "array",
-          "items": { "$ref": "#/definitions/ToolResult" }
-        },
-        "timestamp": { "type": "string", "format": "date-time" },
-        "metadata": { "type": "object" }
-      }
-    },
-    "Message": {
-      "oneOf": [
-        { "$ref": "#/definitions/UserMessage" },
-        { "$ref": "#/definitions/AssistantMessage" },
-        { "$ref": "#/definitions/ToolResultMessage" }
-      ]
-    }
-  }
-}
-```
-
-### A.2 Error Schema
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "required": ["message", "code", "provider", "modality"],
-  "properties": {
-    "message": { "type": "string" },
-    "code": {
-      "type": "string",
-      "enum": [
-        "AUTHENTICATION_FAILED",
-        "RATE_LIMITED",
-        "CONTEXT_LENGTH_EXCEEDED",
-        "MODEL_NOT_FOUND",
-        "INVALID_REQUEST",
-        "INVALID_RESPONSE",
-        "CONTENT_FILTERED",
-        "QUOTA_EXCEEDED",
-        "PROVIDER_ERROR",
-        "NETWORK_ERROR",
-        "TIMEOUT",
-        "CANCELLED"
-      ]
-    },
-    "provider": { "type": "string" },
-    "modality": {
-      "type": "string",
-      "enum": ["llm", "embedding", "image", "audio", "video"]
-    },
-    "statusCode": { "type": "integer" },
-    "cause": { "type": "object" }
-  }
-}
-```
-
-### A.3 Turn Schema
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "required": ["messages", "response", "toolExecutions", "usage", "cycles"],
-  "properties": {
-    "messages": {
-      "type": "array",
-      "items": { "$ref": "#/definitions/Message" }
-    },
-    "response": { "$ref": "#/definitions/AssistantMessage" },
-    "toolExecutions": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["toolName", "toolCallId", "arguments", "result", "isError", "duration"],
-        "properties": {
-          "toolName": { "type": "string" },
-          "toolCallId": { "type": "string" },
-          "arguments": { "type": "object" },
-          "result": {},
-          "isError": { "type": "boolean" },
-          "duration": { "type": "integer" },
-          "approved": { "type": "boolean" }
-        }
-      }
-    },
-    "usage": {
-      "type": "object",
-      "required": ["inputTokens", "outputTokens", "totalTokens", "cacheReadTokens", "cacheWriteTokens"],
-      "properties": {
-        "inputTokens": { "type": "integer" },
-        "outputTokens": { "type": "integer" },
-        "totalTokens": { "type": "integer" },
-        "cacheReadTokens": { "type": "integer" },
-        "cacheWriteTokens": { "type": "integer" },
-        "cycles": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "inputTokens": { "type": "integer" },
-              "outputTokens": { "type": "integer" },
-              "cacheReadTokens": { "type": "integer" },
-              "cacheWriteTokens": { "type": "integer" }
-            }
-          }
-        }
-      }
-    },
-    "cycles": { "type": "integer" },
-    "data": {}
-  }
-}
-```
 
 
 ## Changelog
+
+### 1.3.0
+
+- Reformatted specification for improved clarity and usability
+- Updated RFC 2119 compliance with BCP 14 and RFC 8174 references
+- Simplified schema definitions to reference JSON Schema directly
+- Removed verbose appendix JSON schemas (duplicative of prose definitions)
+- Consolidated helper types into single section
+- Streamlined conformance requirements into tabular format
+- Removed provider implementation guide (to be published as separate document)
+- Simplified type constant documentation
+- Clarified MUST/SHOULD/MAY usage throughout per RFC 2119/8174
+- Reorganized table of contents for logical flow
+- Reduced specification length while maintaining semantic completeness
 
 ### 1.2.0-draft
 

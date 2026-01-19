@@ -12,7 +12,7 @@ title: "Type Alias: XAIAPIMode"
 
 > **XAIAPIMode** = `"completions"` \| `"responses"` \| `"messages"`
 
-Defined in: [src/providers/xai/types.ts:241](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L241)
+Defined in: [src/providers/xai/types.ts:238](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L238)
 
 API mode selector for the xAI provider.
 

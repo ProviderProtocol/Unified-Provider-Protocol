@@ -7,433 +7,59 @@ import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 # Tools
 
-<Badge text="UPP-1.2.0" variant="note" />
+<Badge text="UPP-1.3.0" variant="note" />
 
 ## Tool Definition
 
-Tools use **JSON Schema** for parameter definitions.
-
-**Tool Structure:**
-
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `name` | String | Yes | Tool name (must be unique within an llm() instance) |
-| `description` | String | Yes | Human-readable description for the model |
-| `parameters` | JSONSchema | Yes | JSON Schema defining parameters |
-| `metadata` | ToolMetadata | No | Provider-specific metadata (e.g., cache control) |
-| `run` | Function | Yes | Tool execution function |
-| `approval` | Function | No | Optional approval handler for sensitive operations |
+| `name` | String | Yes | Tool name (unique within instance) |
+| `description` | String | Yes | Description for the model |
+| `parameters` | JSONSchema | Yes | Parameter schema |
+| `run` | Function | Yes | Execution function |
+| `approval` | Function | No | Approval handler |
+| `metadata` | Map | No | Provider-specific metadata |
 
-**ToolMetadata Structure:**
-
-Provider-namespaced metadata for tools. Each provider defines its own metadata shape, enabling provider-specific features without affecting other providers. The structure is `Map&lt;String, Map&gt;` where the outer key is the provider name.
-
-```text
-{
-  providerName: { key: value, ... }
-}
-```
-
-Providers MUST ignore metadata namespaces they don't recognize. Tool metadata is passed through to the provider's native format where supported. Consult individual provider documentation for supported metadata options.
-
-**JSONSchema Structure (for tool parameters):**
-
-```text
-{
-  type: "object",
-  properties: {
-    paramName: {
-      type: "string" | "number" | "integer" | "boolean" | "array" | "object",
-      description: "Parameter description",
-      enum: [...],        // optional
-      items: {...},       // for arrays
-      properties: {...},  // for nested objects
-      required: [...],    // for nested objects
-      default: value      // optional
-    }
-  },
-  required: ["paramName", ...]
-}
-```
-
-## Tool Example
-
-```text
-getWeather = {
-  name: "getWeather",
-  description: "Get current weather for a location",
-  parameters: {
-    type: "object",
-    properties: {
-      location: {
-        type: "string",
-        description: "City name or coordinates"
-      },
-      units: {
-        type: "string",
-        enum: ["celsius", "fahrenheit"],
-        default: "celsius"
-      }
-    },
-    required: ["location"]
-  },
-  run: async (params) => {
-    weather = await fetchWeather(params.location, params.units ?? "celsius")
-    return weather.temp + "° " + params.units + ", " + weather.condition
-  }
-}
-
-claude = llm({
-  model: anthropic("claude-haiku-4-20250514"),
-  config: { apiKey: env.ANTHROPIC_API_KEY },
-  system: "You are a weather assistant.",
-  tools: [getWeather]
-})
-```
-
-## Tool Approval
-
-For sensitive operations, tools can require approval:
-
-```text
-deleteFile = {
-  name: "deleteFile",
-  description: "Delete a file from the filesystem",
-  parameters: {
-    type: "object",
-    properties: {
-      path: { type: "string", description: "File path to delete" }
-    },
-    required: ["path"]
-  },
-  approval: async (params) => {
-    // UI prompt, admin check, path validation, etc.
-    return await promptUser("Allow deletion of " + params.path + "?")
-  },
-  run: async (params) => {
-    await fs.unlink(params.path)
-    return "Deleted " + params.path
-  }
-}
-```
-
-## Tool Execution Flow
+## Tool Execution
 
 By default, `llm()` handles tool execution automatically:
 
-1. Model returns an `AssistantMessage` with `toolCalls`
-2. If `approval` is defined, it's called first (rejected = error result sent to model)
-3. Tool's `run` function is executed with arguments from the model
-4. Result (or error) is sent back to the model as `ToolResultMessage`
-5. Loop continues until model returns without tool calls OR max iterations reached
+1. Model returns `AssistantMessage` with `toolCalls`
+2. If `approval` defined and returns `false`, error result sent to model
+3. Tool's `run` function executed
+4. Result sent back as `ToolResultMessage`
+5. Loop continues until no tool calls OR max iterations
 
-**Error handling:**
-- If `approval()` throws an exception, the exception propagates to the caller and aborts the generation
-- If `approval()` returns `false`, an error result is sent to the model
-- If the tool's `run` function throws, the error is caught and sent as an error result to the model
-
-<Aside type="caution">
-`llm()` does NOT validate tool arguments against the JSON Schema. The schema is provided to the model to guide its output, but validation and sanitization of LLM-provided arguments is the responsibility of the tool implementation. Always treat tool arguments as untrusted input.
-</Aside>
-
-<Aside type="note">
-Similarly, UPP does not validate structured output responses against their schema (see Section 11). Schemas guide LLM behavior but validation is the application's responsibility in both cases.
-</Aside>
+**IMPORTANT:** `llm()` SHALL NOT validate tool arguments against the schema. Tool implementations MUST treat arguments as untrusted input.
 
 ## ToolUseStrategy
 
-For custom control over tool execution, including input/output transformation:
-
-**ToolUseStrategy Structure:**
-
 | Field | Type | Description |
 |-------|------|-------------|
-| `maxIterations` | Integer | Maximum tool execution rounds (default: 10) |
-| `onToolCall` | Function | Called when the model requests a tool call |
-| `onBeforeCall` | Function | Called before tool execution; can skip or transform params |
-| `onAfterCall` | Function | Called after tool execution; can transform result |
-| `onError` | Function | Called on tool execution error |
-| `onMaxIterations` | Function | Called when max iterations reached |
-
-**BeforeCallResult Structure:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `proceed` | Boolean | Whether to proceed with tool execution |
-| `params` | Any? | Transformed parameters to use (optional) |
-
-**AfterCallResult Structure:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `result` | Any | Transformed result to return to the model |
-
-**Hook Return Types:**
-
-| Hook | Return Type | Behavior |
-|------|-------------|----------|
-| `onBeforeCall` | `false` | Skip execution |
-| `onBeforeCall` | `true` | Proceed with original params |
-| `onBeforeCall` | `BeforeCallResult` | Control execution and optionally transform params |
-| `onAfterCall` | `void` | Use original result |
-| `onAfterCall` | `AfterCallResult` | Transform result before returning to model |
-
-## Strategy Example
-
-```text
-strategy = {
-  maxIterations: 5,
-
-  onBeforeCall: async (tool, params) => {
-    print("Calling " + tool.name + " with", params)
-    return true  // Allow execution with original params
-  },
-
-  onAfterCall: async (tool, params, result) => {
-    await logToolUsage(tool.name, params, result)
-    // Return void to use original result
-  },
-
-  onError: async (tool, params, error) => {
-    await alertOps("Tool " + tool.name + " failed: " + error.message)
-  },
-
-  onMaxIterations: async (iterations) => {
-    print("Tool loop hit max iterations:", iterations)
-  }
-}
-
-claude = llm({
-  model: anthropic("claude-haiku-4-20250514"),
-  config: { apiKey: env.ANTHROPIC_API_KEY },
-  tools: [getWeather, searchWeb],
-  toolStrategy: strategy
-})
-```
-
-## Input Transformation
-
-Transform tool parameters before execution:
-
-```text
-strategy = {
-  onBeforeCall: async (tool, params) => {
-    if (tool.name == "search") {
-      // Add default pagination
-      return {
-        proceed: true,
-        params: { ...params, limit: 10, offset: 0 }
-      }
-    }
-    // Proceed with original params for other tools
-    return true
-  }
-}
-```
-
-## Output Transformation
-
-Transform tool results before returning to the model:
-
-```text
-strategy = {
-  onAfterCall: async (tool, params, result) => {
-    if (tool.name == "fetch_data") {
-      // Sanitize sensitive fields
-      return { result: redactPII(result) }
-    }
-    if (tool.name == "get_users") {
-      // Truncate large results
-      return { result: result.slice(0, 100) }
-    }
-    // Return void to use original result
-  }
-}
-```
-
-## Combined Transformation
-
-Input and output transformation can be combined:
-
-```text
-strategy = {
-  onBeforeCall: async (tool, params) => {
-    // Inject authentication
-    if (tool.name == "api_call") {
-      return {
-        proceed: true,
-        params: { ...params, authToken: getAuthToken() }
-      }
-    }
-    return true
-  },
-
-  onAfterCall: async (tool, params, result) => {
-    // Remove injected auth from logged result
-    if (tool.name == "api_call") {
-      return { result: { ...result, authToken: undefined } }
-    }
-  }
-}
-```
-
-## Disabling Automatic Tool Execution
-
-To handle tool calls manually:
-
-```text
-claude = llm({
-  model: anthropic("claude-haiku-4-20250514"),
-  config: { apiKey: env.ANTHROPIC_API_KEY },
-  tools: [getWeather],
-  toolStrategy: { maxIterations: 0 }  // Disable auto-execution
-})
-
-turn = await claude.generate([], "What is the weather?")
-
-if (turn.response.hasToolCalls) {
-  // Handle manually
-  for toolCall in turn.response.toolCalls {
-    print("Model wants to call:", toolCall.toolName)
-    // Execute yourself, then continue conversation
-  }
-}
-```
-
-## Multiple Tool Calls
-
-Models may request multiple tool calls in a single response. `llm()` executes them in parallel by default:
-
-```text
-claude = llm({
-  model: anthropic("claude-haiku-4-20250514"),
-  config: { apiKey: env.ANTHROPIC_API_KEY },
-  tools: [getWeather, getTime]
-})
-
-// Model might call both tools simultaneously
-turn = await claude.generate(
-  "What is the weather and time in Tokyo and Paris?"
-)
-
-// turn.toolExecutions might contain 4 executions
-// (weather + time for each city)
-```
+| `maxIterations` | Integer | Maximum tool rounds (default: 10) |
+| `onToolCall` | Function | Called when tool requested |
+| `onBeforeCall` | Function | Called before execution |
+| `onAfterCall` | Function | Called after execution |
+| `onError` | Function | Called on execution error |
+| `onMaxIterations` | Function | Called when max reached |
 
 ## Provider-Native Tools
 
-Some providers offer **provider-native tools**—built-in capabilities that execute server-side rather than client-side. These differ fundamentally from UPP function tools:
+Some providers offer built-in server-side tools (web search, code interpreter, etc.). These differ from UPP function tools:
 
 | Aspect | UPP Function Tools | Provider-Native Tools |
 |--------|-------------------|----------------------|
-| Passed via | `tools` parameter in `llm()` | `params.tools` (pass-through) |
-| Execution | Client-side via `run` function | Server-side by provider |
-| Output | Returned by `run()`, sent back as `ToolResultMessage` | Incorporated into response content |
-| Definition | Requires `name`, `description`, `parameters`, `run` | Provider-specific structure |
+| Passed via | `tools` parameter | `params.tools` |
+| Execution | Client-side | Server-side |
 
-**Examples of provider-native tools:**
-
-- **Web Search** - Search the web for current information
-- **Code Interpreter** - Execute code in a sandboxed environment
-- **Image Generation** - Generate images from text prompts
-- **File Search** - Search through uploaded documents
-- **Computer Use** - Interact with computer interfaces
-
-#### 10.9.1 Usage Pattern
-
-Provider-native tools are passed through the `params` object, not the `tools` array:
-
-```text
-import openai from "upp/openai"
-
-// Provider-native tools go in params.tools
+```
+// Provider-native tools go in params
 gpt = llm({
   model: openai("gpt-4o"),
   params: {
-    tools: [
-      { type: "web_search" },
-      { type: "image_generation", quality: "high" }
-    ]
+    tools: [{ type: "web_search" }]
   },
-  // UPP function tools go here (can be used together)
+  // UPP function tools
   tools: [myCustomTool]
 })
 ```
-
-#### 10.9.2 Output Handling
-
-Provider-native tool outputs SHOULD be transformed into standard UPP content blocks:
-
-- Image generation results → `ImageBlock` in `AssistantMessage.content`
-- Audio generation results → `AudioBlock` in `AssistantMessage.content`
-- Text-based results (web search, code output) → Incorporated into text response
-
-This ensures outputs are accessible via standard message accessors:
-
-```text
-turn = await gpt.generate("Generate an image of a sunset")
-
-// Generated images are standard content blocks
-images = turn.response.images  // List&lt;ImageBlock&gt;
-firstImage = images[0]
-```
-
-#### 10.9.3 Provider Implementation
-
-Providers offering native tools SHOULD:
-
-1. **Document available tools** - List supported native tools and their configuration options
-2. **Export helper constructors** - Provide ergonomic functions for creating tool configurations
-3. **Transform outputs to content** - Convert tool outputs to standard `ContentBlock` types
-4. **Preserve tool metadata** - Store provider-specific execution details in `metadata.{providerName}` if needed for multi-turn or debugging
-
-```text
-// Example: Provider exports tool helpers
-import { tools } from "upp/openai"
-
-gpt = llm({
-  model: openai("gpt-4o"),
-  params: {
-    tools: [
-      tools.webSearch({ search_context_size: "medium" }),
-      tools.imageGeneration({ quality: "high", size: "1024x1024" })
-    ]
-  }
-})
-```
-
-#### 10.9.4 Combining Tool Types
-
-UPP function tools and provider-native tools can be used together. The provider is responsible for merging them correctly when sending requests:
-
-```text
-// Both tool types in one configuration
-gpt = llm({
-  model: openai("gpt-4o"),
-  params: {
-    tools: [tools.webSearch()]  // Provider-native
-  },
-  tools: [getWeather, saveNote]  // UPP function tools
-})
-
-// The model can use any available tool
-turn = await gpt.generate("What's the weather in Paris and save it to my notes")
-```
-
-The `llm()` core handles UPP function tool execution automatically. Provider-native tools execute server-side and their results appear in the response.
-
-#### 10.9.5 Provider Implementation Notes
-
-Provider-native tools vary significantly between vendors. Implementations SHOULD:
-
-1. **Export helper constructors** in a `tools` namespace (e.g., `import { tools } from "upp/openai"`)
-2. **Document available tools** for each provider with their configuration options
-3. **Handle beta/preview features** via `config.headers` when required by the vendor
-
-Common built-in tool categories across providers include:
-- **Web Search** - Real-time web information retrieval
-- **Code Execution** - Sandboxed code interpretation
-- **File/Document Search** - RAG over document stores
-- **Image Generation** - Text-to-image within LLM context
-
-Consult individual provider documentation for specific tool availability, parameters, and pricing.

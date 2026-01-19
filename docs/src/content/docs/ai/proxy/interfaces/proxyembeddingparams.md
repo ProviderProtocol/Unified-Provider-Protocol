@@ -10,7 +10,7 @@ title: "Interface: ProxyEmbeddingParams"
 
 # Interface: ProxyEmbeddingParams
 
-Defined in: [src/providers/proxy/types.ts:27](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/proxy/types.ts#L27)
+Defined in: [src/providers/proxy/types.ts:27](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/proxy/types.ts#L27)
 
 Proxy-specific embedding parameters.
 

@@ -7,376 +7,58 @@ import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 # Image Interface
 
-<Badge text="UPP-1.2.0" variant="note" />
-
-The image interface provides text-to-image generation and image editing capabilities. UPP acts as a soft wrapper around provider APIs—all provider-specific parameters (size, quality, steps, guidance, etc.) are passed through unchanged via the `params` field.
-
-**Design Philosophy:** The core interface defines only what is truly universal across all image generation providers. Provider-specific features like negative prompts, seeds, reference images, and upscaling are accessed through the `params` passthrough, ensuring UPP never constrains what providers can do.
+<Badge text="UPP-1.3.0" variant="note" />
 
 ## Function Signature
 
-```text
+```
 image(options: ImageOptions) -> ImageInstance
 ```
 
-## Options
-
-**ImageOptions Structure:**
+## ImageOptions
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `model` | ModelReference | Yes | A model reference from a provider factory |
-| `config` | ProviderConfig | No | Provider infrastructure configuration |
-| `params` | Map | No | Provider-specific parameters passed through unchanged |
+| `model` | ModelReference | Yes | Model reference |
+| `config` | ProviderConfig | No | Provider configuration |
+| `params` | Map | No | Provider-specific parameters |
 
-The `params` field is the primary mechanism for configuring image generation. All provider-specific options—dimensions, quality, style, negative prompts, seeds, guidance scales, etc.—flow through params.
+All provider-specific options (size, quality, style, etc.) flow through `params`.
 
 ## ImageInstance
 
-**ImageInstance Interface:**
+| Method | Description |
+|--------|-------------|
+| `generate(input, options?)` | Generate images from prompt |
+| `stream(input)` | Generate with streaming (if supported) |
+| `edit(input)` | Edit existing image (if supported) |
+| `capabilities` | Model capabilities |
 
-| Method/Property | Type | Description |
-|-----------------|------|-------------|
-| `generate(input, options?)` | Function | Generate images from a text prompt |
-| `stream(input)` | Function? | Generate with streaming progress (if supported) |
-| `edit(input)` | Function? | Edit an existing image (if supported) |
-| `model` | BoundImageModel | The bound model |
-| `params` | Map? | Current parameters |
-| `capabilities` | ImageCapabilities | Model capabilities |
+## ImageCapabilities
 
-**ImageInput Type:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `generate` | Boolean | Supports text-to-image |
+| `streaming` | Boolean | Supports streaming previews |
+| `edit` | Boolean | Supports image editing |
+| `maxImages` | Integer? | Maximum images per request |
 
-The input to `generate()` accepts either a simple string prompt or an object with the prompt:
-
-```text
-ImageInput = String | {
-  prompt: String
-}
-```
-
-Provider-specific generation options (negative prompts, seeds, reference images, etc.) belong in the `params` field at instance creation or as part of provider-specific request extensions, NOT in the core ImageInput type.
-
-**ImageGenerateOptions Type:**
-
-```text
-ImageGenerateOptions = {
-  signal?: AbortSignal
-}
-```
-
-Use `signal` to cancel an in-flight image generation request.
-
-## Image Results
-
-**ImageResult Structure:**
+## ImageResult
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `images` | List&lt;GeneratedImage&gt; | Generated images |
-| `metadata` | Map? | Provider-specific response metadata |
-| `usage` | ImageUsage? | Usage/billing information |
-
-**GeneratedImage Structure:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `image` | Image | The generated image (using existing Image class) |
-| `metadata` | Map? | Provider-specific per-image metadata |
-
-The `metadata` fields are typed as `Map` rather than fixed structures because providers return vastly different metadata (e.g., revised prompts, safety ratings, seeds, billing info).
-
-Implementations MUST preserve all provider metadata without truncation.
-
-**ImageUsage Structure:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `imagesGenerated` | Integer? | Number of images generated |
-| `inputTokens` | Integer? | Input tokens consumed (token-based pricing) |
-| `outputTokens` | Integer? | Output tokens consumed (token-based pricing) |
-| `cost` | Float? | Provider-reported cost (credits, dollars, etc.) |
-
-Usage fields are optional because providers report usage differently (some per-image, some per-megapixel, some token-based).
-
-## Streaming Generation
-
-Streaming is supported by very few providers (primarily OpenAI GPT-Image models). When available, it provides partial image previews during generation.
-
-**ImageStreamResult Interface:**
-
-| Property/Method | Type | Description |
-|-----------------|------|-------------|
-| (async iterable) | AsyncIterator&lt;ImageStreamEvent&gt; | ImageStreamResult is async iterable over events |
-| `result` | Promise&lt;ImageResult&gt; | Final result after streaming |
-| `abort()` | Function | Abort the generation |
-
-**ImageStreamEvent Types:**
-
-```text
-// Preview event - partial image available
-{ type: "preview", image: Image, index: Integer, metadata: Map? }
-
-// Complete event - image finished
-{ type: "complete", image: GeneratedImage, index: Integer }
-```
-
-Providers MAY include additional progress information in the event's `metadata` field.
-
-## Image Editing
-
-Image editing (inpainting) is supported by some providers. The edit interface is intentionally minimal—provider-specific edit modes, guidance scales, and other options belong in `params`.
-
-**ImageEditInput Structure:**
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `image` | Image | Yes | Base image to edit |
-| `mask` | Image | No | Mask indicating edit region |
-| `prompt` | String | Yes | Edit instruction |
-
-**Mask Conventions:** Mask interpretation varies by provider. Implementations MUST document the mask convention required by the underlying provider's API. The mask is optional because some providers support prompt-only editing or auto-masking.
-
-## Capabilities
-
-**ImageCapabilities Structure:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `generate` | Boolean | Supports text-to-image generation |
-| `streaming` | Boolean | Supports streaming with partial previews |
-| `edit` | Boolean | Supports image editing/inpainting |
-| `maxImages` | Integer? | Maximum images per request (if known) |
-
-Capabilities are intentionally minimal. Features like upscaling, variations, outpainting, and image-to-image are provider-specific and should be accessed through provider documentation and the `params` passthrough rather than capability flags that would leak provider concepts into the core.
-
-## BoundImageModel
-
-The provider-level interface that implementations must provide.
-
-**BoundImageModel Structure:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `modelId` | String | The model identifier |
-| `capabilities` | ImageCapabilities | Model capabilities |
-| `generate(request)` | Function | Generate images |
-| `stream(request)` | Function? | Stream generation (optional) |
-| `edit(request)` | Function? | Edit an image (optional) |
-
-**ImageRequest Structure:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `prompt` | String | Generation prompt |
-| `params` | Map? | Provider-specific parameters (passed through unchanged) |
-| `config` | ProviderConfig | Provider infrastructure config |
-| `signal` | AbortSignal? | Abort signal |
-
-**ImageResponse Structure:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `images` | List&lt;GeneratedImage&gt; | Generated images |
-| `metadata` | Map? | Provider-specific response metadata |
+| `metadata` | Map? | Provider-specific metadata |
 | `usage` | ImageUsage? | Usage information |
-
-**ImageEditRequest Structure:**
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `image` | Image | Yes | Base image to edit |
-| `mask` | Image | No | Edit mask |
-| `prompt` | String | Yes | Edit instruction |
-| `params` | Map | No | Provider-specific parameters |
-| `config` | ProviderConfig | Yes | Provider infrastructure config |
-| `signal` | AbortSignal | No | Abort signal |
-
-**ImageProviderStreamResult:**
-
-An async iterable of `ImageStreamEvent` objects with a `response` property that resolves to `ImageResponse`.
 
 ## Basic Usage
 
-```text
-import { image } from "upp"
-import openai from "upp/openai"
-
-// Provider params (size, quality) go in the params field
+```
 dalle = image({
   model: openai("dall-e-3"),
-  config: {
-    apiKey: env.OPENAI_API_KEY
-  },
-  params: {
-    size: "1024x1024",
-    quality: "hd",
-    style: "natural"
-  }
+  params: { size: "1024x1024", quality: "hd" }
 })
 
-// Simple generation - just pass the prompt
-result = await dalle.generate("A sunset over mountains, oil painting style")
-
-print(result.images.length)             // 1
-print(result.metadata?.revised_prompt)  // Provider-specific metadata
-
-// Save the image
+result = await dalle.generate("A sunset over mountains")
 imageData = result.images[0].image.toBytes()
-await writeFile("sunset.png", imageData)
-```
-
-## Provider-Specific Features via Params
-
-```text
-import { image } from "upp"
-import stability from "upp/stability"
-
-// All Stability-specific options go in params
-sd = image({
-  model: stability("sd3.5-large"),
-  config: {
-    apiKey: env.STABILITY_API_KEY
-  },
-  params: {
-    aspect_ratio: "16:9",
-    negative_prompt: "cartoon, drawing, illustration, low quality, blurry",
-    seed: 12345,
-    output_format: "png"
-  }
-})
-
-result = await sd.generate("A photorealistic cat on a windowsill, golden hour")
-
-print(result.images.length)       // 1 (controlled by params)
-print(result.metadata?.seed)      // 12345 (if provider returns it)
-```
-
-## Image Editing
-
-```text
-import { image } from "upp"
-import openai from "upp/openai"
-
-gptImage = image({
-  model: openai("gpt-image-1.5"),
-  config: { apiKey: env.OPENAI_API_KEY }
-})
-
-// Check if editing is supported
-if (gptImage.capabilities.edit && gptImage.edit) {
-  edited = await gptImage.edit({
-    image: await Image.fromPath("./photo.png"),
-    mask: await Image.fromPath("./mask.png"),
-    prompt: "Replace the sky with a starry night"
-  })
-
-  await writeFile("edited.png", edited.images[0].image.toBytes())
-}
-```
-
-## Streaming (Provider-Dependent)
-
-```text
-import { image } from "upp"
-import openai from "upp/openai"
-
-// Only OpenAI GPT-Image models currently support streaming
-gptImage = image({
-  model: openai("gpt-image-1"),
-  config: { apiKey: env.OPENAI_API_KEY },
-  params: {
-    stream: true,
-    partial_images: 2  // OpenAI-specific: number of previews
-  }
-})
-
-if (gptImage.capabilities.streaming && gptImage.stream) {
-  stream = gptImage.stream("A cyberpunk cityscape at night")
-
-  for await (event in stream) {
-    switch (event.type) {
-      case "preview":
-        // Display partial preview
-        displayPreview(event.image, event.index)
-        break
-      case "complete":
-        print("Image " + event.index + " complete")
-        break
-    }
-  }
-
-  finalResult = await stream.result
-}
-```
-
-## Multi-Provider Patterns
-
-Different providers have different capabilities. Use params passthrough for provider-specific features:
-
-```text
-// Together AI with LoRA adapters
-flux = image({
-  model: together("black-forest-labs/FLUX.1-dev-lora"),
-  params: {
-    steps: 28,
-    width: 1024,
-    height: 768,
-    image_loras: [
-      { path: "https://huggingface.co/some/lora", scale: 0.8 }
-    ]
-  }
-})
-
-// Google Imagen with safety settings
-imagen = image({
-  model: google("imagen-3.0-generate-002"),
-  params: {
-    sampleCount: 4,
-    aspectRatio: "16:9",
-    personGeneration: "allow_adult",
-    safetySetting: "block_medium_and_above"
-  }
-})
-
-// Black Forest Labs with async polling (handled internally)
-bfl = image({
-  model: bfl("flux-2-pro"),
-  params: {
-    width: 1024,
-    height: 1024,
-    safety_tolerance: 2
-  }
-})
-```
-
-## Provider-Specific Parameters
-
-Parameters are passed through unchanged to the vendor API via the `params` field. UPP acts as a soft wrapper—implementations MUST pass provider params through without modification or validation beyond basic type checking.
-
-Common parameter categories across image generation providers include:
-- **Dimensions**: `width`, `height`, `size`, `aspect_ratio`
-- **Quality**: `quality`, `steps`, `cfg_scale`, `guidance_scale`
-- **Output**: `output_format`, `response_format`, `n` (count)
-- **Style**: `style`, `style_preset`, `negative_prompt`
-- **Reproducibility**: `seed`
-- **Safety**: `safety_tolerance`, `moderation`, `safetySetting`
-
-Each provider exports its own parameter types. Consult individual provider documentation for supported parameters, valid values, and model-specific options.
-
-**Provider Capability Notes:**
-- Not all providers support all operations (edit, vary, upscale, streaming)
-- Some providers do not support image generation at all
-- Implementations MUST declare capabilities accurately via `ImageCapabilities`
-
-## Capability Detection
-
-```text
-// Check capabilities before using optional features
-if (imageGen.capabilities.edit && imageGen.edit) {
-  // Safe to use edit
-}
-
-if (imageGen.capabilities.streaming && imageGen.stream) {
-  // Safe to use streaming
-}
 ```

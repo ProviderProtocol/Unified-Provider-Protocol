@@ -12,7 +12,7 @@ title: "Function: computerTool()"
 
 > **computerTool**(`options`): [`OpenAIComputerTool`](../interfaces/openaicomputertool.md)
 
-Defined in: [src/providers/openai/types.ts:1444](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/openai/types.ts#L1444)
+Defined in: [src/providers/openai/types.ts:1444](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/openai/types.ts#L1444)
 
 Creates a computer tool configuration for the Responses API.
 

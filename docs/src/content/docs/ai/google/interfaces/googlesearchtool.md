@@ -10,7 +10,7 @@ title: "Interface: GoogleSearchTool"
 
 # Interface: GoogleSearchTool
 
-Defined in: [src/providers/google/types.ts:650](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/google/types.ts#L650)
+Defined in: [src/providers/google/types.ts:654](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/google/types.ts#L654)
 
 Google Search grounding tool for real-time web information.
 
@@ -35,6 +35,6 @@ const tool: GoogleSearchTool = {
 
 > **googleSearch**: `Record`\<`string`, `never`\>
 
-Defined in: [src/providers/google/types.ts:652](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/google/types.ts#L652)
+Defined in: [src/providers/google/types.ts:656](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/google/types.ts#L656)
 
 Empty object to enable Google Search grounding

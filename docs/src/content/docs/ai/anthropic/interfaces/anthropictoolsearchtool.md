@@ -10,7 +10,7 @@ title: "Interface: AnthropicToolSearchTool"
 
 # Interface: AnthropicToolSearchTool
 
-Defined in: [src/providers/anthropic/types.ts:998](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/anthropic/types.ts#L998)
+Defined in: [src/providers/anthropic/types.ts:1007](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/anthropic/types.ts#L1007)
 
 Tool search tool for dynamic tool discovery.
 
@@ -34,7 +34,7 @@ const tool: AnthropicToolSearchTool = {
 
 > **name**: `"tool_search_tool_regex"` \| `"tool_search_tool_bm25"`
 
-Defined in: [src/providers/anthropic/types.ts:1002](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/anthropic/types.ts#L1002)
+Defined in: [src/providers/anthropic/types.ts:1011](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/anthropic/types.ts#L1011)
 
 Tool name (must match type variant)
 
@@ -44,6 +44,6 @@ Tool name (must match type variant)
 
 > **type**: `"tool_search_tool_regex_20251119"` \| `"tool_search_tool_bm25_20251119"`
 
-Defined in: [src/providers/anthropic/types.ts:1000](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/anthropic/types.ts#L1000)
+Defined in: [src/providers/anthropic/types.ts:1009](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/anthropic/types.ts#L1009)
 
 Tool type identifier (regex or BM25 variant)

@@ -1,24 +1,22 @@
 ---
 title: Specification Overview
-description: UPP-1.2 Specification Overview - A language-agnostic protocol for AI inference services.
+description: UPP-1.3 Specification Overview - A language-agnostic protocol for AI inference services.
 ---
 
 import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
-# UPP-1.2 Specification
+# UPP-1.3 Specification
 
-<Badge text="Version 1.2.0-draft" variant="note" />
+<Badge text="Version 1.3.0" variant="note" />
 <Badge text="Status: Draft" variant="caution" />
 
-The Unified Provider Protocol (UPP) is a language-agnostic specification for interacting with AI inference services. This document defines the protocol semantics, data structures, and implementation requirements for building UPP-compliant clients and providers in any programming language.
+The Unified Provider Protocol (UPP) is a language-agnostic specification for interacting with AI inference services. This document defines the protocol semantics, data structures, and implementation requirements for building UPP-compliant clients and providers.
 
 UPP establishes uniform interfaces for Large Language Models (LLM), Embedding Models, and Image Generation Models. The protocol enables multi-provider interoperability while preserving provider-native configuration and avoiding abstraction leakage.
 
-UPP provides separate entry points for each modality—`llm()`, `embedding()`, `image()`—while sharing common provider infrastructure, configuration patterns, and design principles.
-
 ## Specification Status
 
-The following table indicates the maturity level of each section in UPP 1.2:
+The following table indicates the maturity level of each section in UPP 1.3:
 
 | Section | Status | Notes |
 |---------|--------|-------|
@@ -44,13 +42,12 @@ The following table indicates the maturity level of each section in UPP 1.2:
 
 ## Purpose
 
-Modern AI development requires interacting with multiple providers (Anthropic, OpenAI, Google, Stability, Voyage, etc.), each with distinct APIs, authentication schemes, and response formats. UPP-1.2 establishes a standard protocol that:
+Modern AI development requires interacting with multiple providers (Anthropic, OpenAI, Google, etc.), each with distinct APIs, authentication schemes, and response formats. UPP establishes a standard protocol that:
 
 - Provides modality-specific interfaces (`llm`, `embedding`, `image`)
 - Enables provider switching without application code changes
 - Maintains provider-native configuration to avoid abstraction leakage
 - Shares common infrastructure (auth, retry, HTTP) across modalities
-- Supports text, image, audio, video, embeddings, and future modalities
 
 ## Scope
 
@@ -61,77 +58,43 @@ This specification covers:
 - The `image()` function interface (image generation)
 - Provider adapter requirements for each modality
 - Shared infrastructure (ProviderConfig, KeyStrategy, error handling)
-- Message, Turn, and Thread data structures (LLM-specific)
+- Message, Turn, and Thread data structures
 - Streaming response handling
 - Tool definition and execution
+
+## Requirements Language
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [BCP 14](https://www.rfc-editor.org/info/bcp14) [[RFC2119](https://www.rfc-editor.org/rfc/rfc2119)] [[RFC8174](https://www.rfc-editor.org/rfc/rfc8174)] when, and only when, they appear in all capitals, as shown here.
 
 ## Terminology
 
 | Term | Definition |
 |------|------------|
 | **Provider** | A vendor-specific adapter exposing one or more modality interfaces |
-| **Modality** | A distinct AI capability: LLM, embedding, image generation, etc. |
+| **Modality** | A distinct AI capability: LLM, embedding, or image generation |
 | **BoundModel** | A model instance bound to a specific provider and model ID |
-| **Message** | A single message in an LLM conversation (user, assistant, or tool result) |
-| **Turn** | The complete result of one LLM inference call, containing all messages produced |
-| **StreamEvent** | A streaming event (lifecycle or content delta) |
+| **Message** | A single message in an LLM conversation |
+| **Turn** | The complete result of one LLM inference call |
 | **Thread** | A utility class for managing LLM conversation history |
-| **Embedding** | A vector representation of text or other content |
-| **UPP** | Unified Provider Protocol |
-
-## Requirements Language
-
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
-
-## Modality Overview
-
-| Entry Point | Purpose |
-|-------------|---------|
-| `llm()` | Chat, completion, reasoning |
-| `embedding()` | Vector embeddings |
-| `image()` | Image generation/editing |
-
-Future modalities may include:
-- `audio()` - Speech-to-text, text-to-speech
-- `video()` - Video generation
 
 ## Notation Conventions
 
-This specification uses language-agnostic pseudocode for examples. The pseudocode follows these conventions:
+This specification uses language-agnostic pseudocode. Implementations SHOULD adapt syntax to their target language's conventions.
 
-- Function calls: `function_name(arg1, arg2)`
-- Object/map literals: `{key: value, key2: value2}`
-- Array/list literals: `[item1, item2, item3]`
-- Property access: `object.property`
-- Method calls: `object.method(args)`
-- Async operations: `await expression`
-- Iteration: `for item in collection`
-- Type annotations: `variable: Type`
-- Optional values: `Type?` or `Optional&lt;Type&gt;`
-- Comments: `// comment text`
-
-## Code Examples
-
-Code examples in this specification use the placeholder package name `upp`. Implementations MUST choose an appropriate package name for their ecosystem. Examples:
-
-| Language | Example Package Name |
-|----------|---------------------|
-| JavaScript/TypeScript | `@upp/ai`, `unified-provider-protocol` |
-| Python | `upp-ai`, `unified_provider_protocol` |
-| Go | `github.com/org/upp` |
-| Rust | `upp-protocol` |
-
-Import syntax varies by language. Examples throughout this specification use JavaScript-style imports for readability:
-
-```text
-// Default export style
-import anthropic from "upp/anthropic"
-
-// Named export style
-import { llm, embedding } from "upp"
+```
+function_name(arg1, arg2)     // Function call
+{ key: value }                // Object/map literal
+[item1, item2]                // Array/list literal
+object.property               // Property access
+await expression              // Async operation
+Type?                         // Optional value
 ```
 
-Implementations SHOULD provide both styles where the language supports them. The semantic behavior is identical regardless of import syntax.
+## Schema Validation
+
+This specification references [JSON Schema](https://json-schema.org/) (draft-07 or later) for parameter and structured output definitions. Implementations MAY use schema validation libraries appropriate to their language ecosystem (e.g., Zod for TypeScript, Pydantic for Python, JSON Schema validators for other languages).
+
+UPP does NOT mandate runtime schema validation. Schemas serve as contracts between components; validation is the responsibility of the application layer.
 
 ## What's Next?
 

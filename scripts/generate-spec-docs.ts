@@ -2,7 +2,7 @@
 /**
  * UPP/UAP Spec Documentation Generator
  *
- * Reads specification files (UPP-1.2.spec.md and UAP-1.0.md) and generates
+ * Reads specification files (UPP-1.3.spec.md and UAP-1.0.md) and generates
  * Starlight-compatible MDX documentation files.
  *
  * Usage:
@@ -44,16 +44,16 @@ interface SpecConfig {
 
 const UPP_CONFIG: SpecConfig = {
   name: "UPP",
-  version: "1.2.0-draft",
+  version: "1.3.0",
   status: "Draft",
-  specFile: join(ROOT_DIR, "UPP-1.2.spec.md"),
+  specFile: join(ROOT_DIR, "UPP-1.3.spec.md"),
   outputDir: join(DOCS_DIR, "upp"),
   sections: {
     1: {
       outputPath: "overview.mdx",
       title: "Specification Overview",
       description:
-        "UPP-1.2 Specification Overview - A language-agnostic protocol for AI inference services.",
+        "UPP-1.3 Specification Overview - A language-agnostic protocol for AI inference services.",
     },
     2: {
       outputPath: "design-principles.mdx",
@@ -70,7 +70,7 @@ const UPP_CONFIG: SpecConfig = {
       outputPath: "llm/interface.mdx",
       title: "LLM Interface",
       description:
-        "UPP-1.2 LLM Interface specification for chat and completion.",
+        "UPP-1.3 LLM Interface specification for chat and completion.",
     },
     6: {
       outputPath: "llm/messages.mdx",
@@ -118,16 +118,11 @@ const UPP_CONFIG: SpecConfig = {
       description: "Complete type definitions for UPP.",
     },
     15: {
-      outputPath: "providers/implementation.mdx",
-      title: "Provider Implementation Guide",
-      description: "Guide for implementing UPP-compliant providers.",
-    },
-    16: {
       outputPath: "providers/conformance.mdx",
       title: "Conformance",
       description: "Provider conformance levels and requirements.",
     },
-    17: {
+    16: {
       outputPath: "security.mdx",
       title: "Security Considerations",
       description: "Security guidelines for UPP implementations.",
@@ -154,7 +149,7 @@ const UAP_CONFIG: SpecConfig = {
       outputPath: "overview.mdx",
       title: "Specification Overview",
       description:
-        "UAP-1.0 Specification Overview - A protocol for building AI agents on UPP-1.2.",
+        "UAP-1.0 Specification Overview - A protocol for building AI agents on UPP-1.3.",
     },
     2: {
       outputPath: "design-principles.mdx",
@@ -418,7 +413,7 @@ function generateUPPOverview(
 
 import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
-# UPP-1.2 Specification
+# UPP-1.3 Specification
 
 <Badge text="Version ${UPP_CONFIG.version}" variant="note" />
 <Badge text="Status: ${UPP_CONFIG.status}" variant="caution" />
@@ -427,7 +422,7 @@ ${abstract}
 
 ## Specification Status
 
-The following table indicates the maturity level of each section in UPP 1.2:
+The following table indicates the maturity level of each section in UPP 1.3:
 
 | Section | Status | Notes |
 |---------|--------|-------|
@@ -495,7 +490,7 @@ import { Aside, Badge } from '@astrojs/starlight/components';
 
 # Error Handling
 
-<Badge text="UPP-1.2" variant="note" />
+<Badge text="UPP-1.3" variant="note" />
 
 UPP provides standardized error handling and retry strategies across all modalities.
 
@@ -543,7 +538,7 @@ import { Aside, Badge } from '@astrojs/starlight/components';
 
 # Architecture
 
-<Badge text="UPP-1.2" variant="note" />
+<Badge text="UPP-1.3" variant="note" />
 
 `;
 
@@ -589,7 +584,7 @@ import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 <Badge text="Version ${UAP_CONFIG.version}" variant="note" />
 <Badge text="Status: ${UAP_CONFIG.status}" variant="success" />
-<Badge text="Built on UPP-1.2" variant="tip" />
+<Badge text="Built on UPP-1.3" variant="tip" />
 
 ${abstract}
 
@@ -693,7 +688,6 @@ function generateUPP() {
     "llm/structured.mdx",
     "embedding/interface.mdx",
     "image/interface.mdx",
-    "providers/implementation.mdx",
     "providers/conformance.mdx",
   ];
 

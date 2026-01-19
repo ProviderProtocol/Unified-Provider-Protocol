@@ -1,388 +1,87 @@
 ---
 title: LLM Interface
-description: UPP-1.2 LLM Interface specification for chat and completion.
+description: UPP-1.3 LLM Interface specification for chat and completion.
 ---
 
 import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 # LLM Interface
 
-<Badge text="UPP-1.2.0" variant="note" />
+<Badge text="UPP-1.3.0" variant="note" />
 
 ## Function Signature
 
-```text
+```
 llm(options: LLMOptions) -> LLMInstance
 ```
 
-## Options
-
-**LLMOptions Structure:**
+## LLMOptions
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `model` | ModelReference | Yes | A model reference from a provider factory |
-| `config` | ProviderConfig | No | Provider infrastructure configuration (uses env vars if omitted) |
-| `params` | Map | No | Model-specific parameters (temperature, max_tokens, etc.) |
-| `system` | String | No | System prompt for all inferences |
-| `tools` | List&lt;Tool&gt; | No | Tools available to the model |
+| `model` | ModelReference | Yes | Model reference from provider factory |
+| `config` | ProviderConfig | No | Provider configuration |
+| `params` | Map | No | Model-specific parameters |
+| `system` | String | No | System prompt |
+| `tools` | List&lt;Tool&gt; | No | Available tools |
 | `toolStrategy` | ToolUseStrategy | No | Tool execution strategy |
 | `structure` | JSONSchema | No | Structured output schema |
 
 ## LLMInstance
 
-**LLMInstance Interface:**
+| Method/Property | Description |
+|-----------------|-------------|
+| `generate(...)` | Execute inference, return complete Turn |
+| `stream(...)` | Execute streaming inference |
+| `model` | The bound model |
+| `capabilities` | Provider API capabilities |
 
-| Method/Property | Type | Description |
-|-----------------|------|-------------|
-| `generate(...)` | Function | Execute inference and return complete Turn |
-| `stream(...)` | Function | Execute streaming inference |
-| `model` | BoundLLMModel | The bound model |
-| `system` | String? | Current system prompt |
-| `params` | Map? | Current parameters |
-| `capabilities` | LLMCapabilities | Provider API capabilities |
+**generate() Signatures:**
 
-**generate() Overloads:**
-
-```text
-// No history - single input
+```
 generate(input: InferenceInput) -> Promise&lt;Turn&gt;
-
-// No history - multiple inputs
 generate(...inputs: InferenceInput[]) -> Promise&lt;Turn&gt;
-
-// With history
-generate(history: List&lt;Message&gt; | Thread, ...inputs: InferenceInput[]) -> Promise&lt;Turn&gt;
+generate(history: List&lt;Message&gt;, ...inputs: InferenceInput[]) -> Promise&lt;Turn&gt;
 ```
 
-**stream() Overloads:**
-
-```text
-// No history - single input
-stream(input: InferenceInput) -> StreamResult
-
-// No history - multiple inputs
-stream(...inputs: InferenceInput[]) -> StreamResult
-
-// With history
-stream(history: List&lt;Message&gt; | Thread, ...inputs: InferenceInput[]) -> StreamResult
-```
-
-**InferenceInput Type:**
-
-```text
-InferenceInput = String | Message | ContentBlock
-```
-
-**History Detection:**
-
-`llm()` determines if the first argument is history or input:
-- `List&lt;Message&gt;` or `Thread` → history
-- `String`, `Message`, or `ContentBlock` → input (no history)
-
-```text
-// No history - one-shot inference
-await claude.generate("What is 2+2?")
-
-// No history - multiple inputs
-await claude.generate("Look at this:", imageBlock)
-
-// With history
-await claude.generate(history, "Follow-up question")
-await claude.generate(thread, "Continue the conversation")
-```
+**InferenceInput:** `String | Message | ContentBlock`
 
 ## LLMCapabilities
 
-`LLMCapabilities` declares what the **provider's API** supports, not individual model capabilities. If a user attempts to use a feature with a model that doesn't support it, the provider's API will return an error—this is expected behavior.
-
-**LLMCapabilities Structure:**
+Capabilities declare what the **provider's API** supports, not individual model capabilities:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `streaming` | Boolean | Provider API supports streaming responses |
-| `tools` | Boolean | Provider API supports tool/function calling |
-| `structuredOutput` | Boolean | Provider API supports native structured output |
-| `imageInput` | Boolean | Provider API supports image input |
-| `documentInput` | Boolean | Provider API supports document input (PDFs, text files) |
-| `videoInput` | Boolean | Provider API supports video input |
-| `audioInput` | Boolean | Provider API supports audio input |
+| `streaming` | Boolean | Supports streaming responses |
+| `tools` | Boolean | Supports tool/function calling |
+| `structuredOutput` | Boolean | Supports native structured output |
+| `imageInput` | Boolean | Supports image input |
+| `documentInput` | Boolean | Supports document input |
+| `videoInput` | Boolean | Supports video input |
+| `audioInput` | Boolean | Supports audio input |
 
-**Capabilities are static.** A provider's capabilities are constant for the lifetime of the provider instance and do not vary per-request or per-model. They reflect what the provider's API supports, determined at provider implementation time.
-
-## BoundLLMModel
-
-**BoundLLMModel Structure:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `modelId` | String | The model identifier |
-| `capabilities` | LLMCapabilities | Provider API capabilities |
-| `complete(request)` | Function | Execute a single non-streaming inference request |
-| `stream(request)` | Function | Execute a single streaming inference request |
-
-**LLMRequest Structure:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `messages` | List&lt;Message&gt; | All messages for this request (history + new input) |
-| `system` | String? | System prompt |
-| `params` | Map? | Model-specific parameters (passed through unchanged) |
-| `tools` | List&lt;Tool&gt;? | Tools available for this request |
-| `structure` | JSONSchema? | Structured output schema (if requested) |
-| `config` | ProviderConfig | Provider infrastructure config (resolved by llm() core) |
-| `signal` | AbortSignal? | Abort signal for cancellation |
-
-**LLMResponse Structure:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `message` | AssistantMessage | The assistant's response |
-| `usage` | TokenUsage | Token consumption |
-| `stopReason` | String | Why generation stopped |
-
-**LLMStreamResult:**
-
-An async iterable of `StreamEvent` objects with a `response` property that resolves to `LLMResponse`.
-
-## Basic Usage
-
-```text
-import { llm } from "upp"
-import anthropic from "upp/anthropic"
-
-claude = llm({
-  model: anthropic("claude-haiku-4-20250514"),
-  config: {
-    apiKey: env.ANTHROPIC_API_KEY
-  },
-  system: "You are a helpful assistant."
-})
-
-// Simple one-shot inference (no history needed)
-turn = await claude.generate("What is the capital of France?")
-print(turn.response.text)  // "The capital of France is Paris."
-```
-
-## Full Configuration
-
-```text
-import { llm, RoundRobinKeys, ExponentialBackoff } from "upp"
-import anthropic from "upp/anthropic"
-
-claude = llm({
-  model: anthropic("claude-haiku-4-20250514"),
-  config: {
-    apiKey: RoundRobinKeys([
-      env.ANTHROPIC_KEY_1,
-      env.ANTHROPIC_KEY_2
-    ]),
-    baseUrl: "https://my-proxy.example.com",
-    timeout: 30000,
-    retryStrategy: ExponentialBackoff({ maxAttempts: 3 })
-  },
-  params: {
-    max_tokens: 4096,
-    temperature: 0.7
-  },
-  system: "You are a friendly AI assistant."
-})
-```
+Capabilities are static for the lifetime of a provider instance.
 
 ## Tool Execution Loop
 
-`llm()` core manages the tool execution loop. Providers only handle single request/response cycles.
+The `llm()` core manages the tool execution loop. Providers only handle single request/response cycles.
 
 **Loop Flow:**
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  llm.generate(history, input)                               │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│  1. Convert input to UserMessage                            │
-│  2. Append to messages array                                │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-              ┌─────────────────────────┐
-              │  provider.complete()    │◄────────────────┐
-              │  (single request)       │                 │
-              └─────────────────────────┘                 │
-                            │                             │
-                            ▼                             │
-              ┌─────────────────────────┐                 │
-              │  response.hasToolCalls? │──── No ────┐    │
-              │                         │            │    │
-              └─────────────────────────┘            │    │
-                            │                        │    │
-                           Yes                       │    │
-                            │                        │    │
-                            ▼                        │    │
-              ┌─────────────────────────┐            │    │
-              │  iterations <           │── No ──►  Error │
-              │  maxIterations?         │                 │
-              └─────────────────────────┘                 │
-                            │                             │
-                           Yes                            │
-                            │                             │
-                            ▼                             │
-              ┌─────────────────────────┐                 │
-              │  Execute tools          │                 │
-              │  (parallel if multiple) │                 │
-              └─────────────────────────┘                 │
-                            │                             │
-                            ▼                             │
-              ┌─────────────────────────┐                 │
-              │  Append AssistantMsg    │                 │
-              │  (with toolCalls)       │                 │
-              │  Append ToolResultMsg   │                 │
-              │  to messages            │─────────────────┘
-              └─────────────────────────┘
-                            │
-                            ▼
-              ┌─────────────────────────┐
-              │  Build Turn from        │
-              │  accumulated messages   │
-              └─────────────────────────┘
-                            │
-                            ▼
-                        Return Turn
-```
-
-**Implementation Notes:**
-
-1. Each cycle increments `Turn.cycles`
-2. Token usage is aggregated across all cycles
-3. All messages (user, tool calls, tool results, final response) are collected in `Turn.messages`
-4. If `maxIterations` is reached, `onMaxIterations` callback fires and an error is thrown
-5. Tool execution order follows provider/model behavior (parallel if model returns multiple calls)
-
-## Conversation Flow
-
-```text
-claude = llm({
-  model: anthropic("claude-haiku-4-20250514"),
-  config: { apiKey: env.ANTHROPIC_API_KEY },
-  system: "You are a helpful assistant."
-})
-
-// User manages their own history
-history = []
-
-// First turn
-turn1 = await claude.generate(history, "My name is Alice.")
-history.push(...turn1.messages)
-
-// Second turn (history preserved)
-turn2 = await claude.generate(history, "What is my name?")
-history.push(...turn2.messages)
-
-print(turn2.response.text)  // "Your name is Alice."
-```
+1. Convert input to UserMessage, append to messages
+2. Call provider's `complete()` method
+3. If response has tool calls AND iterations < maxIterations:
+   - Execute tools (parallel if multiple)
+   - Append AssistantMessage and ToolResultMessage
+   - Return to step 2
+4. Build Turn from accumulated messages
 
 ## Provider Responsibilities
 
-#### 5.10.1 Request Transformation
+Providers MUST:
 
-The provider MUST transform UPP structures to vendor format:
-
-- Convert `Message` types to vendor message format
-- Handle system prompt according to vendor requirements (top-level param vs message)
-- Convert `Tool` definitions from JSON Schema to vendor tool format
-- Convert binary data (images, audio) to vendor-required encoding (e.g., base64)
-- Transform structured output schema to vendor format (if supported)
-
-#### 5.10.2 Response Transformation
-
-The provider MUST transform vendor responses to UPP structures:
-
-- Map vendor response to `AssistantMessage` (which may include `toolCalls`)
-- Map streaming chunks to `StreamEvent` with appropriate event metadata
-- Preserve vendor-specific metadata in `Message.metadata` under the provider's namespace
-
-<Aside type="note">
-The provider returns a single `LLMResponse`. `llm()` core handles constructing the full `Turn` including tool loops.
-</Aside>
-
-#### 5.10.3 Metadata Handling
-
-Providers MUST handle their own metadata namespace in `Message.metadata`:
-
-**Extracting metadata from responses:**
-
-```text
-// Google provider extracting thought_signature
-message = AssistantMessage(content, toolCalls, {
-  metadata: {
-    google: {
-      thought_signature: vendorResponse.thought_signature
-    }
-  }
-})
-```
-
-**Including metadata in requests:**
-
-```text
-// When sending messages back to the API, providers extract their namespace
-function transformToVendor(message) {
-  googleMeta = message.metadata?.google
-  return {
-    role: message.type,
-    content: transformContent(message.content),
-    // Include provider-specific fields
-    thought_signature: googleMeta?.thought_signature
-  }
-}
-```
-
-Providers SHOULD preserve unknown metadata fields during round-trips to support future API additions.
-
-#### 5.10.4 System Prompt Handling
-
-The provider MUST transform the system prompt from `LLMOptions.system` to the vendor-specific format required by the underlying API.
-
-#### 5.10.5 Structured Output Handling
-
-If `structure` is provided:
-
-1. `llm()` core checks `capabilities.structuredOutput`
-2. If `false`, MUST throw `UPPError` with code `INVALID_REQUEST`
-3. If `true`, the provider MUST:
-   - Transform the JSON Schema to vendor-specific format (if different)
-   - Enable structured output mode on the API request
-   - Parse the response as JSON and return the parsed object
-
-UPP does NOT validate the response against the schema. Modern LLMs with structured output support reliably produce conformant output. If validation is required, it is the application's responsibility. UPP does NOT automatically retry on schema mismatch.
-
-Similarly, `llm()` core checks capabilities before using other features:
-- `tools` provided but `capabilities.tools` is `false` → MUST throw `INVALID_REQUEST`
-- Image content provided but `capabilities.imageInput` is `false` → MUST throw `INVALID_REQUEST`
-- Document content provided but `capabilities.documentInput` is `false` → MUST throw `INVALID_REQUEST`
-- `stream()` called but `capabilities.streaming` is `false` → MUST throw `INVALID_REQUEST`
-
-#### 5.10.6 Error Handling
-
-The provider MUST normalize errors to `UPPError`:
-
-```text
-class UPPError extends Error {
-  code: ErrorCode
-  provider: String
-  modality: Modality
-  statusCode: Integer?
-  cause: Error?
-
-  constructor(message, code, provider, modality, statusCode?, cause?) {
-    super(message)
-    this.code = code
-    this.provider = provider
-    this.modality = modality
-    this.statusCode = statusCode
-    this.cause = cause
-  }
-}
-```
+1. **Transform requests:** Convert UPP structures to vendor format
+2. **Transform responses:** Map vendor responses to `AssistantMessage`
+3. **Handle system prompts:** Transform to vendor-specific format
+4. **Normalize errors:** Wrap vendor errors in `UPPError`
+5. **Namespace metadata:** Store vendor-specific data under `metadata.{providerName}`

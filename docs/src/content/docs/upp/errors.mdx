@@ -7,105 +7,58 @@ import { Aside, Badge } from '@astrojs/starlight/components';
 
 # Error Handling
 
-<Badge text="UPP-1.2" variant="note" />
+<Badge text="UPP-1.3" variant="note" />
 
 UPP provides standardized error handling and retry strategies across all modalities.
 
 ## Error Structure
 
-All modalities normalize errors to `UPPError`:
-
-**UPPError Structure:**
+All modalities MUST normalize errors to `UPPError`:
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `message` | String | Human-readable error message |
 | `code` | ErrorCode | Standardized error code |
-| `provider` | String | Provider name (e.g., "anthropic") |
-| `modality` | Modality | Which modality: "llm", "embedding", "image" |
+| `provider` | String | Provider name |
+| `modality` | Modality | Which modality: `llm`, `embedding`, `image` |
 | `statusCode` | Integer? | HTTP status code if applicable |
 | `cause` | Error? | Original underlying error |
 
 **ErrorCode Values:**
 
-| Code | Description |
-|------|-------------|
-| `AUTHENTICATION_FAILED` | Invalid or missing API key |
-| `RATE_LIMITED` | Too many requests |
-| `CONTEXT_LENGTH_EXCEEDED` | Input exceeds model context limit |
-| `MODEL_NOT_FOUND` | Requested model doesn't exist |
-| `INVALID_REQUEST` | Malformed request |
-| `INVALID_RESPONSE` | Response failed validation (e.g., structured output) |
-| `CONTENT_FILTERED` | Content policy violation |
-| `QUOTA_EXCEEDED` | Usage limits exceeded |
-| `PROVIDER_ERROR` | Provider-side error |
-| `NETWORK_ERROR` | Connection failure |
-| `TIMEOUT` | Request timed out |
-| `CANCELLED` | Operation was cancelled |
+`AUTHENTICATION_FAILED`, `RATE_LIMITED`, `CONTEXT_LENGTH_EXCEEDED`, `MODEL_NOT_FOUND`, `INVALID_REQUEST`, `INVALID_RESPONSE`, `CONTENT_FILTERED`, `QUOTA_EXCEEDED`, `PROVIDER_ERROR`, `NETWORK_ERROR`, `TIMEOUT`, `CANCELLED`
 
-**Modality Values:**
+**HTTP Status Code Mapping:**
 
-| Value | Description |
-|-------|-------------|
-| `llm` | Large Language Model operations |
-| `embedding` | Vector embedding operations |
-| `image` | Image generation operations |
-| `audio` | Audio operations (future) |
-| `video` | Video operations (future) |
+| HTTP Status | Error Code |
+|-------------|------------|
+| 400 | `INVALID_REQUEST` |
+| 401, 403 | `AUTHENTICATION_FAILED` |
+| 404 | `MODEL_NOT_FOUND` |
+| 429 | `RATE_LIMITED` |
+| 5xx | `PROVIDER_ERROR` |
 
 ## Retry Strategies
 
 **RetryStrategy Interface:**
 
-| Method | Parameters | Return Type | Description |
-|--------|------------|-------------|-------------|
-| `onRetry` | error: UPPError, attempt: Integer | Integer \| null \| Promise | Returns delay in ms before retry, or null to stop |
-| `beforeRequest` | (none) | Integer \| Promise&lt;Integer&gt; | Optional. Returns delay before making request (pre-emptive rate limiting) |
-| `reset` | (none) | void | Optional. Reset strategy state after success |
+```
+interface RetryStrategy {
+  onRetry(error: UPPError, attempt: Integer): Integer | null | Promise
+  beforeRequest?(): Integer | Promise&lt;Integer&gt;
+  reset?(): void
+}
+```
+
+The `onRetry` method MUST return delay in milliseconds before retry, or `null` to stop retrying.
 
 **Standard Implementations:**
 
-```text
-// Exponential backoff with jitter
-ExponentialBackoff({
-  maxAttempts: 5,
-  initialDelay: 1000,
-  maxDelay: 30000,
-  jitter: true
-})
-
-// Linear backoff
-LinearBackoff({
-  maxAttempts: 3,
-  delay: 2000
-})
-
-// No retry
-NoRetry()
-
-// Token bucket rate limiting
-TokenBucket({
-  capacity: 100,
-  refillRate: 10  // tokens per second
-})
-
-// Honor server Retry-After headers
-RetryAfterStrategy({
-  fallbackDelay: 5000
-})
-```
-
-**Custom strategy example:**
-
-```text
-class MyCustomStrategy implements RetryStrategy {
-  onRetry(error, attempt) {
-    if (attempt >= 5) return null  // Stop retrying
-    if (error.code == "RATE_LIMITED") return 5000  // 5 second delay
-    return 1000  // 1 second delay for other errors
-  }
-}
-```
+| Strategy | Description |
+|----------|-------------|
+| `ExponentialBackoff(options)` | Exponential backoff with jitter |
+| `LinearBackoff(options)` | Fixed delay between retries |
+| `NoRetry()` | No automatic retry |
 
 
 ## HTTP Status Code Mapping

@@ -10,7 +10,7 @@ title: "Interface: ImageOptions"
 
 # Interface: ImageOptions\<TParams\>
 
-Defined in: [src/types/image.ts:44](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/types/image.ts#L44)
+Defined in: [src/types/image.ts:44](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/types/image.ts#L44)
 
 Options for creating an image instance with the image() function.
 
@@ -38,7 +38,7 @@ Provider-specific parameter type
 
 > `optional` **config**: [`ProviderConfig`](providerconfig.md)
 
-Defined in: [src/types/image.ts:49](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/types/image.ts#L49)
+Defined in: [src/types/image.ts:49](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/types/image.ts#L49)
 
 Provider infrastructure configuration
 
@@ -48,7 +48,7 @@ Provider infrastructure configuration
 
 > **model**: [`ImageModelInput`](imagemodelinput.md)
 
-Defined in: [src/types/image.ts:46](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/types/image.ts#L46)
+Defined in: [src/types/image.ts:46](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/types/image.ts#L46)
 
 A model reference from a provider factory
 
@@ -58,6 +58,6 @@ A model reference from a provider factory
 
 > `optional` **params**: `TParams`
 
-Defined in: [src/types/image.ts:52](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/types/image.ts#L52)
+Defined in: [src/types/image.ts:52](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/types/image.ts#L52)
 
 Provider-specific parameters (passed through unchanged)

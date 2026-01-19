@@ -12,7 +12,7 @@ title: "Function: resolveApiKey()"
 
 > **resolveApiKey**(`config`, `envVar?`, `provider?`, `modality?`): `Promise`\<`string`\>
 
-Defined in: [src/http/keys.ts:237](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/http/keys.ts#L237)
+Defined in: [src/http/keys.ts:257](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/http/keys.ts#L257)
 
 Resolves an API key from provider configuration with multiple fallback options.
 

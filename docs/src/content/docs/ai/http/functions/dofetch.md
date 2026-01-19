@@ -12,7 +12,7 @@ title: "Function: doFetch()"
 
 > **doFetch**(`url`, `init`, `config`, `provider`, `modality`): `Promise`\<`Response`\>
 
-Defined in: [src/http/fetch.ts:67](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/http/fetch.ts#L67)
+Defined in: [src/http/fetch.ts:86](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/http/fetch.ts#L86)
 
 Executes an HTTP fetch request with automatic retry, timeout handling, and error normalization.
 

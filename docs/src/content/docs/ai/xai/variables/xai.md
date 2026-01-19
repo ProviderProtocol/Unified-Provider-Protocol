@@ -12,7 +12,7 @@ title: "Variable: xai"
 
 > `const` **xai**: [`Provider`](../../core/interfaces/provider.md)\<[`XAIProviderOptions`](../interfaces/xaiprovideroptions.md)\>
 
-Defined in: [src/providers/xai/index.ts:117](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/index.ts#L117)
+Defined in: [src/providers/xai/index.ts:114](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/index.ts#L114)
 
 xAI provider
 
@@ -73,15 +73,12 @@ const reasoningModel = llm({
   }
 });
 
-// Using Live Search (deprecated Dec 2025)
+// Using Agent Tools (web search, code execution, etc.)
 const searchModel = llm({
-  model: xai('grok-4'),
+  model: xai('grok-4', { api: 'responses' }),
   params: {
     max_tokens: 1000,
-    search_parameters: {
-      mode: 'auto',
-      sources: ['web', 'x', 'news'],
-    }
+    tools: [tools.webSearch()],
   }
 });
 

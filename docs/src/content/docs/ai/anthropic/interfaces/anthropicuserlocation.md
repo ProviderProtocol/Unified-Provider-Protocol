@@ -10,7 +10,7 @@ title: "Interface: AnthropicUserLocation"
 
 # Interface: AnthropicUserLocation
 
-Defined in: [src/providers/anthropic/types.ts:831](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/anthropic/types.ts#L831)
+Defined in: [src/providers/anthropic/types.ts:840](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/anthropic/types.ts#L840)
 
 User location for web search context.
 
@@ -22,7 +22,7 @@ Used to localize web search results based on the user's approximate location.
 
 > `optional` **city**: `string`
 
-Defined in: [src/providers/anthropic/types.ts:835](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/anthropic/types.ts#L835)
+Defined in: [src/providers/anthropic/types.ts:844](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/anthropic/types.ts#L844)
 
 City name
 
@@ -32,7 +32,7 @@ City name
 
 > `optional` **country**: `string`
 
-Defined in: [src/providers/anthropic/types.ts:839](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/anthropic/types.ts#L839)
+Defined in: [src/providers/anthropic/types.ts:848](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/anthropic/types.ts#L848)
 
 ISO 3166-1 alpha-2 country code (e.g., "US")
 
@@ -42,7 +42,7 @@ ISO 3166-1 alpha-2 country code (e.g., "US")
 
 > `optional` **region**: `string`
 
-Defined in: [src/providers/anthropic/types.ts:837](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/anthropic/types.ts#L837)
+Defined in: [src/providers/anthropic/types.ts:846](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/anthropic/types.ts#L846)
 
 Region/state name
 
@@ -52,7 +52,7 @@ Region/state name
 
 > `optional` **timezone**: `string`
 
-Defined in: [src/providers/anthropic/types.ts:841](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/anthropic/types.ts#L841)
+Defined in: [src/providers/anthropic/types.ts:850](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/anthropic/types.ts#L850)
 
 IANA timezone (e.g., "America/New_York")
 
@@ -62,6 +62,6 @@ IANA timezone (e.g., "America/New_York")
 
 > **type**: `"approximate"`
 
-Defined in: [src/providers/anthropic/types.ts:833](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/anthropic/types.ts#L833)
+Defined in: [src/providers/anthropic/types.ts:842](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/anthropic/types.ts#L842)
 
 Location type - must be 'approximate'

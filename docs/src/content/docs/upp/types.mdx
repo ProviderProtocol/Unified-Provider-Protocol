@@ -7,313 +7,39 @@ import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 # Data Types
 
-<Badge text="UPP-1.2.0" variant="note" />
+<Badge text="UPP-1.3.0" variant="note" />
 
 ## Primitive Types
 
-| Type | Description | JSON Representation |
-|------|-------------|---------------------|
-| `String` | UTF-8 text | JSON string |
-| `Integer` | Signed integer (at least 64-bit) | JSON number |
-| `Float` | IEEE 754 double precision | JSON number |
-| `Boolean` | True or false | JSON boolean |
-| `Bytes` | Raw binary data | Base64-encoded JSON string |
-| `Timestamp` | Point in time | ISO 8601 string |
-| `Map&lt;K,V&gt;` | Key-value mapping | JSON object |
-| `List&lt;T&gt;` | Ordered collection | JSON array |
-| `Optional&lt;T&gt;` or `T?` | Value or null | JSON value or `null` |
-| `Union&lt;A,B,...&gt;` | One of multiple types | Discriminated by `type` field |
-| `Any` | Any JSON value | Any JSON value |
+| Type | Description |
+|------|-------------|
+| `String` | UTF-8 text |
+| `Integer` | Signed integer (at least 64-bit) |
+| `Float` | IEEE 754 double precision |
+| `Boolean` | True or false |
+| `Bytes` | Raw binary data |
+| `Timestamp` | Point in time (ISO 8601) |
+| `Map&lt;K,V&gt;` | Key-value mapping |
+| `List&lt;T&gt;` | Ordered collection |
+| `T?` | Optional value |
+| `Any` | Any JSON value |
 
 ## Platform Types
 
-The following types are assumed to be provided by the host language or runtime environment:
+Implementations MUST use platform-appropriate equivalents:
 
 | Type | Description |
 |------|-------------|
-| `AbortSignal` | A signal object that allows aborting asynchronous operations. Implementations SHOULD use the platform's standard abort mechanism (e.g., `AbortSignal` in JavaScript, `CancellationToken` in C#, `Context` in Go). |
-| `AsyncIterable&lt;T&gt;` | An object that can be asynchronously iterated, yielding values of type `T`. Used for streaming responses. |
-| `AsyncIterator&lt;T&gt;` | The iterator protocol for async iteration. |
-| `Promise&lt;T&gt;` | A promise/future that resolves to a value of type `T`. |
-| `Function` | A callable function. Specific signatures are defined where used. |
+| `AbortSignal` | Allows aborting async operations |
+| `AsyncIterable&lt;T&gt;` | Async iteration protocol |
+| `Promise&lt;T&gt;` | Promise/future resolving to T |
 
-## Modality Types
+## Modality Type
 
-```text
-Modality = "llm" | "embedding" | "image" | "audio" | "video"
 ```
-
-## Schema Types
-
-JSON Schema types used for tool parameters and structured outputs are defined in [Section 11.2](#112-schema-definition). The core types are:
-
-- `JSONSchema` - Root schema for structured outputs (must have `type: "object"`)
-- `JSONSchemaProperty` - Individual property definitions within a schema
-
-## Complete Export List
-
-UPP implementations SHOULD export the following types through their language's standard public API mechanism. All types listed below are considered part of the public API surface and MUST be accessible to users of the implementation:
-
-**Entry Points:**
-- `llm`
-- `embedding`
-- `image`
-- `ai` (namespace containing all entry points)
-
-**LLM Types:**
-- `LLMOptions`
-- `LLMInstance`
-- `LLMCapabilities`
-- `LLMProvider`
-- `BoundLLMModel`
-- `LLMRequest`
-- `LLMResponse`
-- `LLMStreamResult`
-- `InferenceInput`
-
-**Message Types:**
-- `Message`
-- `UserMessage`
-- `AssistantMessage`
-- `ToolResultMessage`
-- `MessageOptions`
-- `MessageMetadata`
-- `MessageType`
-
-**Content Block Types:**
-- `ContentBlock`
-- `TextBlock`
-- `ImageBlock`
-- `DocumentBlock`
-- `AudioBlock`
-- `VideoBlock`
-- `BinaryBlock`
-- `ImageSource`
-- `DocumentSource`
-
-**Tool Types:**
-- `ToolCall`
-- `ToolResult`
-- `Tool`
-- `ToolUseStrategy`
-- `BeforeCallResult`
-- `AfterCallResult`
-- `ToolExecution`
-
-**Turn & Thread Types:**
-- `Turn`
-- `TokenUsage`
-- `Thread`
-- `ThreadJSON`
-
-**Streaming Types:**
-- `StreamResult`
-- `StreamEvent`
-- `StreamEventType`
-- `EventDelta`
-
-**Schema Types:**
-- `JSONSchema`
-- `JSONSchemaProperty`
-
-**Embedding Types:**
-- `EmbeddingOptions`
-- `EmbeddingInstance`
-- `EmbeddingProvider`
-- `BoundEmbeddingModel`
-- `EmbeddingRequest`
-- `EmbeddingResponse`
-- `EmbeddingInput`
-- `EmbeddingInputType`
-- `Embedding`
-- `EmbeddingBatch`
-- `EmbeddingUsage`
-- `EmbeddingProgress`
-- `EmbedManyOptions`
-
-**Image Types:**
-- `ImageOptions`
-- `ImageInstance`
-- `ImageProvider`
-- `BoundImageModel`
-- `ImageRequest`
-- `ImageResponse`
-- `ImagePrompt`
-- `ImageGenerateOptions`
-- `ImageResult`
-- `GeneratedImage`
-- `ImageUsage`
-- `ImageMetadata`
-- `ImageItemMetadata`
-- `ImageStreamResult`
-- `ImageStreamEvent`
-- `ImageProviderStreamResult`
-- `ImageEditInput`
-- `ImageEditRequest`
-- `ImageVaryInput`
-- `ImageVaryRequest`
-- `ImageUpscaleInput`
-- `ImageUpscaleRequest`
-- `ImageCapabilities`
-
-**Shared Infrastructure:**
-- `ProviderConfig`
-- `KeyStrategy`
-- `RoundRobinKeys`
-- `WeightedKeys`
-- `DynamicKey`
-- `RetryStrategy`
-- `ExponentialBackoff`
-- `LinearBackoff`
-- `NoRetry`
-- `TokenBucket`
-- `RetryAfterStrategy`
-- `UPPError`
-- `ErrorCode`
-- `Modality`
-
-**Utilities:**
-- `Image`
-- `Document`
-- `Audio`
-- `Video`
-- `isUserMessage`
-- `isAssistantMessage`
-- `isToolResultMessage`
-
-**Type Constants:**
-- `StreamEventType`
-- `ContentBlockType`
-- `ImageSourceType`
-- `MessageRole`
-- `ErrorCode`
-- `ModalityType`
+Modality = "llm" | "embedding" | "image"
+```
 
 ## Type Constants
 
-UPP exports named constant objects for all discriminated union types. These constants SHOULD be used instead of raw string literals for type-safe code:
-
-**StreamEventType Constants:**
-
-| Constant | Value |
-|----------|-------|
-| `StreamEventType.TextDelta` | `'text_delta'` |
-| `StreamEventType.ReasoningDelta` | `'reasoning_delta'` |
-| `StreamEventType.ImageDelta` | `'image_delta'` |
-| `StreamEventType.AudioDelta` | `'audio_delta'` |
-| `StreamEventType.VideoDelta` | `'video_delta'` |
-| `StreamEventType.ToolCallDelta` | `'tool_call_delta'` |
-| `StreamEventType.ToolExecutionStart` | `'tool_execution_start'` |
-| `StreamEventType.ToolExecutionEnd` | `'tool_execution_end'` |
-| `StreamEventType.MessageStart` | `'message_start'` |
-| `StreamEventType.MessageStop` | `'message_stop'` |
-| `StreamEventType.ContentBlockStart` | `'content_block_start'` |
-| `StreamEventType.ContentBlockStop` | `'content_block_stop'` |
-
-**ContentBlockType Constants:**
-
-| Constant | Value |
-|----------|-------|
-| `ContentBlockType.Text` | `'text'` |
-| `ContentBlockType.Reasoning` | `'reasoning'` |
-| `ContentBlockType.Image` | `'image'` |
-| `ContentBlockType.Document` | `'document'` |
-| `ContentBlockType.Audio` | `'audio'` |
-| `ContentBlockType.Video` | `'video'` |
-| `ContentBlockType.Binary` | `'binary'` |
-
-**ImageSourceType Constants:**
-
-| Constant | Value |
-|----------|-------|
-| `ImageSourceType.Base64` | `'base64'` |
-| `ImageSourceType.Url` | `'url'` |
-| `ImageSourceType.Bytes` | `'bytes'` |
-
-**DocumentSourceType Constants:**
-
-| Constant | Value |
-|----------|-------|
-| `DocumentSourceType.Base64` | `'base64'` |
-| `DocumentSourceType.Url` | `'url'` |
-| `DocumentSourceType.Text` | `'text'` |
-
-**MessageRole Constants:**
-
-| Constant | Value |
-|----------|-------|
-| `MessageRole.User` | `'user'` |
-| `MessageRole.Assistant` | `'assistant'` |
-| `MessageRole.ToolResult` | `'tool_result'` |
-
-**ErrorCode Constants:**
-
-| Constant | Value |
-|----------|-------|
-| `ErrorCode.AuthenticationFailed` | `'AUTHENTICATION_FAILED'` |
-| `ErrorCode.RateLimited` | `'RATE_LIMITED'` |
-| `ErrorCode.ContextLengthExceeded` | `'CONTEXT_LENGTH_EXCEEDED'` |
-| `ErrorCode.ModelNotFound` | `'MODEL_NOT_FOUND'` |
-| `ErrorCode.InvalidRequest` | `'INVALID_REQUEST'` |
-| `ErrorCode.InvalidResponse` | `'INVALID_RESPONSE'` |
-| `ErrorCode.ContentFiltered` | `'CONTENT_FILTERED'` |
-| `ErrorCode.QuotaExceeded` | `'QUOTA_EXCEEDED'` |
-| `ErrorCode.ProviderError` | `'PROVIDER_ERROR'` |
-| `ErrorCode.NetworkError` | `'NETWORK_ERROR'` |
-| `ErrorCode.Timeout` | `'TIMEOUT'` |
-| `ErrorCode.Cancelled` | `'CANCELLED'` |
-
-**ModalityType Constants:**
-
-| Constant | Value |
-|----------|-------|
-| `ModalityType.LLM` | `'llm'` |
-| `ModalityType.Embedding` | `'embedding'` |
-| `ModalityType.Image` | `'image'` |
-| `ModalityType.Audio` | `'audio'` |
-| `ModalityType.Video` | `'video'` |
-
-**Usage Example:**
-
-```text
-import { StreamEventType, ErrorCode, MessageRole } from "upp"
-
-// Streaming with type constants
-for await (event in stream) {
-  if (event.type == StreamEventType.TextDelta) {
-    print(event.delta.text)
-  } else if (event.type == StreamEventType.ToolCallDelta) {
-    print("Tool call:", event.delta.toolName)
-  }
-}
-
-// Error handling with type constants
-try {
-  await instance.generate("Hello")
-} catch (error) {
-  if (error.code == ErrorCode.RateLimited) {
-    // Handle rate limiting
-  } else if (error.code == ErrorCode.AuthenticationFailed) {
-    // Handle auth failure
-  }
-}
-
-// Message type checking with constants
-if (message.type == MessageRole.Assistant) {
-  print("Assistant:", message.text)
-}
-```
-
-## Provider Exports
-
-Each provider module exports a single factory function and its own parameter types. The model ID passed to the factory determines which modality handler is used.
-
-```text
-// Pattern: "upp/{provider}"
-import openai from "upp/openai"
-import anthropic from "upp/anthropic"
-import google from "upp/google"
-
-// Each provider also exports its parameter types
-// e.g., OpenAILLMParams, AnthropicLLMParams, etc.
-```
+Implementations SHOULD export named constants for discriminated union types (e.g., `StreamEventType.TextDelta`, `ErrorCode.RateLimited`, `MessageRole.User`). Using constants instead of raw strings enables better tooling support and type safety.

@@ -10,7 +10,7 @@ title: "Interface: EmbedOptions"
 
 # Interface: EmbedOptions
 
-Defined in: [src/types/embedding.ts:63](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/types/embedding.ts#L63)
+Defined in: [src/types/embedding.ts:76](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/types/embedding.ts#L76)
 
 Options for embed() calls.
 
@@ -20,7 +20,7 @@ Options for embed() calls.
 
 > `optional` **batchSize**: `number`
 
-Defined in: [src/types/embedding.ts:71](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/types/embedding.ts#L71)
+Defined in: [src/types/embedding.ts:84](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/types/embedding.ts#L84)
 
 Inputs per batch when chunked (default: provider max)
 
@@ -30,7 +30,7 @@ Inputs per batch when chunked (default: provider max)
 
 > `optional` **chunked**: `boolean`
 
-Defined in: [src/types/embedding.ts:68](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/types/embedding.ts#L68)
+Defined in: [src/types/embedding.ts:81](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/types/embedding.ts#L81)
 
 Enable chunked processing with progress for large input sets.
 When true, returns EmbeddingStream instead of Promise.
@@ -41,9 +41,19 @@ When true, returns EmbeddingStream instead of Promise.
 
 > `optional` **concurrency**: `number`
 
-Defined in: [src/types/embedding.ts:74](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/types/embedding.ts#L74)
+Defined in: [src/types/embedding.ts:87](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/types/embedding.ts#L87)
 
 Concurrent batch limit when chunked (default: 1)
+
+***
+
+### inputType?
+
+> `optional` **inputType**: [`EmbeddingInputType`](../type-aliases/embeddinginputtype.md)
+
+Defined in: [src/types/embedding.ts:93](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/types/embedding.ts#L93)
+
+Hint for embedding optimization (provider-specific)
 
 ***
 
@@ -51,6 +61,6 @@ Concurrent batch limit when chunked (default: 1)
 
 > `optional` **signal**: `AbortSignal`
 
-Defined in: [src/types/embedding.ts:77](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/types/embedding.ts#L77)
+Defined in: [src/types/embedding.ts:90](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/types/embedding.ts#L90)
 
 Abort signal for cancellation

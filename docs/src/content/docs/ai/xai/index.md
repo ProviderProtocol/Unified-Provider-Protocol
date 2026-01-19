@@ -46,7 +46,6 @@ console.log(turn.response.text);
 - [XAIModelReference](interfaces/xaimodelreference.md)
 - [XAIProviderOptions](interfaces/xaiprovideroptions.md)
 - [XAIResponsesParams](interfaces/xairesponsesparams.md)
-- [~~XAISearchParameters~~](interfaces/xaisearchparameters.md)
 - [XAIServerSideToolUsage](interfaces/xaiserversidetoolusage.md)
 - [XAIWebSearchTool](interfaces/xaiwebsearchtool.md)
 - [XAIXSearchTool](interfaces/xaixsearchtool.md)

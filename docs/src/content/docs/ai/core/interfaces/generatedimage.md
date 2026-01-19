@@ -10,7 +10,7 @@ title: "Interface: GeneratedImage"
 
 # Interface: GeneratedImage
 
-Defined in: [src/types/image.ts:85](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/types/image.ts#L85)
+Defined in: [src/types/image.ts:85](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/types/image.ts#L85)
 
 A single generated image with optional metadata.
 
@@ -20,7 +20,7 @@ A single generated image with optional metadata.
 
 > **image**: [`Image`](../classes/image.md)
 
-Defined in: [src/types/image.ts:87](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/types/image.ts#L87)
+Defined in: [src/types/image.ts:87](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/types/image.ts#L87)
 
 The generated image
 
@@ -30,6 +30,6 @@ The generated image
 
 > `optional` **metadata**: `Record`\<`string`, `unknown`\>
 
-Defined in: [src/types/image.ts:90](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/types/image.ts#L90)
+Defined in: [src/types/image.ts:90](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/types/image.ts#L90)
 
 Provider-specific per-image metadata

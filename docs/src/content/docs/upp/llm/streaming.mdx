@@ -7,168 +7,47 @@ import { Aside, Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
 # Streaming
 
-<Badge text="UPP-1.2.0" variant="note" />
+<Badge text="UPP-1.3.0" variant="note" />
 
 ## StreamResult
 
-Streaming returns a `StreamResult` that is both an async iterable and provides access to the final `Turn`:
+Streaming returns a `StreamResult`:
 
-**StreamResult Interface:**
-
-| Property/Method | Type | Description |
-|-----------------|------|-------------|
-| (async iterable) | AsyncIterator&lt;StreamEvent&gt; | StreamResult is async iterable over events |
-| `turn` | Promise&lt;Turn&gt; | Resolves to complete Turn after streaming |
-| `abort()` | Function | Abort the stream |
+| Property/Method | Description |
+|-----------------|-------------|
+| (async iterable) | Yields `StreamEvent` objects |
+| `turn` | Promise resolving to complete Turn |
+| `abort()` | Abort the stream |
 
 ## StreamEvent
-
-During streaming, providers emit `StreamEvent` objects:
-
-**StreamEvent Structure:**
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `type` | StreamEventType | Event type |
-| `index` | Integer | Index of the content block this event belongs to |
-| `delta` | EventDelta | Event data (type-specific) |
+| `index` | Integer | Content block index |
+| `delta` | EventDelta | Event data |
 
 **StreamEventType Values:**
 
-| Value | Description |
-|-------|-------------|
-| `text_delta` | Partial text token |
-| `reasoning_delta` | Reasoning/thinking token |
-| `image_delta` | Partial image data |
-| `audio_delta` | Partial audio data |
-| `video_delta` | Partial video data |
-| `tool_call_delta` | Partial tool call |
-| `tool_execution_start` | Tool execution started |
-| `tool_execution_end` | Tool execution completed |
-| `message_start` | Stream started |
-| `message_stop` | Stream complete |
-| `content_block_start` | New content block started |
-| `content_block_stop` | Content block complete |
+`text_delta`, `reasoning_delta`, `image_delta`, `audio_delta`, `video_delta`, `tool_call_delta`, `tool_execution_start`, `tool_execution_end`, `message_start`, `message_stop`, `content_block_start`, `content_block_stop`
 
-**EventDelta Structure:**
+## Usage
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `text` | String? | Text content |
-| `data` | Bytes? | Binary data |
-| `toolCallId` | String? | Tool call ID |
-| `toolName` | String? | Tool name |
-| `argumentsJson` | String? | Partial JSON arguments |
-| `result` | Any? | Tool execution result (for `tool_execution_end`) |
-| `isError` | Boolean? | Whether tool execution errored (for `tool_execution_end`) |
-| `timestamp` | Integer? | Timestamp in ms (for `tool_execution_start`/`tool_execution_end`) |
-
-## Streaming Usage
-
-```text
-claude = llm({
-  model: anthropic("claude-haiku-4-20250514"),
-  config: { apiKey: env.ANTHROPIC_API_KEY },
-  system: "You are a helpful assistant."
-})
-
-history = []
-
-// Stream the response
-stream = claude.stream(history, "Write a haiku about programming.")
+```
+stream = claude.stream(history, "Write a haiku.")
 
 for await (event in stream) {
   if (event.type == "text_delta") {
-    print(event.delta.text, end="")
-  }
-}
-
-// Get the complete turn after streaming
-turn = await stream.turn
-history.push(...turn.messages)
-```
-
-## Streaming with Tools
-
-When tools are involved, streaming may pause while tools execute:
-
-```text
-stream = claude.stream(history, "What is the weather in Paris?")
-
-for await (event in stream) {
-  switch (event.type) {
-    case "text_delta":
-      print(event.delta.text, end="")
-      break
-    case "tool_call_delta":
-      // Tool call being streamed
-      print("[tool]", event.delta.toolName)
-      break
-    case "message_stop":
-      // A message completed (might be tool call, will continue after tool runs)
-      break
+    print(event.delta.text)
   }
 }
 
 turn = await stream.turn
-print("Tool executions:", turn.toolExecutions)
 ```
 
-## Aborting Streams
+## Abort Behavior
 
-```text
-stream = claude.stream(history, "Write a very long story...")
-
-// Cancel after 5 seconds
-setTimeout(() => {
-  stream.abort()
-}, 5000)
-
-try {
-  for await (event in stream) {
-    print(event.delta.text, end="")
-  }
-} catch (error) {
-  if (error instanceof UPPError && error.code == "CANCELLED") {
-    print("Stream was cancelled")
-  }
-}
-```
-
-**Abort behavior with tools:** When a stream is aborted during a tool execution loop, the abort signal propagates to any in-flight tool execution. The current tool's `run` function receives the abort via `AbortSignal` (if it accepts one). Pending tool calls that haven't started execution MUST be skipped. The overall generation MUST throw a `CANCELLED` error.
-
-## Streaming Event Order
-
-A typical streaming sequence:
-
-```
-message_start
-  content_block_start (index: 0)
-    text_delta "Hello"
-    text_delta " world"
-    text_delta "!"
-  content_block_stop (index: 0)
-message_stop
-```
-
-With tool calls:
-
-```
-message_start
-  content_block_start (index: 0)
-    text_delta "Let me check..."
-  content_block_stop (index: 0)
-  content_block_start (index: 1)
-    tool_call_delta { toolName: "getWeather" }
-    tool_call_delta { argumentsJson: '{"loc' }
-    tool_call_delta { argumentsJson: 'ation":"Paris"}' }
-  content_block_stop (index: 1)
-message_stop
-tool_execution_start { toolCallId: "call_123", toolName: "getWeather", timestamp: 1704067200000 }
-tool_execution_end { toolCallId: "call_123", toolName: "getWeather", result: "Paris: 72°F", isError: false, timestamp: 1704067200050 }
-message_start
-  content_block_start (index: 0)
-    text_delta "The weather is..."
-  content_block_stop (index: 0)
-message_stop
-```
+When aborted during tool execution:
+- The abort signal MUST propagate to in-flight tool execution
+- Pending tool calls MUST be skipped
+- The generation MUST throw `CANCELLED` error

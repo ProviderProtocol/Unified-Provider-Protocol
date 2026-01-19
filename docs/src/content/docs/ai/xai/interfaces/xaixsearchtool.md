@@ -10,7 +10,7 @@ title: "Interface: XAIXSearchTool"
 
 # Interface: XAIXSearchTool
 
-Defined in: [src/providers/xai/types.ts:332](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L332)
+Defined in: [src/providers/xai/types.ts:310](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L310)
 
 X (Twitter) search tool for social media content.
 
@@ -33,7 +33,7 @@ const tool: XAIXSearchTool = {
 
 > `optional` **allowed\_x\_handles**: `string`[]
 
-Defined in: [src/providers/xai/types.ts:336](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L336)
+Defined in: [src/providers/xai/types.ts:314](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L314)
 
 Limit to specific X handles (max 10, mutually exclusive with excluded_x_handles)
 
@@ -43,7 +43,7 @@ Limit to specific X handles (max 10, mutually exclusive with excluded_x_handles)
 
 > `optional` **enable\_image\_understanding**: `boolean`
 
-Defined in: [src/providers/xai/types.ts:344](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L344)
+Defined in: [src/providers/xai/types.ts:322](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L322)
 
 Enable image analysis in posts
 
@@ -53,7 +53,7 @@ Enable image analysis in posts
 
 > `optional` **enable\_video\_understanding**: `boolean`
 
-Defined in: [src/providers/xai/types.ts:346](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L346)
+Defined in: [src/providers/xai/types.ts:324](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L324)
 
 Enable video analysis in posts
 
@@ -63,7 +63,7 @@ Enable video analysis in posts
 
 > `optional` **excluded\_x\_handles**: `string`[]
 
-Defined in: [src/providers/xai/types.ts:338](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L338)
+Defined in: [src/providers/xai/types.ts:316](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L316)
 
 Exclude specific X handles (max 10, "grok" excluded by default)
 
@@ -73,7 +73,7 @@ Exclude specific X handles (max 10, "grok" excluded by default)
 
 > `optional` **from\_date**: `string`
 
-Defined in: [src/providers/xai/types.ts:340](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L340)
+Defined in: [src/providers/xai/types.ts:318](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L318)
 
 Start date filter (YYYY-MM-DD)
 
@@ -83,7 +83,7 @@ Start date filter (YYYY-MM-DD)
 
 > `optional` **to\_date**: `string`
 
-Defined in: [src/providers/xai/types.ts:342](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L342)
+Defined in: [src/providers/xai/types.ts:320](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L320)
 
 End date filter (YYYY-MM-DD)
 
@@ -93,6 +93,6 @@ End date filter (YYYY-MM-DD)
 
 > **type**: `"x_search"`
 
-Defined in: [src/providers/xai/types.ts:334](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/xai/types.ts#L334)
+Defined in: [src/providers/xai/types.ts:312](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/xai/types.ts#L312)
 
 Tool type identifier

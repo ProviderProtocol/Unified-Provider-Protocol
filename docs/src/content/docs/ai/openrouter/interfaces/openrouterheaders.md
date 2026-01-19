@@ -10,7 +10,7 @@ title: "Interface: OpenRouterHeaders"
 
 # Interface: OpenRouterHeaders
 
-Defined in: [src/providers/openrouter/types.ts:1443](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/openrouter/types.ts#L1443)
+Defined in: [src/providers/openrouter/types.ts:1444](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/openrouter/types.ts#L1444)
 
 OpenRouter-specific HTTP headers for API requests.
 
@@ -33,7 +33,7 @@ const headers: OpenRouterHeaders = {
 
 > `optional` **HTTP-Referer**: `string`
 
-Defined in: [src/providers/openrouter/types.ts:1445](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/openrouter/types.ts#L1445)
+Defined in: [src/providers/openrouter/types.ts:1446](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/openrouter/types.ts#L1446)
 
 Application URL for analytics and leaderboard tracking.
 
@@ -43,6 +43,6 @@ Application URL for analytics and leaderboard tracking.
 
 > `optional` **X-Title**: `string`
 
-Defined in: [src/providers/openrouter/types.ts:1447](https://github.com/ProviderProtocol/ai/blob/6119c5b59e26af41fa847efb47d9abf792ee3fb5/src/providers/openrouter/types.ts#L1447)
+Defined in: [src/providers/openrouter/types.ts:1448](https://github.com/ProviderProtocol/ai/blob/2772450aa66e4362aca4f33c14d03af66fd20186/src/providers/openrouter/types.ts#L1448)
 
 Application name for analytics display.
