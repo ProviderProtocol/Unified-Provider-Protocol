@@ -10,7 +10,7 @@ title: "Interface: Middleware"
 
 # Interface: Middleware
 
-Defined in: [src/types/middleware.ts:138](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/middleware.ts#L138)
+Defined in: [src/types/middleware.ts:138](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/middleware.ts#L138)
 
 Middleware interface with optional hooks.
 
@@ -50,7 +50,7 @@ const customMiddleware: Middleware = {
 
 > `readonly` **name**: `string`
 
-Defined in: [src/types/middleware.ts:140](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/middleware.ts#L140)
+Defined in: [src/types/middleware.ts:140](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/middleware.ts#L140)
 
 Middleware name for debugging and logging
 
@@ -60,7 +60,7 @@ Middleware name for debugging and logging
 
 > `optional` **onEnd**(`ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:157](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/middleware.ts#L157)
+Defined in: [src/types/middleware.ts:157](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/middleware.ts#L157)
 
 Called when generate/stream completes successfully.
 Called in reverse middleware order.
@@ -83,7 +83,7 @@ The middleware context with response populated
 
 > `optional` **onError**(`error`, `ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:166](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/middleware.ts#L166)
+Defined in: [src/types/middleware.ts:166](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/middleware.ts#L166)
 
 Called on any error during execution.
 Called for all middleware that have this hook, regardless of order.
@@ -112,7 +112,7 @@ The middleware context
 
 > `optional` **onRequest**(`ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:175](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/middleware.ts#L175)
+Defined in: [src/types/middleware.ts:175](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/middleware.ts#L175)
 
 Called before provider execution. Can modify the request.
 
@@ -134,7 +134,7 @@ The middleware context with mutable request
 
 > `optional` **onResponse**(`ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:183](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/middleware.ts#L183)
+Defined in: [src/types/middleware.ts:183](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/middleware.ts#L183)
 
 Called after provider execution. Can modify the response.
 Called in reverse middleware order.
@@ -157,7 +157,7 @@ The middleware context with mutable response
 
 > `optional` **onStart**(`ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:149](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/middleware.ts#L149)
+Defined in: [src/types/middleware.ts:149](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/middleware.ts#L149)
 
 Called when generate/stream starts, before any provider execution.
 
@@ -179,7 +179,7 @@ The middleware context
 
 > `optional` **onStreamEnd**(`ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:206](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/middleware.ts#L206)
+Defined in: [src/types/middleware.ts:206](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/middleware.ts#L206)
 
 Called when stream completes, after all events have been processed.
 
@@ -201,7 +201,7 @@ The stream context
 
 > `optional` **onStreamEvent**(`event`, `ctx`): [`StreamEvent`](streamevent.md) \| [`StreamEvent`](streamevent.md)[] \| `null`
 
-Defined in: [src/types/middleware.ts:199](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/middleware.ts#L199)
+Defined in: [src/types/middleware.ts:199](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/middleware.ts#L199)
 
 Called for each stream event. Can transform, filter, or expand events.
 
@@ -236,7 +236,7 @@ Transformed event(s) or null to filter
 
 > `optional` **onToolCall**(`tool`, `params`, `ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:217](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/middleware.ts#L217)
+Defined in: [src/types/middleware.ts:217](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/middleware.ts#L217)
 
 Called when a tool is about to be executed.
 
@@ -270,7 +270,7 @@ The middleware context
 
 > `optional` **onToolResult**(`tool`, `result`, `ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:226](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/middleware.ts#L226)
+Defined in: [src/types/middleware.ts:226](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/middleware.ts#L226)
 
 Called after tool execution completes.
 

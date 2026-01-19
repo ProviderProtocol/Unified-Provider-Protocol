@@ -10,7 +10,7 @@ title: "Interface: OpenAIModelOptions"
 
 # Interface: OpenAIModelOptions
 
-Defined in: [src/providers/openai/types.ts:412](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/providers/openai/types.ts#L412)
+Defined in: [src/providers/openai/types.ts:412](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/openai/types.ts#L412)
 
 Options when creating an OpenAI model reference.
 
@@ -20,6 +20,6 @@ Options when creating an OpenAI model reference.
 
 > `optional` **api**: [`OpenAIAPIMode`](../type-aliases/openaiapimode.md)
 
-Defined in: [src/providers/openai/types.ts:414](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/providers/openai/types.ts#L414)
+Defined in: [src/providers/openai/types.ts:414](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/openai/types.ts#L414)
 
 Which API to use

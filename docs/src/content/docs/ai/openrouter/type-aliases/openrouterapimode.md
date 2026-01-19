@@ -12,7 +12,7 @@ title: "Type Alias: OpenRouterAPIMode"
 
 > **OpenRouterAPIMode** = `"completions"` \| `"responses"`
 
-Defined in: [src/providers/openrouter/types.ts:264](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/providers/openrouter/types.ts#L264)
+Defined in: [src/providers/openrouter/types.ts:264](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/openrouter/types.ts#L264)
 
 API mode selection for OpenRouter provider.
 

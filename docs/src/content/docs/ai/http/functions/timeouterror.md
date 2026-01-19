@@ -12,7 +12,7 @@ title: "Function: timeoutError()"
 
 > **timeoutError**(`timeout`, `provider`, `modality`): [`UPPError`](../../core/classes/upperror.md)
 
-Defined in: [src/http/errors.ts:173](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/http/errors.ts#L173)
+Defined in: [src/http/errors.ts:173](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/http/errors.ts#L173)
 
 Creates a UPPError for request timeout.
 

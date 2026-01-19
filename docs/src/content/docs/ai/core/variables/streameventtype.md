@@ -12,7 +12,7 @@ title: "Variable: StreamEventType"
 
 > `const` **StreamEventType**: `object`
 
-Defined in: [src/types/stream.ts:28](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/stream.ts#L28)
+Defined in: [src/types/stream.ts:28](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/stream.ts#L28)
 
 Stream event type constants.
 

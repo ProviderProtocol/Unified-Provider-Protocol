@@ -10,7 +10,7 @@ title: "Interface: LoggingOptions"
 
 # Interface: LoggingOptions
 
-Defined in: [src/middleware/logging.ts:21](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/middleware/logging.ts#L21)
+Defined in: [src/middleware/logging.ts:21](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/middleware/logging.ts#L21)
 
 Options for logging middleware.
 
@@ -20,7 +20,7 @@ Options for logging middleware.
 
 > `optional` **level**: [`LogLevel`](../type-aliases/loglevel.md)
 
-Defined in: [src/middleware/logging.ts:26](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/middleware/logging.ts#L26)
+Defined in: [src/middleware/logging.ts:26](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/middleware/logging.ts#L26)
 
 Minimum log level to output.
 
@@ -36,7 +36,7 @@ Minimum log level to output.
 
 > `optional` **logStreamEvents**: `boolean`
 
-Defined in: [src/middleware/logging.ts:32](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/middleware/logging.ts#L32)
+Defined in: [src/middleware/logging.ts:32](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/middleware/logging.ts#L32)
 
 Log individual stream events.
 
@@ -52,7 +52,7 @@ false
 
 > `optional` **logToolCalls**: `boolean`
 
-Defined in: [src/middleware/logging.ts:38](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/middleware/logging.ts#L38)
+Defined in: [src/middleware/logging.ts:38](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/middleware/logging.ts#L38)
 
 Log tool calls and results.
 
@@ -68,7 +68,7 @@ true
 
 > `optional` **prefix**: `string`
 
-Defined in: [src/middleware/logging.ts:52](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/middleware/logging.ts#L52)
+Defined in: [src/middleware/logging.ts:52](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/middleware/logging.ts#L52)
 
 Prefix for all log messages.
 
@@ -84,7 +84,7 @@ Prefix for all log messages.
 
 > `optional` **logger**(`level`, `message`, `data?`): `void`
 
-Defined in: [src/middleware/logging.ts:46](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/middleware/logging.ts#L46)
+Defined in: [src/middleware/logging.ts:46](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/middleware/logging.ts#L46)
 
 Custom logger function. If not provided, uses console.log.
 

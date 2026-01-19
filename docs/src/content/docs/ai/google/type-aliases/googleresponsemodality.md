@@ -12,7 +12,7 @@ title: "Type Alias: GoogleResponseModality"
 
 > **GoogleResponseModality** = `"TEXT"` \| `"IMAGE"` \| `"AUDIO"` \| `"Text"` \| `"Image"` \| `"Audio"`
 
-Defined in: [src/providers/google/types.ts:162](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/providers/google/types.ts#L162)
+Defined in: [src/providers/google/types.ts:162](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/google/types.ts#L162)
 
 Output modality enum values for Gemini responseModalities.
 

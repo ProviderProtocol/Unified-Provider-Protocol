@@ -12,7 +12,7 @@ title: "Variable: tools"
 
 > `const` **tools**: `object`
 
-Defined in: [src/providers/openai/types.ts:1552](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/providers/openai/types.ts#L1552)
+Defined in: [src/providers/openai/types.ts:1552](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/openai/types.ts#L1552)
 
 Namespace object containing all tool helper constructors.
 

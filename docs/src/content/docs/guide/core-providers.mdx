@@ -7,7 +7,7 @@ import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
 
 # Providers
 
-UPP supports seven AI providers out of the box. Each provider is a separate import that can be used with `llm()`, `embedding()`, or `image()`.
+UPP supports eight AI providers out of the box. Each provider is a separate import that can be used with `llm()`, `embedding()`, or `image()`.
 
 ## Provider Capabilities
 
@@ -19,6 +19,7 @@ UPP supports seven AI providers out of the box. Each provider is a separate impo
 | **xAI** | ✓ | | ✓ | Grok models |
 | **Ollama** | ✓ | ✓ | | Local models |
 | **OpenRouter** | ✓ | ✓ | | Multi-provider gateway |
+| **Responses** | ✓ | | | OpenResponses-compatible endpoints |
 | **Proxy** | ✓ | ✓ | ✓ | Custom API endpoints |
 
 ## Anthropic
@@ -203,6 +204,56 @@ const model = llm({
 ```
 
 OpenRouter provides access to models from many providers with a unified API and billing.
+
+## Responses
+
+Connect to any OpenResponses-compatible endpoint. This provider implements the OpenResponses specification for interoperable LLM interfaces.
+
+```typescript
+import { llm } from '@providerprotocol/ai';
+import { responses } from '@providerprotocol/ai/responses';
+
+// Connect to OpenAI using the OpenResponses spec
+const model = llm({
+  model: responses('gpt-4o', {
+    host: 'https://api.openai.com/v1',
+    apiKeyEnv: 'OPENAI_API_KEY',
+  }),
+  params: {
+    max_output_tokens: 1000,
+  },
+});
+
+const turn = await model.generate('Hello!');
+```
+
+### Configuration
+
+```typescript
+interface ResponsesProviderOptions {
+  host: string;        // Required: Base URL of the OpenResponses server
+  apiKeyEnv?: string;  // Optional: Env var name (default: 'OPENRESPONSES_API_KEY')
+}
+```
+
+### Use Cases
+
+The responses provider works with any OpenResponses-compatible endpoint:
+
+```typescript
+// OpenAI
+responses('gpt-4o', { host: 'https://api.openai.com/v1', apiKeyEnv: 'OPENAI_API_KEY' })
+
+// OpenRouter
+responses('anthropic/claude-sonnet-4', { host: 'https://openrouter.ai/api/v1', apiKeyEnv: 'OPENROUTER_API_KEY' })
+
+// Self-hosted server
+responses('my-model', { host: 'https://my-server.example.com/v1' })
+```
+
+<Aside type="tip">
+Use the responses provider when you want a standardized interface that works across multiple OpenResponses-compatible services without changing your code.
+</Aside>
 
 ## Proxy Provider
 

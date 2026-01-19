@@ -10,7 +10,7 @@ title: "Interface: LLMOptions"
 
 # Interface: LLMOptions\<TParams\>
 
-Defined in: [src/types/llm.ts:119](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/llm.ts#L119)
+Defined in: [src/types/llm.ts:119](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/llm.ts#L119)
 
 Options for creating an LLM instance with the llm() function.
 
@@ -42,7 +42,7 @@ Provider-specific parameter type
 
 > `optional` **config**: [`ProviderConfig`](providerconfig.md)
 
-Defined in: [src/types/llm.ts:124](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/llm.ts#L124)
+Defined in: [src/types/llm.ts:124](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/llm.ts#L124)
 
 Provider infrastructure configuration (optional - uses env vars if omitted)
 
@@ -52,7 +52,7 @@ Provider infrastructure configuration (optional - uses env vars if omitted)
 
 > `optional` **middleware**: [`Middleware`](middleware.md)[]
 
-Defined in: [src/types/llm.ts:166](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/llm.ts#L166)
+Defined in: [src/types/llm.ts:166](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/llm.ts#L166)
 
 Middleware for intercepting and transforming requests, responses, and streams.
 
@@ -77,7 +77,7 @@ const model = llm({
 
 > **model**: `ModelInput`
 
-Defined in: [src/types/llm.ts:121](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/llm.ts#L121)
+Defined in: [src/types/llm.ts:121](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/llm.ts#L121)
 
 A model reference from a provider factory
 
@@ -87,7 +87,7 @@ A model reference from a provider factory
 
 > `optional` **params**: `TParams`
 
-Defined in: [src/types/llm.ts:127](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/llm.ts#L127)
+Defined in: [src/types/llm.ts:127](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/llm.ts#L127)
 
 Model-specific parameters (temperature, max_tokens, etc.)
 
@@ -97,7 +97,7 @@ Model-specific parameters (temperature, max_tokens, etc.)
 
 > `optional` **structure**: [`JSONSchema`](jsonschema.md)
 
-Defined in: [src/types/llm.ts:147](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/llm.ts#L147)
+Defined in: [src/types/llm.ts:147](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/llm.ts#L147)
 
 Structured output schema (JSON Schema)
 
@@ -107,7 +107,7 @@ Structured output schema (JSON Schema)
 
 > `optional` **system**: `string` \| `unknown`[]
 
-Defined in: [src/types/llm.ts:138](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/llm.ts#L138)
+Defined in: [src/types/llm.ts:138](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/llm.ts#L138)
 
 System prompt for all inferences.
 
@@ -123,7 +123,7 @@ Array formats are passed through directly to the provider.
 
 > `optional` **tools**: [`Tool`](tool.md)\<`unknown`, `unknown`\>[]
 
-Defined in: [src/types/llm.ts:141](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/llm.ts#L141)
+Defined in: [src/types/llm.ts:141](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/llm.ts#L141)
 
 Tools available to the model
 
@@ -133,6 +133,6 @@ Tools available to the model
 
 > `optional` **toolStrategy**: [`ToolUseStrategy`](toolusestrategy.md)
 
-Defined in: [src/types/llm.ts:144](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/llm.ts#L144)
+Defined in: [src/types/llm.ts:144](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/llm.ts#L144)
 
 Tool execution strategy

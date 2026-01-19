@@ -12,7 +12,7 @@ title: "Function: parsedObjectMiddleware()"
 
 > **parsedObjectMiddleware**(`options`): [`Middleware`](../interfaces/middleware.md)
 
-Defined in: [src/middleware/parsed-object.ts:108](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/middleware/parsed-object.ts#L108)
+Defined in: [src/middleware/parsed-object.ts:108](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/middleware/parsed-object.ts#L108)
 
 Middleware exports for composable request/response/stream transformations.
 

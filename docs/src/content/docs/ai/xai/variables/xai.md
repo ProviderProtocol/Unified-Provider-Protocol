@@ -12,7 +12,7 @@ title: "Variable: xai"
 
 > `const` **xai**: [`Provider`](../../core/interfaces/provider.md)\<[`XAIProviderOptions`](../interfaces/xaiprovideroptions.md)\>
 
-Defined in: [src/providers/xai/index.ts:114](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/providers/xai/index.ts#L114)
+Defined in: [src/providers/xai/index.ts:114](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/xai/index.ts#L114)
 
 xAI provider
 

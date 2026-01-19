@@ -10,7 +10,7 @@ title: "Interface: ParsedObjectOptions"
 
 # Interface: ParsedObjectOptions
 
-Defined in: [src/middleware/parsed-object.ts:35](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/middleware/parsed-object.ts#L35)
+Defined in: [src/middleware/parsed-object.ts:35](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/middleware/parsed-object.ts#L35)
 
 Options for parsed object middleware.
 
@@ -20,7 +20,7 @@ Options for parsed object middleware.
 
 > `optional` **parseObjects**: `boolean`
 
-Defined in: [src/middleware/parsed-object.ts:40](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/middleware/parsed-object.ts#L40)
+Defined in: [src/middleware/parsed-object.ts:40](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/middleware/parsed-object.ts#L40)
 
 Parse ObjectDelta events (structured output responses).
 
@@ -36,7 +36,7 @@ true
 
 > `optional` **parseToolCalls**: `boolean`
 
-Defined in: [src/middleware/parsed-object.ts:46](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/middleware/parsed-object.ts#L46)
+Defined in: [src/middleware/parsed-object.ts:46](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/middleware/parsed-object.ts#L46)
 
 Parse ToolCallDelta events (tool call arguments).
 

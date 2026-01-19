@@ -12,7 +12,7 @@ title: "Type Alias: ProxyHandler()"
 
 > **ProxyHandler** = (`body`, `meta`) => `Promise`\<[`Turn`](../../core/interfaces/turn.md)\> \| [`StreamResult`](../../core/interfaces/streamresult.md) \| `Promise`\<[`StreamResult`](../../core/interfaces/streamresult.md)\>
 
-Defined in: [src/providers/proxy/server/types.ts:34](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/providers/proxy/server/types.ts#L34)
+Defined in: [src/providers/proxy/server/types.ts:34](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/proxy/server/types.ts#L34)
 
 Handler function signature for proxy endpoints.
 Takes parsed request data and returns either a Turn or StreamResult.

@@ -12,7 +12,7 @@ title: "Function: parseImageBody()"
 
 > **parseImageBody**(`body`): [`ParsedImageRequest`](../interfaces/parsedimagerequest.md)
 
-Defined in: [src/providers/proxy/server/webapi.ts:164](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/providers/proxy/server/webapi.ts#L164)
+Defined in: [src/providers/proxy/server/webapi.ts:164](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/proxy/server/webapi.ts#L164)
 
 Parse an HTTP request body into image request data.
 

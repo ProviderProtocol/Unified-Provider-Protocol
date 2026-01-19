@@ -12,7 +12,7 @@ title: "Function: deserializeMessage()"
 
 > **deserializeMessage**(`json`): [`Message`](../../core/classes/message.md)
 
-Defined in: [src/providers/proxy/serialization.ts:49](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/providers/proxy/serialization.ts#L49)
+Defined in: [src/providers/proxy/serialization.ts:49](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/proxy/serialization.ts#L49)
 
 Reconstruct a Message from MessageJSON format.
 

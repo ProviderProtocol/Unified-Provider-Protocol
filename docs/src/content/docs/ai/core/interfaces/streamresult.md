@@ -10,7 +10,7 @@ title: "Interface: StreamResult"
 
 # Interface: StreamResult\<TData\>
 
-Defined in: [src/types/stream.ts:169](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/stream.ts#L169)
+Defined in: [src/types/stream.ts:169](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/stream.ts#L169)
 
 Stream result - an async iterable that also provides the final turn.
 
@@ -54,7 +54,7 @@ Type of the structured output data
 
 > `readonly` **turn**: `Promise`\<[`Turn`](turn.md)\<`TData`\>\>
 
-Defined in: [src/types/stream.ts:175](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/stream.ts#L175)
+Defined in: [src/types/stream.ts:175](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/stream.ts#L175)
 
 Promise that resolves to the complete Turn after streaming finishes.
 Rejects if the stream is aborted or terminated early.
@@ -81,7 +81,7 @@ Defined in: node\_modules/typescript/lib/lib.es2018.asynciterable.d.ts:38
 
 > **abort**(): `void`
 
-Defined in: [src/types/stream.ts:181](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/stream.ts#L181)
+Defined in: [src/types/stream.ts:181](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/stream.ts#L181)
 
 Aborts the stream, stopping further events and cancelling the request.
 This will cause [StreamResult.turn](#turn) to reject.

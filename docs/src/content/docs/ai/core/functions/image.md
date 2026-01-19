@@ -12,7 +12,7 @@ title: "Function: image()"
 
 > **image**\<`TParams`\>(`options`): [`ImageInstance`](../interfaces/imageinstance.md)\<`TParams`\>
 
-Defined in: [src/core/image.ts:56](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/core/image.ts#L56)
+Defined in: [src/core/image.ts:56](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/core/image.ts#L56)
 
 Creates an image generation instance configured with the specified options.
 

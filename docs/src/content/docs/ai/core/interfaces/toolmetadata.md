@@ -10,7 +10,7 @@ title: "Interface: ToolMetadata"
 
 # Interface: ToolMetadata
 
-Defined in: [src/types/tool.ts:26](https://github.com/ProviderProtocol/ai/blob/978bdaec9d2e6187458e85ae2efbc76e37cdc207/src/types/tool.ts#L26)
+Defined in: [src/types/tool.ts:26](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/tool.ts#L26)
 
 Provider-namespaced metadata for tools.
 
