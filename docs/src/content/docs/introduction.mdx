@@ -1,71 +1,216 @@
 ---
 title: Introduction
-description: Understanding the Unified Provider Protocol and its goals.
+description: Provider Protocol SDK (UPP) - A unified API for AI inference across multiple providers.
 ---
 
 import { Aside, Badge } from '@astrojs/starlight/components';
 
-# Introduction to UPP
+# Provider Protocol SDK (UPP) - LLM Reference Guide
 
-<Badge text="Version 1.2.0-draft" variant="note" />
+<Badge text="@providerprotocol/ai" variant="note" />
+<Badge text="@providerprotocol/agents" variant="tip" />
 
-**UPP (Unified Provider Protocol)** is a first-generation standard for simplifying AI inference and enabling multi-provider interoperability. The protocol defines uniform interfaces for interacting with Large Language Models, Embedding Models, Image Generation Models, and other AI inference APIs through modality-specific, consistent developer experiences.
+**Package**: `@providerprotocol/ai`
+**Runtime**: Bun/Node.js (ESM only)
 
-## Purpose
+## Overview
 
-Modern AI development requires interacting with multiple providers (Anthropic, OpenAI, Google, Stability, Voyage, etc.), each with distinct APIs, authentication schemes, and response formats. UPP establishes a standard protocol that:
+Provider Protocol (UPP - Unified Provider Protocol) is a TypeScript SDK that provides a unified API for interacting with multiple AI providers. It eliminates provider fragmentation by offering one consistent interface across 9+ providers and 3 modalities.
 
-- Provides modality-specific interfaces (`llm`, `embedding`, `image`)
-- Enables provider switching without application code changes
-- Maintains provider-native configuration to avoid abstraction leakage
-- Shares common infrastructure (auth, retry, HTTP) across modalities
-- Supports text, image, audio, video, embeddings, and future modalities
+**Key Features:**
+- Unified interface for Anthropic, OpenAI, Google, xAI, Groq, Cerebras, Ollama, OpenRouter
+- Three modalities: LLM inference, embeddings, image generation
+- Full streaming support with event-based API
+- Tool/function calling with automatic execution loops
+- Structured output (JSON schema validation)
+- Multimodal input (text, images, documents, audio, video)
+- Middleware system for request/response transformation
+- Retry strategies and API key rotation
 
-## Scope
+---
 
-This specification covers:
+## Installation
 
-- The `llm()` function interface (chat/completion)
-- The `embedding()` function interface (vector embeddings)
-- The `image()` function interface (image generation)
-- Provider adapter requirements for each modality
-- Shared infrastructure (ProviderConfig, KeyStrategy, error handling)
-- Message, Turn, and Thread data structures (LLM-specific)
-- Streaming response handling
-- Tool definition and execution
+```bash
+bun add @providerprotocol/ai
+# or
+npm install @providerprotocol/ai
+```
 
-## Terminology
+---
 
-| Term | Definition |
-|------|------------|
-| **Provider** | A vendor-specific adapter exposing one or more modality interfaces |
-| **Modality** | A distinct AI capability: LLM, embedding, image generation, etc. |
-| **BoundModel** | A model instance bound to a specific provider and model ID |
-| **Message** | A single message in an LLM conversation (user, assistant, or tool result) |
-| **Turn** | The complete result of one LLM inference call, containing all messages produced |
-| **StreamEvent** | A streaming event (lifecycle or content delta) |
-| **Thread** | A utility class for managing LLM conversation history |
-| **Embedding** | A vector representation of text or other content |
-| **UPP** | Unified Provider Protocol |
+## Quick Start
 
-## Requirements Language
+### Basic LLM Usage
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
+```typescript
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
 
-## Modality Overview
+const claude = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  system: 'You are a helpful assistant.',
+});
 
-| Entry Point | Purpose | Example Models |
-|-------------|---------|----------------|
-| `llm()` | Chat, completion, reasoning | Claude, GPT-4, Gemini |
-| `embedding()` | Vector embeddings | text-embedding-3, Voyage, Cohere |
-| `image()` | Image generation/editing | DALL-E, Stable Diffusion, Imagen |
+// Simple generation
+const turn = await claude.generate('Hello, world!');
+console.log(turn.response.text);
+```
 
-<Aside type="tip">
-Future modalities may include `audio()` for speech-to-text/text-to-speech and `video()` for video generation.
+### Streaming
+
+```typescript
+import { StreamEventType } from '@providerprotocol/ai';
+
+const stream = claude.stream('Tell me a story');
+
+for await (const event of stream) {
+  if (event.type === StreamEventType.TextDelta) {
+    process.stdout.write(event.delta.text);
+  }
+}
+
+const turn = await stream.turn;
+console.log('Total tokens:', turn.usage.totalTokens);
+```
+
+---
+
+## Core Concepts
+
+### Factory Functions
+
+Three main factory functions create instances for each modality:
+
+```typescript
+import { llm, embedding, image } from '@providerprotocol/ai';
+```
+
+### Provider Functions
+
+Each provider exports a factory function that creates model references:
+
+```typescript
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { openai } from '@providerprotocol/ai/openai';
+import { google } from '@providerprotocol/ai/google';
+import { xai } from '@providerprotocol/ai/xai';
+import { groq } from '@providerprotocol/ai/groq';
+import { cerebras } from '@providerprotocol/ai/cerebras';
+import { ollama } from '@providerprotocol/ai/ollama';
+import { openrouter } from '@providerprotocol/ai/openrouter';
+import { proxy } from '@providerprotocol/ai/proxy';
+```
+
+---
+
+## Per-Library Imports (Subpaths)
+
+The package uses subpath exports to keep bundles small. Import only what you need:
+
+| Import Path | Contents |
+|-------------|----------|
+| `@providerprotocol/ai` | Core: `llm`, `embedding`, `image`, types, media classes |
+| `@providerprotocol/ai/anthropic` | Anthropic provider + types |
+| `@providerprotocol/ai/openai` | OpenAI provider + types |
+| `@providerprotocol/ai/google` | Google/Gemini provider + types |
+| `@providerprotocol/ai/xai` | xAI/Grok provider + types |
+| `@providerprotocol/ai/groq` | Groq provider + types |
+| `@providerprotocol/ai/cerebras` | Cerebras provider + types |
+| `@providerprotocol/ai/ollama` | Ollama provider + types |
+| `@providerprotocol/ai/openrouter` | OpenRouter provider + types |
+| `@providerprotocol/ai/proxy` | Proxy provider + server adapters |
+| `@providerprotocol/ai/responses` | OpenAI Responses API provider |
+| `@providerprotocol/ai/http` | HTTP utilities: retry/key strategies |
+
+### Example: Minimal Import
+
+```typescript
+// Only imports Anthropic provider code, not OpenAI, Google, etc.
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+```
+
+### Example: Multiple Providers
+
+```typescript
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { openai } from '@providerprotocol/ai/openai';
+import { google } from '@providerprotocol/ai/google';
+```
+
+### Model Reference
+
+Provider functions return a `ModelReference` that's passed to factory functions:
+
+```typescript
+const model = anthropic('claude-sonnet-4-20250514', {
+  // provider-specific options
+});
+
+const instance = llm({ model });
+```
+
+---
+
+## Provider Capability Matrix
+
+| Provider | LLM | Embed | Image | Streaming | Tools | Structured | Vision | Documents |
+|----------|:---:|:-----:|:-----:|:---------:|:-----:|:----------:|:------:|:---------:|
+| Anthropic | ✓ | | | ✓ | ✓ | ✓ | ✓ | ✓ |
+| OpenAI | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Google | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| xAI | ✓ | | ✓ | ✓ | ✓ | | ✓ | |
+| Groq | ✓ | | | ✓ | ✓ | ✓ | ✓ | |
+| Cerebras | ✓ | | | ✓ | ✓ | ✓ | | |
+| Ollama | ✓ | ✓ | | ✓ | ✓ | | | |
+| OpenRouter | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Proxy | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+<Aside type="note">
+Proxy capabilities depend on your backend implementation.
 </Aside>
+
+---
+
+## Environment Variables
+
+API keys are automatically loaded from environment variables:
+
+```bash
+ANTHROPIC_API_KEY=sk-ant-...
+OPENAI_API_KEY=sk-...
+GOOGLE_API_KEY=...
+XAI_API_KEY=...
+GROQ_API_KEY=gsk_...
+CEREBRAS_API_KEY=...
+OPENROUTER_API_KEY=sk-or-...
+# Ollama doesn't require an API key
+```
+
+---
+
+## Important Notes
+
+1. **ESM Only**: This package is ESM-only. Use `"type": "module"` in package.json.
+
+2. **Bun Preferred**: Designed for Bun runtime. Works with Node.js but Bun is recommended.
+
+3. **No Dependencies**: Zero production dependencies for minimal footprint.
+
+4. **Provider Isolation**: Each provider is a separate module with no cross-provider code.
+
+5. **Type Safety**: 100% TypeScript with strict mode. No `any` types.
+
+6. **Stream Completion**: Always `await stream.turn` after iterating to ensure completion.
+
+---
 
 ## What's Next?
 
-- Learn about [Design Principles](/design-principles/) that guide UPP
-- Jump to the [Quick Start](/quick-start/) guide
-- Explore the [Architecture](/core/architecture/) overview
+- Jump to the [Quick Start](/guide/quick-start/) guide for a hands-on tutorial
+- Explore [Streaming](/guide/streaming/) for real-time responses
+- Learn about [Tool Calling](/guide/tools/) for function execution
+- See [Structured Output](/guide/structured-output/) for JSON schema validation
+- Browse the [API Reference](/ai/core/) for detailed documentation
