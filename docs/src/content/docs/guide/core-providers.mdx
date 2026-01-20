@@ -7,7 +7,7 @@ import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
 
 # Providers
 
-UPP supports eight AI providers out of the box. Each provider is a separate import that can be used with `llm()`, `embedding()`, or `image()`.
+UPP supports ten AI providers out of the box. Each provider is a separate import that can be used with `llm()`, `embedding()`, or `image()`.
 
 ## Provider Capabilities
 
@@ -18,7 +18,9 @@ UPP supports eight AI providers out of the box. Each provider is a separate impo
 | **Google** | ✓ | ✓ | ✓ | Gemini models, Imagen |
 | **xAI** | ✓ | | ✓ | Grok models |
 | **Ollama** | ✓ | ✓ | | Local models |
-| **OpenRouter** | ✓ | ✓ | | Multi-provider gateway |
+| **OpenRouter** | ✓ | ✓ | ✓ | Multi-provider gateway |
+| **Groq** | ✓ | | | Fast inference with Llama, Gemma, Mixtral |
+| **Cerebras** | ✓ | | | Ultra-fast inference with Llama, Qwen |
 | **Responses** | ✓ | | | OpenResponses-compatible endpoints |
 | **Proxy** | ✓ | ✓ | ✓ | Custom API endpoints |
 
@@ -205,6 +207,58 @@ const model = llm({
 
 OpenRouter provides access to models from many providers with a unified API and billing.
 
+## Groq
+
+Fast inference with Llama, Gemma, and Mixtral models.
+
+```typescript
+import { llm } from '@providerprotocol/ai';
+import { groq } from '@providerprotocol/ai/groq';
+
+const model = llm({
+  model: groq('llama-3.3-70b-versatile'),
+  params: { max_tokens: 1000 },
+});
+
+const turn = await model.generate('Hello!');
+```
+
+**Capabilities:** Streaming, tool calling, structured output, image input (Llama 4 preview).
+
+**Popular models:** `llama-3.3-70b-versatile`, `llama-3.1-8b-instant`, `gemma2-9b-it`, `mixtral-8x7b-32768`
+
+## Cerebras
+
+Ultra-fast inference with Llama, Qwen, and GPT-OSS models.
+
+```typescript
+import { llm } from '@providerprotocol/ai';
+import { cerebras } from '@providerprotocol/ai/cerebras';
+
+const model = llm({
+  model: cerebras('llama-3.3-70b'),
+  params: { max_completion_tokens: 1000 },
+});
+
+const turn = await model.generate('Hello!');
+```
+
+### With Reasoning (GPT-OSS)
+
+```typescript
+const model = llm({
+  model: cerebras('gpt-oss-120b'),
+  params: {
+    reasoning_effort: 'high',
+    reasoning_format: 'parsed',
+  },
+});
+```
+
+**Capabilities:** Streaming, tool calling, structured output, reasoning parameters.
+
+**Popular models:** `llama-3.3-70b`, `llama-3.1-8b`, `qwen-3-32b`, `gpt-oss-120b`
+
 ## Responses
 
 Connect to any OpenResponses-compatible endpoint. This provider implements the OpenResponses specification for interoperable LLM interfaces.
@@ -304,6 +358,8 @@ const claude = llm({
 | Google | `GoogleLLMParams` | `GoogleEmbedParams` | `GoogleImageParams` |
 | xAI | `XAILLMParams` | - | `XAIImageParams` |
 | Ollama | `OllamaLLMParams` | `OllamaEmbedParams` | - |
+| Groq | `GroqLLMParams` | - | - |
+| Cerebras | `CerebrasLLMParams` | - | - |
 | Responses | `ResponsesParams` | - | - |
 
 ## Environment Variables
@@ -316,6 +372,8 @@ OPENAI_API_KEY=sk-...
 GOOGLE_API_KEY=...
 XAI_API_KEY=...
 OPENROUTER_API_KEY=...
+GROQ_API_KEY=...
+CEREBRAS_API_KEY=...
 OPENRESPONSES_API_KEY=...  # For responses provider (or use apiKeyEnv option)
 ```
 
