@@ -12,6 +12,6 @@ title: "Type Alias: GoogleTaskType"
 
 > **GoogleTaskType** = `"RETRIEVAL_QUERY"` \| `"RETRIEVAL_DOCUMENT"` \| `"SEMANTIC_SIMILARITY"` \| `"CLASSIFICATION"` \| `"CLUSTERING"` \| `"QUESTION_ANSWERING"` \| `"FACT_VERIFICATION"` \| `"CODE_RETRIEVAL_QUERY"` \| `"TASK_TYPE_UNSPECIFIED"`
 
-Defined in: [src/providers/google/embed.ts:29](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/google/embed.ts#L29)
+Defined in: [src/providers/google/embed.ts:29](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/google/embed.ts#L29)
 
 Google task types for embedding optimization.

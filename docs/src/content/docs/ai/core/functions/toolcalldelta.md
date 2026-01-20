@@ -12,7 +12,7 @@ title: "Function: toolCallDelta()"
 
 > **toolCallDelta**(`toolCallId`, `toolName`, `argumentsJson`, `index`): [`StreamEvent`](../interfaces/streamevent.md)
 
-Defined in: [src/types/stream.ts:259](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/stream.ts#L259)
+Defined in: [src/types/stream.ts:259](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/stream.ts#L259)
 
 Creates a tool call delta stream event.
 

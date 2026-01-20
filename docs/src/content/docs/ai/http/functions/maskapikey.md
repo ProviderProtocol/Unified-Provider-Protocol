@@ -12,7 +12,7 @@ title: "Function: maskApiKey()"
 
 > **maskApiKey**(`key`): `string`
 
-Defined in: [src/http/keys.ts:201](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/http/keys.ts#L201)
+Defined in: [src/http/keys.ts:201](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/http/keys.ts#L201)
 
 Masks an API key for safe logging.
 Shows first 4 and last 4 characters with ellipsis, or '***' for short keys.

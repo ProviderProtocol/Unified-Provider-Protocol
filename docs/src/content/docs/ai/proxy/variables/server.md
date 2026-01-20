@@ -12,7 +12,7 @@ title: "Variable: server"
 
 > `const` **server**: `object`
 
-Defined in: [src/providers/proxy/server/index.ts:96](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/proxy/server/index.ts#L96)
+Defined in: [src/providers/proxy/server/index.ts:96](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/proxy/server/index.ts#L96)
 
 Server adapters namespace.
 

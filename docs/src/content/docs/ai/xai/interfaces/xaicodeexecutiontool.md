@@ -10,7 +10,7 @@ title: "Interface: XAICodeExecutionTool"
 
 # Interface: XAICodeExecutionTool
 
-Defined in: [src/providers/xai/types.ts:340](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/xai/types.ts#L340)
+Defined in: [src/providers/xai/types.ts:340](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/xai/types.ts#L340)
 
 Code execution tool for Python in a sandbox.
 
@@ -31,6 +31,6 @@ const tool: XAICodeExecutionTool = {
 
 > **type**: `"code_interpreter"`
 
-Defined in: [src/providers/xai/types.ts:342](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/xai/types.ts#L342)
+Defined in: [src/providers/xai/types.ts:342](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/xai/types.ts#L342)
 
 Tool type identifier

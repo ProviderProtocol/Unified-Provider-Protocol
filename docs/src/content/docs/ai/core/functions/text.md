@@ -12,7 +12,7 @@ title: "Function: text()"
 
 > **text**(`content`): [`TextBlock`](../interfaces/textblock.md)
 
-Defined in: [src/types/content.ts:435](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/content.ts#L435)
+Defined in: [src/types/content.ts:435](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/content.ts#L435)
 
 Creates a text content block from a string.
 

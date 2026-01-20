@@ -10,7 +10,7 @@ title: "Interface: ParsedStreamEvent"
 
 # Interface: ParsedStreamEvent
 
-Defined in: [src/middleware/parsed-object.ts:28](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/middleware/parsed-object.ts#L28)
+Defined in: [src/middleware/parsed-object.ts:28](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/middleware/parsed-object.ts#L28)
 
 Stream event with parsed JSON data.
 Returned by parsedObjectMiddleware for ObjectDelta and ToolCallDelta events.
@@ -25,7 +25,7 @@ Returned by parsedObjectMiddleware for ObjectDelta and ToolCallDelta events.
 
 > **delta**: [`ParsedEventDelta`](parsedeventdelta.md)
 
-Defined in: [src/middleware/parsed-object.ts:29](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/middleware/parsed-object.ts#L29)
+Defined in: [src/middleware/parsed-object.ts:29](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/middleware/parsed-object.ts#L29)
 
 ***
 
@@ -33,7 +33,7 @@ Defined in: [src/middleware/parsed-object.ts:29](https://github.com/ProviderProt
 
 > **index**: `number`
 
-Defined in: [src/types/stream.ts:137](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/stream.ts#L137)
+Defined in: [src/types/stream.ts:137](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/stream.ts#L137)
 
 Index of the content block this event belongs to
 
@@ -47,7 +47,7 @@ Index of the content block this event belongs to
 
 > **type**: [`StreamEventType`](../type-aliases/streameventtype.md)
 
-Defined in: [src/types/stream.ts:134](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/types/stream.ts#L134)
+Defined in: [src/types/stream.ts:134](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/stream.ts#L134)
 
 Event type discriminator
 

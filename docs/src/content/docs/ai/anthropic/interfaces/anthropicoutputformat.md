@@ -10,7 +10,7 @@ title: "Interface: AnthropicOutputFormat"
 
 # Interface: AnthropicOutputFormat
 
-Defined in: [src/providers/anthropic/types.ts:257](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/anthropic/types.ts#L257)
+Defined in: [src/providers/anthropic/types.ts:257](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/anthropic/types.ts#L257)
 
 Native structured output format configuration.
 
@@ -40,7 +40,7 @@ const outputFormat: AnthropicOutputFormat = {
 
 > **schema**: `object`
 
-Defined in: [src/providers/anthropic/types.ts:261](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/anthropic/types.ts#L261)
+Defined in: [src/providers/anthropic/types.ts:261](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/anthropic/types.ts#L261)
 
 JSON Schema defining the expected response structure.
 
@@ -74,6 +74,6 @@ Schema type (always 'object' for structured outputs).
 
 > **type**: `"json_schema"`
 
-Defined in: [src/providers/anthropic/types.ts:259](https://github.com/ProviderProtocol/ai/blob/5aefe26b1ee7a6863c43107299be578fae7abd51/src/providers/anthropic/types.ts#L259)
+Defined in: [src/providers/anthropic/types.ts:259](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/anthropic/types.ts#L259)
 
 Output format type - currently only 'json_schema' is supported.
