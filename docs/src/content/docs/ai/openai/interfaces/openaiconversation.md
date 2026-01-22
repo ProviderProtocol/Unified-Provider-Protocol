@@ -10,7 +10,7 @@ title: "Interface: OpenAIConversation"
 
 # Interface: OpenAIConversation
 
-Defined in: [src/providers/openai/types.ts:254](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openai/types.ts#L254)
+Defined in: [src/providers/openai/types.ts:254](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L254)
 
 Reference to an existing conversation for the Responses API.
 
@@ -24,6 +24,6 @@ Cannot be used together with `previous_response_id`.
 
 > **id**: `string`
 
-Defined in: [src/providers/openai/types.ts:256](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openai/types.ts#L256)
+Defined in: [src/providers/openai/types.ts:256](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L256)
 
 Conversation ID

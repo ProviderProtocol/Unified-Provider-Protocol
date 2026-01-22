@@ -12,7 +12,7 @@ title: "Function: isDocumentBlock()"
 
 > **isDocumentBlock**(`block`): `block is DocumentBlock`
 
-Defined in: [src/types/content.ts:519](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/content.ts#L519)
+Defined in: [src/types/content.ts:519](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/content.ts#L519)
 
 Type guard for DocumentBlock.
 

@@ -10,7 +10,7 @@ title: "Class: ExponentialBackoff"
 
 # Class: ExponentialBackoff
 
-Defined in: [src/http/retry.ts:43](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/http/retry.ts#L43)
+Defined in: [src/http/retry.ts:43](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/http/retry.ts#L43)
 
 Implements exponential backoff with optional jitter for retry delays.
 
@@ -56,7 +56,7 @@ const provider = createOpenAI({
 
 > **new ExponentialBackoff**(`options`): `ExponentialBackoff`
 
-Defined in: [src/http/retry.ts:58](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/http/retry.ts#L58)
+Defined in: [src/http/retry.ts:58](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/http/retry.ts#L58)
 
 Creates a new ExponentialBackoff instance.
 
@@ -100,7 +100,7 @@ Maximum delay cap in milliseconds (default: 30000)
 
 > **onRetry**(`error`, `attempt`): `number` \| `null`
 
-Defined in: [src/http/retry.ts:77](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/http/retry.ts#L77)
+Defined in: [src/http/retry.ts:77](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/http/retry.ts#L77)
 
 Determines whether to retry and calculates the delay.
 

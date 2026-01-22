@@ -10,7 +10,7 @@ title: "Interface: CerebrasRequest"
 
 # Interface: CerebrasRequest
 
-Defined in: [src/providers/cerebras/types.ts:121](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L121)
+Defined in: [src/providers/cerebras/types.ts:121](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L121)
 
 Request body for the Cerebras Chat Completions API.
 
@@ -20,7 +20,7 @@ Request body for the Cerebras Chat Completions API.
 
 > `optional` **clear\_thinking**: `boolean`
 
-Defined in: [src/providers/cerebras/types.ts:138](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L138)
+Defined in: [src/providers/cerebras/types.ts:138](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L138)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/providers/cerebras/types.ts:138](https://github.com/ProviderPro
 
 > `optional` **logprobs**: `boolean`
 
-Defined in: [src/providers/cerebras/types.ts:145](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L145)
+Defined in: [src/providers/cerebras/types.ts:145](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L145)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [src/providers/cerebras/types.ts:145](https://github.com/ProviderPro
 
 > `optional` **max\_completion\_tokens**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:129](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L129)
+Defined in: [src/providers/cerebras/types.ts:129](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L129)
 
 ***
 
@@ -44,7 +44,7 @@ Defined in: [src/providers/cerebras/types.ts:129](https://github.com/ProviderPro
 
 > **messages**: [`CerebrasMessage`](../type-aliases/cerebrasmessage.md)[]
 
-Defined in: [src/providers/cerebras/types.ts:123](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L123)
+Defined in: [src/providers/cerebras/types.ts:123](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L123)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [src/providers/cerebras/types.ts:123](https://github.com/ProviderPro
 
 > **model**: `string`
 
-Defined in: [src/providers/cerebras/types.ts:122](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L122)
+Defined in: [src/providers/cerebras/types.ts:122](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L122)
 
 ***
 
@@ -60,7 +60,7 @@ Defined in: [src/providers/cerebras/types.ts:122](https://github.com/ProviderPro
 
 > `optional` **parallel\_tool\_calls**: `boolean`
 
-Defined in: [src/providers/cerebras/types.ts:134](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L134)
+Defined in: [src/providers/cerebras/types.ts:134](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L134)
 
 ***
 
@@ -68,7 +68,7 @@ Defined in: [src/providers/cerebras/types.ts:134](https://github.com/ProviderPro
 
 > `optional` **prediction**: `object`
 
-Defined in: [src/providers/cerebras/types.ts:141](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L141)
+Defined in: [src/providers/cerebras/types.ts:141](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L141)
 
 #### content
 
@@ -84,7 +84,7 @@ Defined in: [src/providers/cerebras/types.ts:141](https://github.com/ProviderPro
 
 > `optional` **queue\_threshold**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:140](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L140)
+Defined in: [src/providers/cerebras/types.ts:140](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L140)
 
 ***
 
@@ -92,7 +92,7 @@ Defined in: [src/providers/cerebras/types.ts:140](https://github.com/ProviderPro
 
 > `optional` **reasoning\_effort**: `"low"` \| `"medium"` \| `"high"`
 
-Defined in: [src/providers/cerebras/types.ts:136](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L136)
+Defined in: [src/providers/cerebras/types.ts:136](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L136)
 
 ***
 
@@ -100,7 +100,7 @@ Defined in: [src/providers/cerebras/types.ts:136](https://github.com/ProviderPro
 
 > `optional` **reasoning\_format**: `"parsed"` \| `"raw"` \| `"hidden"` \| `"none"`
 
-Defined in: [src/providers/cerebras/types.ts:137](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L137)
+Defined in: [src/providers/cerebras/types.ts:137](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L137)
 
 ***
 
@@ -108,7 +108,7 @@ Defined in: [src/providers/cerebras/types.ts:137](https://github.com/ProviderPro
 
 > `optional` **response\_format**: [`CerebrasResponseFormat`](../type-aliases/cerebrasresponseformat.md)
 
-Defined in: [src/providers/cerebras/types.ts:135](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L135)
+Defined in: [src/providers/cerebras/types.ts:135](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L135)
 
 ***
 
@@ -116,7 +116,7 @@ Defined in: [src/providers/cerebras/types.ts:135](https://github.com/ProviderPro
 
 > `optional` **seed**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:131](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L131)
+Defined in: [src/providers/cerebras/types.ts:131](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L131)
 
 ***
 
@@ -124,7 +124,7 @@ Defined in: [src/providers/cerebras/types.ts:131](https://github.com/ProviderPro
 
 > `optional` **service\_tier**: `string`
 
-Defined in: [src/providers/cerebras/types.ts:139](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L139)
+Defined in: [src/providers/cerebras/types.ts:139](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L139)
 
 ***
 
@@ -132,7 +132,7 @@ Defined in: [src/providers/cerebras/types.ts:139](https://github.com/ProviderPro
 
 > `optional` **stop**: `string`[]
 
-Defined in: [src/providers/cerebras/types.ts:128](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L128)
+Defined in: [src/providers/cerebras/types.ts:128](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L128)
 
 ***
 
@@ -140,7 +140,7 @@ Defined in: [src/providers/cerebras/types.ts:128](https://github.com/ProviderPro
 
 > `optional` **stream**: `boolean`
 
-Defined in: [src/providers/cerebras/types.ts:126](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L126)
+Defined in: [src/providers/cerebras/types.ts:126](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L126)
 
 ***
 
@@ -148,7 +148,7 @@ Defined in: [src/providers/cerebras/types.ts:126](https://github.com/ProviderPro
 
 > `optional` **stream\_options**: `object`
 
-Defined in: [src/providers/cerebras/types.ts:127](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L127)
+Defined in: [src/providers/cerebras/types.ts:127](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L127)
 
 #### include\_usage?
 
@@ -160,7 +160,7 @@ Defined in: [src/providers/cerebras/types.ts:127](https://github.com/ProviderPro
 
 > `optional` **temperature**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:124](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L124)
+Defined in: [src/providers/cerebras/types.ts:124](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L124)
 
 ***
 
@@ -168,7 +168,7 @@ Defined in: [src/providers/cerebras/types.ts:124](https://github.com/ProviderPro
 
 > `optional` **tool\_choice**: [`CerebrasToolChoice`](../type-aliases/cerebrastoolchoice.md)
 
-Defined in: [src/providers/cerebras/types.ts:133](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L133)
+Defined in: [src/providers/cerebras/types.ts:133](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L133)
 
 ***
 
@@ -176,7 +176,7 @@ Defined in: [src/providers/cerebras/types.ts:133](https://github.com/ProviderPro
 
 > `optional` **tools**: [`CerebrasTool`](cerebrastool.md)[]
 
-Defined in: [src/providers/cerebras/types.ts:132](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L132)
+Defined in: [src/providers/cerebras/types.ts:132](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L132)
 
 ***
 
@@ -184,7 +184,7 @@ Defined in: [src/providers/cerebras/types.ts:132](https://github.com/ProviderPro
 
 > `optional` **top\_logprobs**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:146](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L146)
+Defined in: [src/providers/cerebras/types.ts:146](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L146)
 
 ***
 
@@ -192,7 +192,7 @@ Defined in: [src/providers/cerebras/types.ts:146](https://github.com/ProviderPro
 
 > `optional` **top\_p**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:125](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L125)
+Defined in: [src/providers/cerebras/types.ts:125](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L125)
 
 ***
 
@@ -200,4 +200,4 @@ Defined in: [src/providers/cerebras/types.ts:125](https://github.com/ProviderPro
 
 > `optional` **user**: `string`
 
-Defined in: [src/providers/cerebras/types.ts:130](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L130)
+Defined in: [src/providers/cerebras/types.ts:130](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L130)

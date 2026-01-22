@@ -10,7 +10,7 @@ title: "Interface: OpenAIWebSearchTool"
 
 # Interface: OpenAIWebSearchTool
 
-Defined in: [src/providers/openai/types.ts:1161](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openai/types.ts#L1161)
+Defined in: [src/providers/openai/types.ts:1161](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1161)
 
 Web search tool for Responses API
 Enables the model to search the web for up-to-date information
@@ -21,7 +21,7 @@ Enables the model to search the web for up-to-date information
 
 > `optional` **search\_context\_size**: `"low"` \| `"medium"` \| `"high"`
 
-Defined in: [src/providers/openai/types.ts:1167](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openai/types.ts#L1167)
+Defined in: [src/providers/openai/types.ts:1167](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1167)
 
 Context size for search results
 Controls how much context from web results to include
@@ -32,7 +32,7 @@ Controls how much context from web results to include
 
 > **type**: `"web_search"`
 
-Defined in: [src/providers/openai/types.ts:1162](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openai/types.ts#L1162)
+Defined in: [src/providers/openai/types.ts:1162](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1162)
 
 ***
 
@@ -40,6 +40,6 @@ Defined in: [src/providers/openai/types.ts:1162](https://github.com/ProviderProt
 
 > `optional` **user\_location**: [`OpenAIWebSearchUserLocation`](openaiwebsearchuserlocation.md) \| `null`
 
-Defined in: [src/providers/openai/types.ts:1169](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openai/types.ts#L1169)
+Defined in: [src/providers/openai/types.ts:1169](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1169)
 
 User location for localizing search results

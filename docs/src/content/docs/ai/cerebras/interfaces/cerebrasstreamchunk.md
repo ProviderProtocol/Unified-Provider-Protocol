@@ -10,7 +10,7 @@ title: "Interface: CerebrasStreamChunk"
 
 # Interface: CerebrasStreamChunk
 
-Defined in: [src/providers/cerebras/types.ts:281](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L281)
+Defined in: [src/providers/cerebras/types.ts:281](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L281)
 
 Streaming chunk structure from the Cerebras API.
 
@@ -20,7 +20,7 @@ Streaming chunk structure from the Cerebras API.
 
 > **choices**: `CerebrasStreamChoice`[]
 
-Defined in: [src/providers/cerebras/types.ts:286](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L286)
+Defined in: [src/providers/cerebras/types.ts:286](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L286)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/providers/cerebras/types.ts:286](https://github.com/ProviderPro
 
 > `optional` **created**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:284](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L284)
+Defined in: [src/providers/cerebras/types.ts:284](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L284)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [src/providers/cerebras/types.ts:284](https://github.com/ProviderPro
 
 > **id**: `string`
 
-Defined in: [src/providers/cerebras/types.ts:282](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L282)
+Defined in: [src/providers/cerebras/types.ts:282](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L282)
 
 ***
 
@@ -44,7 +44,7 @@ Defined in: [src/providers/cerebras/types.ts:282](https://github.com/ProviderPro
 
 > **model**: `string`
 
-Defined in: [src/providers/cerebras/types.ts:285](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L285)
+Defined in: [src/providers/cerebras/types.ts:285](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L285)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [src/providers/cerebras/types.ts:285](https://github.com/ProviderPro
 
 > **object**: `"chat.completion.chunk"`
 
-Defined in: [src/providers/cerebras/types.ts:283](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L283)
+Defined in: [src/providers/cerebras/types.ts:283](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L283)
 
 ***
 
@@ -60,7 +60,7 @@ Defined in: [src/providers/cerebras/types.ts:283](https://github.com/ProviderPro
 
 > `optional` **system\_fingerprint**: `string`
 
-Defined in: [src/providers/cerebras/types.ts:288](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L288)
+Defined in: [src/providers/cerebras/types.ts:288](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L288)
 
 ***
 
@@ -68,7 +68,7 @@ Defined in: [src/providers/cerebras/types.ts:288](https://github.com/ProviderPro
 
 > `optional` **time\_info**: [`CerebrasTimeInfo`](cerebrastimeinfo.md)
 
-Defined in: [src/providers/cerebras/types.ts:289](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L289)
+Defined in: [src/providers/cerebras/types.ts:289](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L289)
 
 ***
 
@@ -76,4 +76,4 @@ Defined in: [src/providers/cerebras/types.ts:289](https://github.com/ProviderPro
 
 > `optional` **usage**: [`CerebrasUsage`](cerebrasusage.md) \| `null`
 
-Defined in: [src/providers/cerebras/types.ts:287](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L287)
+Defined in: [src/providers/cerebras/types.ts:287](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L287)

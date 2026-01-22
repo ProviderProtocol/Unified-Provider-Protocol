@@ -12,7 +12,7 @@ title: "Function: warnInsecureUrl()"
 
 > **warnInsecureUrl**(`url`, `provider`): `void`
 
-Defined in: [src/http/fetch.ts:25](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/http/fetch.ts#L25)
+Defined in: [src/http/fetch.ts:25](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/http/fetch.ts#L25)
 
 Warns when a non-TLS URL is used with a provider.
 Only warns in non-production, excludes localhost for local development.

@@ -10,7 +10,7 @@ title: "Interface: ResponsesRequest"
 
 # Interface: ResponsesRequest
 
-Defined in: [src/providers/responses/types.ts:185](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L185)
+Defined in: [src/providers/responses/types.ts:185](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L185)
 
 Request body for the OpenResponses API.
 
@@ -20,7 +20,7 @@ Request body for the OpenResponses API.
 
 > `optional` **background**: `boolean`
 
-Defined in: [src/providers/responses/types.ts:209](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L209)
+Defined in: [src/providers/responses/types.ts:209](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L209)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/providers/responses/types.ts:209](https://github.com/ProviderPr
 
 > `optional` **frequency\_penalty**: `number`
 
-Defined in: [src/providers/responses/types.ts:193](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L193)
+Defined in: [src/providers/responses/types.ts:193](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L193)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [src/providers/responses/types.ts:193](https://github.com/ProviderPr
 
 > `optional` **include**: `string`[]
 
-Defined in: [src/providers/responses/types.ts:208](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L208)
+Defined in: [src/providers/responses/types.ts:208](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L208)
 
 ***
 
@@ -44,7 +44,7 @@ Defined in: [src/providers/responses/types.ts:208](https://github.com/ProviderPr
 
 > **input**: `string` \| [`ResponsesInputItem`](../type-aliases/responsesinputitem.md)[]
 
-Defined in: [src/providers/responses/types.ts:187](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L187)
+Defined in: [src/providers/responses/types.ts:187](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L187)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [src/providers/responses/types.ts:187](https://github.com/ProviderPr
 
 > `optional` **instructions**: `string`
 
-Defined in: [src/providers/responses/types.ts:188](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L188)
+Defined in: [src/providers/responses/types.ts:188](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L188)
 
 ***
 
@@ -60,7 +60,7 @@ Defined in: [src/providers/responses/types.ts:188](https://github.com/ProviderPr
 
 > `optional` **max\_output\_tokens**: `number`
 
-Defined in: [src/providers/responses/types.ts:189](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L189)
+Defined in: [src/providers/responses/types.ts:189](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L189)
 
 ***
 
@@ -68,7 +68,7 @@ Defined in: [src/providers/responses/types.ts:189](https://github.com/ProviderPr
 
 > `optional` **max\_tool\_calls**: `number`
 
-Defined in: [src/providers/responses/types.ts:211](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L211)
+Defined in: [src/providers/responses/types.ts:211](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L211)
 
 ***
 
@@ -76,7 +76,7 @@ Defined in: [src/providers/responses/types.ts:211](https://github.com/ProviderPr
 
 > `optional` **metadata**: `Record`\<`string`, `string`\>
 
-Defined in: [src/providers/responses/types.ts:202](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L202)
+Defined in: [src/providers/responses/types.ts:202](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L202)
 
 ***
 
@@ -84,7 +84,7 @@ Defined in: [src/providers/responses/types.ts:202](https://github.com/ProviderPr
 
 > **model**: `string`
 
-Defined in: [src/providers/responses/types.ts:186](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L186)
+Defined in: [src/providers/responses/types.ts:186](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L186)
 
 ***
 
@@ -92,7 +92,7 @@ Defined in: [src/providers/responses/types.ts:186](https://github.com/ProviderPr
 
 > `optional` **parallel\_tool\_calls**: `boolean`
 
-Defined in: [src/providers/responses/types.ts:198](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L198)
+Defined in: [src/providers/responses/types.ts:198](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L198)
 
 ***
 
@@ -100,7 +100,7 @@ Defined in: [src/providers/responses/types.ts:198](https://github.com/ProviderPr
 
 > `optional` **presence\_penalty**: `number`
 
-Defined in: [src/providers/responses/types.ts:192](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L192)
+Defined in: [src/providers/responses/types.ts:192](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L192)
 
 ***
 
@@ -108,7 +108,7 @@ Defined in: [src/providers/responses/types.ts:192](https://github.com/ProviderPr
 
 > `optional` **previous\_response\_id**: `string`
 
-Defined in: [src/providers/responses/types.ts:210](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L210)
+Defined in: [src/providers/responses/types.ts:210](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L210)
 
 ***
 
@@ -116,7 +116,7 @@ Defined in: [src/providers/responses/types.ts:210](https://github.com/ProviderPr
 
 > `optional` **prompt\_cache\_key**: `string`
 
-Defined in: [src/providers/responses/types.ts:212](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L212)
+Defined in: [src/providers/responses/types.ts:212](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L212)
 
 ***
 
@@ -124,7 +124,7 @@ Defined in: [src/providers/responses/types.ts:212](https://github.com/ProviderPr
 
 > `optional` **reasoning**: `object`
 
-Defined in: [src/providers/responses/types.ts:203](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L203)
+Defined in: [src/providers/responses/types.ts:203](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L203)
 
 #### effort?
 
@@ -140,7 +140,7 @@ Defined in: [src/providers/responses/types.ts:203](https://github.com/ProviderPr
 
 > `optional` **safety\_identifier**: `string`
 
-Defined in: [src/providers/responses/types.ts:213](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L213)
+Defined in: [src/providers/responses/types.ts:213](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L213)
 
 ***
 
@@ -148,7 +148,7 @@ Defined in: [src/providers/responses/types.ts:213](https://github.com/ProviderPr
 
 > `optional` **service\_tier**: `string`
 
-Defined in: [src/providers/responses/types.ts:207](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L207)
+Defined in: [src/providers/responses/types.ts:207](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L207)
 
 ***
 
@@ -156,7 +156,7 @@ Defined in: [src/providers/responses/types.ts:207](https://github.com/ProviderPr
 
 > `optional` **store**: `boolean`
 
-Defined in: [src/providers/responses/types.ts:201](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L201)
+Defined in: [src/providers/responses/types.ts:201](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L201)
 
 ***
 
@@ -164,7 +164,7 @@ Defined in: [src/providers/responses/types.ts:201](https://github.com/ProviderPr
 
 > `optional` **stream**: `boolean`
 
-Defined in: [src/providers/responses/types.ts:195](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L195)
+Defined in: [src/providers/responses/types.ts:195](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L195)
 
 ***
 
@@ -172,7 +172,7 @@ Defined in: [src/providers/responses/types.ts:195](https://github.com/ProviderPr
 
 > `optional` **temperature**: `number`
 
-Defined in: [src/providers/responses/types.ts:190](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L190)
+Defined in: [src/providers/responses/types.ts:190](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L190)
 
 ***
 
@@ -180,7 +180,7 @@ Defined in: [src/providers/responses/types.ts:190](https://github.com/ProviderPr
 
 > `optional` **text**: `ResponsesTextConfig`
 
-Defined in: [src/providers/responses/types.ts:199](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L199)
+Defined in: [src/providers/responses/types.ts:199](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L199)
 
 ***
 
@@ -188,7 +188,7 @@ Defined in: [src/providers/responses/types.ts:199](https://github.com/ProviderPr
 
 > `optional` **tool\_choice**: `ResponsesToolChoice`
 
-Defined in: [src/providers/responses/types.ts:197](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L197)
+Defined in: [src/providers/responses/types.ts:197](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L197)
 
 ***
 
@@ -196,7 +196,7 @@ Defined in: [src/providers/responses/types.ts:197](https://github.com/ProviderPr
 
 > `optional` **tools**: [`ResponsesToolUnion`](../type-aliases/responsestoolunion.md)[]
 
-Defined in: [src/providers/responses/types.ts:196](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L196)
+Defined in: [src/providers/responses/types.ts:196](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L196)
 
 ***
 
@@ -204,7 +204,7 @@ Defined in: [src/providers/responses/types.ts:196](https://github.com/ProviderPr
 
 > `optional` **top\_logprobs**: `number`
 
-Defined in: [src/providers/responses/types.ts:194](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L194)
+Defined in: [src/providers/responses/types.ts:194](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L194)
 
 ***
 
@@ -212,7 +212,7 @@ Defined in: [src/providers/responses/types.ts:194](https://github.com/ProviderPr
 
 > `optional` **top\_p**: `number`
 
-Defined in: [src/providers/responses/types.ts:191](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L191)
+Defined in: [src/providers/responses/types.ts:191](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L191)
 
 ***
 
@@ -220,4 +220,4 @@ Defined in: [src/providers/responses/types.ts:191](https://github.com/ProviderPr
 
 > `optional` **truncation**: `"auto"` \| `"disabled"`
 
-Defined in: [src/providers/responses/types.ts:200](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L200)
+Defined in: [src/providers/responses/types.ts:200](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L200)

@@ -204,20 +204,75 @@ const thinker = llm({
 | `interleavedThinking` | Claude can think between tool calls |
 | `devFullThinking` | Developer mode for full thinking visibility |
 | `effort` | Control response thoroughness vs efficiency (Opus 4.5) |
+| `computerUseLegacy` | Computer use for Claude 3.x models |
 | `computerUse` | Mouse, keyboard, screenshot control (Claude 4) |
+| `computerUseOpus` | Computer use with extra commands (Opus 4.5) |
 | `codeExecution` | Python/Bash sandbox execution |
 | `tokenEfficientTools` | Up to 70% token reduction for tool calls |
 | `fineGrainedToolStreaming` | Stream tool args without buffering |
+| `maxTokens35Sonnet` | 8,192 output tokens for Claude 3.5 Sonnet |
 | `output128k` | 128K token output length |
 | `context1m` | 1 million token context window (Sonnet 4) |
 | `promptCaching` | Reduced latency and costs via caching |
 | `extendedCacheTtl` | 1-hour cache TTL (vs 5-minute default) |
+| `contextManagement` | Automatic tool call clearing for context |
+| `modelContextWindowExceeded` | Handle exceeded context windows |
 | `advancedToolUse` | Tool Search, Programmatic Tool Calling |
 | `mcpClient` | Connect to remote MCP servers |
+| `mcpClientLatest` | Updated MCP client |
 | `filesApi` | Upload and manage files |
 | `pdfs` | PDF document support |
+| `tokenCounting` | Token counting endpoint |
 | `messageBatches` | Async batch processing at 50% cost |
 | `skills` | Agent Skills (PowerPoint, Excel, Word, PDF) |
+
+## Anthropic Built-in Tools
+
+Use Anthropic's built-in tools directly with the `tools` export:
+
+```typescript
+import { anthropic, betas, tools } from '@providerprotocol/ai/anthropic';
+import { llm } from '@providerprotocol/ai';
+
+// Web search with optional user location
+const model = llm({
+  model: anthropic('claude-sonnet-4-20250514'),
+  params: {
+    tools: [tools.webSearch({ max_results: 5 })],
+  },
+});
+
+// Computer use (requires beta)
+const computerModel = llm({
+  model: anthropic('claude-sonnet-4-20250514', {
+    betas: [betas.computerUse],
+  }),
+  params: {
+    tools: [tools.computer({ display_width: 1920, display_height: 1080, display_number: 1 })],
+  },
+});
+
+// Code execution (requires beta)
+const codeModel = llm({
+  model: anthropic('claude-sonnet-4-20250514', {
+    betas: [betas.codeExecution],
+  }),
+  params: {
+    tools: [tools.codeExecution()],
+  },
+});
+```
+
+**Available Built-in Tools:**
+
+| Tool | Description |
+|------|-------------|
+| `tools.webSearch()` | Search the web with optional max results and location |
+| `tools.computer()` | Mouse, keyboard, and screenshot control |
+| `tools.textEditor()` | Edit text files programmatically |
+| `tools.bash()` | Execute bash commands |
+| `tools.codeExecution()` | Run code in a sandboxed environment |
+| `tools.toolSearch()` | Search through available tools |
 
 ## Reasoning / Extended Thinking
 
@@ -540,15 +595,16 @@ const restored = Thread.fromJSON(JSON.parse(localStorage.getItem('conversation')
 
 ## Middleware
 
-Compose request/response/stream transformations with the middleware system.
+Compose request/response/stream transformations with the middleware system. Middleware is imported from dedicated entry points.
 
 ### Parsed Object Middleware
 
 Automatically parse streaming JSON from structured output and tool call events:
 
 ```typescript
-import { llm, parsedObjectMiddleware } from '@providerprotocol/ai';
+import { llm } from '@providerprotocol/ai';
 import { anthropic } from '@providerprotocol/ai/anthropic';
+import { parsedObjectMiddleware } from '@providerprotocol/ai/middleware/parsed-object';
 
 const model = llm({
   model: anthropic('claude-sonnet-4-20250514'),
@@ -578,8 +634,9 @@ for await (const event of model.stream('What is the capital of France?')) {
 Add visibility into request lifecycle:
 
 ```typescript
-import { llm, loggingMiddleware } from '@providerprotocol/ai';
+import { llm } from '@providerprotocol/ai';
 import { anthropic } from '@providerprotocol/ai/anthropic';
+import { loggingMiddleware } from '@providerprotocol/ai/middleware/logging';
 
 const model = llm({
   model: anthropic('claude-sonnet-4-20250514'),
@@ -591,9 +648,98 @@ const model = llm({
 const result = await model.generate('Hello');
 ```
 
+### Pub-Sub Middleware (Stream Resumption)
+
+Enable reconnecting clients to catch up on missed events during active generation. The middleware buffers events and publishes them to subscribers.
+
+```typescript
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { pubsubMiddleware, memoryAdapter } from '@providerprotocol/ai/middleware/pubsub';
+import { webapi } from '@providerprotocol/ai/middleware/pubsub/server';
+
+// Create a shared adapter instance
+const adapter = memoryAdapter({ maxStreams: 1000 });
+
+// Server route handling both new requests and reconnections
+Bun.serve({
+  port: 3000,
+  async fetch(req) {
+    const { messages, streamId } = await req.json();
+    const exists = await adapter.exists(streamId);
+
+    if (!exists) {
+      // Start background generation (fire and forget)
+      const model = llm({
+        model: anthropic('claude-sonnet-4-20250514'),
+        middleware: [pubsubMiddleware({ adapter, streamId })],
+      });
+      consumeInBackground(model.stream(messages));
+    }
+
+    // Both new and reconnect: subscribe to events
+    return new Response(webapi.createSubscriberStream(streamId, adapter), {
+      headers: { 'Content-Type': 'text/event-stream' },
+    });
+  },
+});
+```
+
+**Framework Adapters:**
+
+```typescript
+// Express
+import { express } from '@providerprotocol/ai/middleware/pubsub/server';
+app.post('/api/ai/reconnect', (req, res) => {
+  const { streamId } = req.body;
+  express.streamSubscriber(streamId, adapter, res);
+});
+
+// Fastify
+import { fastify } from '@providerprotocol/ai/middleware/pubsub/server';
+app.post('/api/ai/reconnect', (request, reply) => {
+  const { streamId } = request.body;
+  return fastify.streamSubscriber(streamId, adapter, reply);
+});
+
+// H3/Nuxt
+import { h3 } from '@providerprotocol/ai/middleware/pubsub/server';
+export default defineEventHandler(async (event) => {
+  const { streamId } = await readBody(event);
+  return h3.streamSubscriber(streamId, adapter, event);
+});
+```
+
+**Custom Adapters:**
+
+Implement `PubSubAdapter` for custom backends (Redis, etc.):
+
+```typescript
+import type { PubSubAdapter } from '@providerprotocol/ai/middleware/pubsub';
+
+const redisAdapter: PubSubAdapter = {
+  async exists(streamId) { /* ... */ },
+  async create(streamId, metadata) { /* ... */ },
+  async append(streamId, event) { /* ... */ },
+  async markCompleted(streamId) { /* ... */ },
+  async isCompleted(streamId) { /* ... */ },
+  async getEvents(streamId) { /* ... */ },
+  async getStream(streamId) { /* ... */ },
+  subscribe(streamId, callback) { /* ... */ },
+  publish(streamId, event) { /* ... */ },
+  async remove(streamId) { /* ... */ },
+  async cleanup(maxAge) { /* ... */ },
+};
+```
+
 ### Combining Middleware
 
 ```typescript
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { loggingMiddleware } from '@providerprotocol/ai/middleware/logging';
+import { parsedObjectMiddleware } from '@providerprotocol/ai/middleware/parsed-object';
+
 const model = llm({
   model: anthropic('claude-sonnet-4-20250514'),
   structure: mySchema,
@@ -751,6 +897,74 @@ export default defineEventHandler(async (event) => {
 - Request/response logging, content filtering
 - Double-layer retry: client retries to proxy, server retries to AI provider
 
+## OpenAI API Modes
+
+OpenAI supports two API endpoints. The Responses API is the default and recommended approach:
+
+```typescript
+import { openai } from '@providerprotocol/ai/openai';
+
+// Responses API (default, recommended)
+openai('gpt-4o')
+
+// Chat Completions API (legacy)
+openai('gpt-4o', { api: 'completions' })
+```
+
+The Responses API supports built-in tools and stateful conversations. Use completions for backward compatibility.
+
+## OpenAI Built-in Tools
+
+With the Responses API, use OpenAI's built-in tools directly:
+
+```typescript
+import { llm } from '@providerprotocol/ai';
+import { openai, tools } from '@providerprotocol/ai/openai';
+
+// Web search
+const model = llm({
+  model: openai('gpt-4o'),
+  params: {
+    tools: [tools.webSearch()],
+  },
+});
+
+// File search with vector stores
+const researchModel = llm({
+  model: openai('gpt-4o'),
+  params: {
+    tools: [tools.fileSearch({ vector_store_ids: ['vs_abc123'] })],
+  },
+});
+
+// Code interpreter
+const codeModel = llm({
+  model: openai('gpt-4o'),
+  params: {
+    tools: [tools.codeInterpreter()],
+  },
+});
+
+// Image generation
+const creativeModel = llm({
+  model: openai('gpt-4o'),
+  params: {
+    tools: [tools.imageGeneration()],
+  },
+});
+```
+
+**Available Built-in Tools:**
+
+| Tool | Description |
+|------|-------------|
+| `tools.webSearch()` | Search the web with optional user location |
+| `tools.fileSearch()` | Search uploaded files in vector stores |
+| `tools.codeInterpreter()` | Execute code in a sandboxed environment |
+| `tools.computer()` | Computer use with display configuration |
+| `tools.imageGeneration()` | Generate images via DALL-E |
+| `tools.mcp()` | Connect to MCP servers |
+
 ## xAI API Modes
 
 xAI supports multiple API compatibility modes:
@@ -784,7 +998,33 @@ const model = llm({
 const turn = await model.generate('Hello!');
 ```
 
-**Capabilities:** Streaming, tool calling, structured output, image input (Llama 4 preview).
+**With web search:**
+
+```typescript
+const searchModel = llm({
+  model: groq('llama-3.3-70b-versatile'),
+  params: {
+    search_settings: { mode: 'auto' },
+  },
+});
+```
+
+**With RAG documents:**
+
+```typescript
+const ragModel = llm({
+  model: groq('llama-3.3-70b-versatile'),
+  params: {
+    documents: [
+      { title: 'Doc 1', content: 'Document content here...' },
+      { title: 'Doc 2', content: 'More content...' },
+    ],
+    citation_options: { include: true },
+  },
+});
+```
+
+**Capabilities:** Streaming, tool calling, structured output, image input (Llama 4 preview), web search, RAG with citations.
 
 **Environment:** `GROQ_API_KEY`
 

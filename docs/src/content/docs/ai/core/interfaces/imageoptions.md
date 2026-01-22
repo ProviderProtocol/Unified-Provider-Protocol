@@ -10,7 +10,7 @@ title: "Interface: ImageOptions"
 
 # Interface: ImageOptions\<TParams\>
 
-Defined in: [src/types/image.ts:45](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/image.ts#L45)
+Defined in: [src/types/image.ts:45](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/image.ts#L45)
 
 Options for creating an image instance with the image() function.
 
@@ -38,7 +38,7 @@ Provider-specific parameter type
 
 > `optional` **config**: [`ProviderConfig`](providerconfig.md)
 
-Defined in: [src/types/image.ts:50](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/image.ts#L50)
+Defined in: [src/types/image.ts:50](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/image.ts#L50)
 
 Provider infrastructure configuration
 
@@ -48,7 +48,7 @@ Provider infrastructure configuration
 
 > `optional` **middleware**: [`Middleware`](middleware.md)[]
 
-Defined in: [src/types/image.ts:61](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/image.ts#L61)
+Defined in: [src/types/image.ts:61](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/image.ts#L61)
 
 Middleware for intercepting and transforming requests and responses.
 
@@ -61,7 +61,7 @@ and reverse order for response/end hooks.
 
 > **model**: [`ImageModelInput`](imagemodelinput.md)
 
-Defined in: [src/types/image.ts:47](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/image.ts#L47)
+Defined in: [src/types/image.ts:47](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/image.ts#L47)
 
 A model reference from a provider factory
 
@@ -71,6 +71,6 @@ A model reference from a provider factory
 
 > `optional` **params**: `TParams`
 
-Defined in: [src/types/image.ts:53](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/image.ts#L53)
+Defined in: [src/types/image.ts:53](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/image.ts#L53)
 
 Provider-specific parameters (passed through unchanged)

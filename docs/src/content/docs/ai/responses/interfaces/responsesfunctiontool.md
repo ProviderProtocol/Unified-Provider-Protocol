@@ -10,7 +10,7 @@ title: "Interface: ResponsesFunctionTool"
 
 # Interface: ResponsesFunctionTool
 
-Defined in: [src/providers/responses/types.ts:362](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L362)
+Defined in: [src/providers/responses/types.ts:362](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L362)
 
 Function tool definition.
 
@@ -20,7 +20,7 @@ Function tool definition.
 
 > **description**: `string`
 
-Defined in: [src/providers/responses/types.ts:365](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L365)
+Defined in: [src/providers/responses/types.ts:365](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L365)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/providers/responses/types.ts:365](https://github.com/ProviderPr
 
 > **name**: `string`
 
-Defined in: [src/providers/responses/types.ts:364](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L364)
+Defined in: [src/providers/responses/types.ts:364](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L364)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [src/providers/responses/types.ts:364](https://github.com/ProviderPr
 
 > **parameters**: `object`
 
-Defined in: [src/providers/responses/types.ts:366](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L366)
+Defined in: [src/providers/responses/types.ts:366](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L366)
 
 #### additionalProperties?
 
@@ -60,7 +60,7 @@ Defined in: [src/providers/responses/types.ts:366](https://github.com/ProviderPr
 
 > `optional` **strict**: `boolean`
 
-Defined in: [src/providers/responses/types.ts:372](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L372)
+Defined in: [src/providers/responses/types.ts:372](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L372)
 
 ***
 
@@ -68,4 +68,4 @@ Defined in: [src/providers/responses/types.ts:372](https://github.com/ProviderPr
 
 > **type**: `"function"`
 
-Defined in: [src/providers/responses/types.ts:363](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L363)
+Defined in: [src/providers/responses/types.ts:363](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L363)

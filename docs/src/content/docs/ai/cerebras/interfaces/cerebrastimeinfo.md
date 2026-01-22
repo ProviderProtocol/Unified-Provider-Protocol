@@ -10,7 +10,7 @@ title: "Interface: CerebrasTimeInfo"
 
 # Interface: CerebrasTimeInfo
 
-Defined in: [src/providers/cerebras/types.ts:257](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L257)
+Defined in: [src/providers/cerebras/types.ts:257](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L257)
 
 Time information from the API response
 
@@ -20,7 +20,7 @@ Time information from the API response
 
 > `optional` **completion\_time**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:260](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L260)
+Defined in: [src/providers/cerebras/types.ts:260](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L260)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/providers/cerebras/types.ts:260](https://github.com/ProviderPro
 
 > `optional` **prompt\_time**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:259](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L259)
+Defined in: [src/providers/cerebras/types.ts:259](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L259)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [src/providers/cerebras/types.ts:259](https://github.com/ProviderPro
 
 > `optional` **queue\_time**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:258](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L258)
+Defined in: [src/providers/cerebras/types.ts:258](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L258)
 
 ***
 
@@ -44,4 +44,4 @@ Defined in: [src/providers/cerebras/types.ts:258](https://github.com/ProviderPro
 
 > `optional` **total\_time**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:261](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L261)
+Defined in: [src/providers/cerebras/types.ts:261](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L261)

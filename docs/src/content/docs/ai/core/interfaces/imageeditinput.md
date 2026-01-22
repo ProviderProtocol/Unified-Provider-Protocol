@@ -10,7 +10,7 @@ title: "Interface: ImageEditInput"
 
 # Interface: ImageEditInput
 
-Defined in: [src/types/image.ts:80](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/image.ts#L80)
+Defined in: [src/types/image.ts:80](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/image.ts#L80)
 
 Input for edit() operations.
 
@@ -20,7 +20,7 @@ Input for edit() operations.
 
 > **image**: [`Image`](../classes/image.md)
 
-Defined in: [src/types/image.ts:82](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/image.ts#L82)
+Defined in: [src/types/image.ts:82](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/image.ts#L82)
 
 Base image to edit
 
@@ -30,7 +30,7 @@ Base image to edit
 
 > `optional` **mask**: [`Image`](../classes/image.md)
 
-Defined in: [src/types/image.ts:85](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/image.ts#L85)
+Defined in: [src/types/image.ts:85](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/image.ts#L85)
 
 Mask indicating edit region (interpretation varies by provider)
 
@@ -40,6 +40,6 @@ Mask indicating edit region (interpretation varies by provider)
 
 > **prompt**: `string`
 
-Defined in: [src/types/image.ts:88](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/image.ts#L88)
+Defined in: [src/types/image.ts:88](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/image.ts#L88)
 
 Edit instruction prompt

@@ -10,7 +10,7 @@ title: "Interface: OpenRouterProviderPreferences"
 
 # Interface: OpenRouterProviderPreferences
 
-Defined in: [src/providers/openrouter/types.ts:299](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openrouter/types.ts#L299)
+Defined in: [src/providers/openrouter/types.ts:299](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openrouter/types.ts#L299)
 
 Provider routing preferences for OpenRouter.
 
@@ -26,7 +26,7 @@ Controls how OpenRouter selects and routes requests to upstream providers.
 
 > `optional` **allow\_fallbacks**: `boolean`
 
-Defined in: [src/providers/openrouter/types.ts:301](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openrouter/types.ts#L301)
+Defined in: [src/providers/openrouter/types.ts:301](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openrouter/types.ts#L301)
 
 Allow fallback to other providers if the primary is unavailable.
 
@@ -36,7 +36,7 @@ Allow fallback to other providers if the primary is unavailable.
 
 > `optional` **data\_collection**: `"allow"` \| `"deny"`
 
-Defined in: [src/providers/openrouter/types.ts:305](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openrouter/types.ts#L305)
+Defined in: [src/providers/openrouter/types.ts:305](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openrouter/types.ts#L305)
 
 Data collection policy: 'allow' or 'deny'.
 
@@ -46,7 +46,7 @@ Data collection policy: 'allow' or 'deny'.
 
 > `optional` **ignore**: `string`[]
 
-Defined in: [src/providers/openrouter/types.ts:309](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openrouter/types.ts#L309)
+Defined in: [src/providers/openrouter/types.ts:309](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openrouter/types.ts#L309)
 
 List of provider slugs to exclude from routing.
 
@@ -56,7 +56,7 @@ List of provider slugs to exclude from routing.
 
 > `optional` **order**: `string`[]
 
-Defined in: [src/providers/openrouter/types.ts:307](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openrouter/types.ts#L307)
+Defined in: [src/providers/openrouter/types.ts:307](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openrouter/types.ts#L307)
 
 Ordered list of preferred provider slugs.
 
@@ -66,7 +66,7 @@ Ordered list of preferred provider slugs.
 
 > `optional` **quantizations**: `string`[]
 
-Defined in: [src/providers/openrouter/types.ts:311](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openrouter/types.ts#L311)
+Defined in: [src/providers/openrouter/types.ts:311](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openrouter/types.ts#L311)
 
 Preferred quantization levels (e.g., 'fp16', 'int8').
 
@@ -76,6 +76,6 @@ Preferred quantization levels (e.g., 'fp16', 'int8').
 
 > `optional` **require\_parameters**: `boolean`
 
-Defined in: [src/providers/openrouter/types.ts:303](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openrouter/types.ts#L303)
+Defined in: [src/providers/openrouter/types.ts:303](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openrouter/types.ts#L303)
 
 Require that the provider supports all specified parameters.

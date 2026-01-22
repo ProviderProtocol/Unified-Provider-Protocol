@@ -10,7 +10,7 @@ title: "Interface: ResponsesParams"
 
 # Interface: ResponsesParams
 
-Defined in: [src/providers/responses/types.ts:74](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L74)
+Defined in: [src/providers/responses/types.ts:74](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L74)
 
 Parameters for the OpenResponses API.
 
@@ -27,7 +27,7 @@ directly to the `/responses` endpoint.
 
 > `optional` **background**: `boolean`
 
-Defined in: [src/providers/responses/types.ts:120](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L120)
+Defined in: [src/providers/responses/types.ts:120](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L120)
 
 Background processing - run response asynchronously
 
@@ -37,7 +37,7 @@ Background processing - run response asynchronously
 
 > `optional` **frequency\_penalty**: `number`
 
-Defined in: [src/providers/responses/types.ts:88](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L88)
+Defined in: [src/providers/responses/types.ts:88](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L88)
 
 Frequency penalty for new tokens
 
@@ -47,7 +47,7 @@ Frequency penalty for new tokens
 
 > `optional` **include**: `string`[]
 
-Defined in: [src/providers/responses/types.ts:117](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L117)
+Defined in: [src/providers/responses/types.ts:117](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L117)
 
 Fields to include in output.
 
@@ -63,7 +63,7 @@ Fields to include in output.
 
 > `optional` **max\_output\_tokens**: `number`
 
-Defined in: [src/providers/responses/types.ts:76](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L76)
+Defined in: [src/providers/responses/types.ts:76](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L76)
 
 Maximum output tokens (minimum 16)
 
@@ -73,7 +73,7 @@ Maximum output tokens (minimum 16)
 
 > `optional` **max\_tool\_calls**: `number`
 
-Defined in: [src/providers/responses/types.ts:132](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L132)
+Defined in: [src/providers/responses/types.ts:132](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L132)
 
 Maximum total calls to built-in tools
 
@@ -83,7 +83,7 @@ Maximum total calls to built-in tools
 
 > `optional` **metadata**: `Record`\<`string`, `string`\>
 
-Defined in: [src/providers/responses/types.ts:129](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L129)
+Defined in: [src/providers/responses/types.ts:129](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L129)
 
 Metadata key-value pairs (max 16, keys max 64 chars, values max 512 chars)
 
@@ -93,7 +93,7 @@ Metadata key-value pairs (max 16, keys max 64 chars, values max 512 chars)
 
 > `optional` **parallel\_tool\_calls**: `boolean`
 
-Defined in: [src/providers/responses/types.ts:94](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L94)
+Defined in: [src/providers/responses/types.ts:94](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L94)
 
 Whether to enable parallel tool calls
 
@@ -103,7 +103,7 @@ Whether to enable parallel tool calls
 
 > `optional` **presence\_penalty**: `number`
 
-Defined in: [src/providers/responses/types.ts:85](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L85)
+Defined in: [src/providers/responses/types.ts:85](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L85)
 
 Presence penalty for new tokens
 
@@ -113,7 +113,7 @@ Presence penalty for new tokens
 
 > `optional` **previous\_response\_id**: `string`
 
-Defined in: [src/providers/responses/types.ts:123](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L123)
+Defined in: [src/providers/responses/types.ts:123](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L123)
 
 Continue from a previous response
 
@@ -123,7 +123,7 @@ Continue from a previous response
 
 > `optional` **prompt\_cache\_key**: `string`
 
-Defined in: [src/providers/responses/types.ts:135](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L135)
+Defined in: [src/providers/responses/types.ts:135](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L135)
 
 Stable identifier for caching similar requests (max 64 chars)
 
@@ -133,7 +133,7 @@ Stable identifier for caching similar requests (max 64 chars)
 
 > `optional` **reasoning**: `object`
 
-Defined in: [src/providers/responses/types.ts:100](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L100)
+Defined in: [src/providers/responses/types.ts:100](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L100)
 
 Reasoning configuration (for reasoning models).
 Supported on gpt-5 and o-series models.
@@ -156,7 +156,7 @@ Include summary of reasoning
 
 > `optional` **safety\_identifier**: `string`
 
-Defined in: [src/providers/responses/types.ts:138](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L138)
+Defined in: [src/providers/responses/types.ts:138](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L138)
 
 Stable identifier for abuse detection (max 64 chars)
 
@@ -164,9 +164,9 @@ Stable identifier for abuse detection (max 64 chars)
 
 ### service\_tier?
 
-> `optional` **service\_tier**: `"default"` \| `"auto"` \| `"priority"` \| `"flex"`
+> `optional` **service\_tier**: `"default"` \| `"priority"` \| `"auto"` \| `"flex"`
 
-Defined in: [src/providers/responses/types.ts:108](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L108)
+Defined in: [src/providers/responses/types.ts:108](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L108)
 
 Service tier
 
@@ -176,7 +176,7 @@ Service tier
 
 > `optional` **store**: `boolean`
 
-Defined in: [src/providers/responses/types.ts:126](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L126)
+Defined in: [src/providers/responses/types.ts:126](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L126)
 
 Store response for continuation
 
@@ -186,7 +186,7 @@ Store response for continuation
 
 > `optional` **temperature**: `number`
 
-Defined in: [src/providers/responses/types.ts:79](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L79)
+Defined in: [src/providers/responses/types.ts:79](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L79)
 
 Temperature for randomness (0.0 - 2.0)
 
@@ -196,7 +196,7 @@ Temperature for randomness (0.0 - 2.0)
 
 > `optional` **text**: `ResponsesTextConfig`
 
-Defined in: [src/providers/responses/types.ts:144](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L144)
+Defined in: [src/providers/responses/types.ts:144](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L144)
 
 Text format configuration.
 Controls output format (text, json_object, json_schema) and verbosity.
@@ -207,7 +207,7 @@ Controls output format (text, json_object, json_schema) and verbosity.
 
 > `optional` **tools**: [`ResponsesBuiltInTool`](responsesbuiltintool.md)[]
 
-Defined in: [src/providers/responses/types.ts:151](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L151)
+Defined in: [src/providers/responses/types.ts:151](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L151)
 
 Built-in tools from the OpenResponses specification.
 Currently supports function tools; provider-specific built-in tools
@@ -219,7 +219,7 @@ may be added via the tools array.
 
 > `optional` **top\_logprobs**: `number`
 
-Defined in: [src/providers/responses/types.ts:91](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L91)
+Defined in: [src/providers/responses/types.ts:91](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L91)
 
 Number of top logprobs to return (0-20)
 
@@ -229,7 +229,7 @@ Number of top logprobs to return (0-20)
 
 > `optional` **top\_p**: `number`
 
-Defined in: [src/providers/responses/types.ts:82](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L82)
+Defined in: [src/providers/responses/types.ts:82](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L82)
 
 Top-p (nucleus) sampling (0.0 - 1.0)
 
@@ -239,6 +239,6 @@ Top-p (nucleus) sampling (0.0 - 1.0)
 
 > `optional` **truncation**: `"auto"` \| `"disabled"`
 
-Defined in: [src/providers/responses/types.ts:111](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/responses/types.ts#L111)
+Defined in: [src/providers/responses/types.ts:111](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L111)
 
 Truncation strategy

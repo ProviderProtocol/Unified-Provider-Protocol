@@ -10,7 +10,7 @@ title: "Interface: GroqProviderOptions"
 
 # Interface: GroqProviderOptions
 
-Defined in: [src/providers/groq/index.ts:19](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/groq/index.ts#L19)
+Defined in: [src/providers/groq/index.ts:19](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/index.ts#L19)
 
 Configuration options for the Groq provider.
 

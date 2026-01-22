@@ -10,7 +10,7 @@ title: "Interface: ParsedBody"
 
 # Interface: ParsedBody
 
-Defined in: [src/providers/proxy/server/types.ts:16](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/proxy/server/types.ts#L16)
+Defined in: [src/providers/proxy/server/types.ts:16](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/proxy/server/types.ts#L16)
 
 Parsed request body from a proxy HTTP request.
 
@@ -20,7 +20,7 @@ Parsed request body from a proxy HTTP request.
 
 > **messages**: [`Message`](../../core/classes/message.md)[]
 
-Defined in: [src/providers/proxy/server/types.ts:17](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/proxy/server/types.ts#L17)
+Defined in: [src/providers/proxy/server/types.ts:17](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/proxy/server/types.ts#L17)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/providers/proxy/server/types.ts:17](https://github.com/Provider
 
 > `optional` **model**: `string`
 
-Defined in: [src/providers/proxy/server/types.ts:20](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/proxy/server/types.ts#L20)
+Defined in: [src/providers/proxy/server/types.ts:20](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/proxy/server/types.ts#L20)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [src/providers/proxy/server/types.ts:20](https://github.com/Provider
 
 > `optional` **params**: `Record`\<`string`, `unknown`\>
 
-Defined in: [src/providers/proxy/server/types.ts:19](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/proxy/server/types.ts#L19)
+Defined in: [src/providers/proxy/server/types.ts:19](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/proxy/server/types.ts#L19)
 
 ***
 
@@ -44,7 +44,7 @@ Defined in: [src/providers/proxy/server/types.ts:19](https://github.com/Provider
 
 > `optional` **structure**: [`JSONSchema`](../../core/interfaces/jsonschema.md)
 
-Defined in: [src/providers/proxy/server/types.ts:27](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/proxy/server/types.ts#L27)
+Defined in: [src/providers/proxy/server/types.ts:27](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/proxy/server/types.ts#L27)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [src/providers/proxy/server/types.ts:27](https://github.com/Provider
 
 > `optional` **system**: `string` \| `unknown`[]
 
-Defined in: [src/providers/proxy/server/types.ts:18](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/proxy/server/types.ts#L18)
+Defined in: [src/providers/proxy/server/types.ts:18](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/proxy/server/types.ts#L18)
 
 ***
 
@@ -60,7 +60,7 @@ Defined in: [src/providers/proxy/server/types.ts:18](https://github.com/Provider
 
 > `optional` **tools**: `object`[]
 
-Defined in: [src/providers/proxy/server/types.ts:21](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/proxy/server/types.ts#L21)
+Defined in: [src/providers/proxy/server/types.ts:21](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/proxy/server/types.ts#L21)
 
 #### description
 

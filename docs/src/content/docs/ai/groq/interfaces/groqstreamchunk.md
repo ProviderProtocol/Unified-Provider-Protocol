@@ -10,7 +10,7 @@ title: "Interface: GroqStreamChunk"
 
 # Interface: GroqStreamChunk
 
-Defined in: [src/providers/groq/types.ts:307](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/groq/types.ts#L307)
+Defined in: [src/providers/groq/types.ts:307](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L307)
 
 Streaming chunk structure from the Groq API.
 
@@ -20,7 +20,7 @@ Streaming chunk structure from the Groq API.
 
 > **choices**: `GroqStreamChoice`[]
 
-Defined in: [src/providers/groq/types.ts:312](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/groq/types.ts#L312)
+Defined in: [src/providers/groq/types.ts:312](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L312)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/providers/groq/types.ts:312](https://github.com/ProviderProtoco
 
 > **created**: `number`
 
-Defined in: [src/providers/groq/types.ts:310](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/groq/types.ts#L310)
+Defined in: [src/providers/groq/types.ts:310](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L310)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [src/providers/groq/types.ts:310](https://github.com/ProviderProtoco
 
 > **id**: `string`
 
-Defined in: [src/providers/groq/types.ts:308](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/groq/types.ts#L308)
+Defined in: [src/providers/groq/types.ts:308](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L308)
 
 ***
 
@@ -44,7 +44,7 @@ Defined in: [src/providers/groq/types.ts:308](https://github.com/ProviderProtoco
 
 > **model**: `string`
 
-Defined in: [src/providers/groq/types.ts:311](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/groq/types.ts#L311)
+Defined in: [src/providers/groq/types.ts:311](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L311)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [src/providers/groq/types.ts:311](https://github.com/ProviderProtoco
 
 > **object**: `"chat.completion.chunk"`
 
-Defined in: [src/providers/groq/types.ts:309](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/groq/types.ts#L309)
+Defined in: [src/providers/groq/types.ts:309](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L309)
 
 ***
 
@@ -60,7 +60,7 @@ Defined in: [src/providers/groq/types.ts:309](https://github.com/ProviderProtoco
 
 > `optional` **system\_fingerprint**: `string`
 
-Defined in: [src/providers/groq/types.ts:314](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/groq/types.ts#L314)
+Defined in: [src/providers/groq/types.ts:314](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L314)
 
 ***
 
@@ -68,7 +68,7 @@ Defined in: [src/providers/groq/types.ts:314](https://github.com/ProviderProtoco
 
 > `optional` **usage**: [`GroqUsage`](groqusage.md) \| `null`
 
-Defined in: [src/providers/groq/types.ts:313](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/groq/types.ts#L313)
+Defined in: [src/providers/groq/types.ts:313](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L313)
 
 ***
 
@@ -76,7 +76,7 @@ Defined in: [src/providers/groq/types.ts:313](https://github.com/ProviderProtoco
 
 > `optional` **x\_groq**: `object`
 
-Defined in: [src/providers/groq/types.ts:315](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/groq/types.ts#L315)
+Defined in: [src/providers/groq/types.ts:315](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L315)
 
 #### id?
 

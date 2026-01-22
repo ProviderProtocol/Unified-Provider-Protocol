@@ -10,7 +10,7 @@ title: "Interface: OpenAICodeInterpreterContainer"
 
 # Interface: OpenAICodeInterpreterContainer
 
-Defined in: [src/providers/openai/types.ts:1199](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openai/types.ts#L1199)
+Defined in: [src/providers/openai/types.ts:1199](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1199)
 
 Code interpreter container configuration
 
@@ -20,7 +20,7 @@ Code interpreter container configuration
 
 > `optional` **file\_ids**: `string`[]
 
-Defined in: [src/providers/openai/types.ts:1205](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openai/types.ts#L1205)
+Defined in: [src/providers/openai/types.ts:1205](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1205)
 
 File IDs to make available in the container
 
@@ -30,7 +30,7 @@ File IDs to make available in the container
 
 > `optional` **memory\_limit**: `string`
 
-Defined in: [src/providers/openai/types.ts:1203](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openai/types.ts#L1203)
+Defined in: [src/providers/openai/types.ts:1203](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1203)
 
 Memory limit for the container (e.g., '1g', '4g')
 
@@ -40,6 +40,6 @@ Memory limit for the container (e.g., '1g', '4g')
 
 > **type**: `"auto"`
 
-Defined in: [src/providers/openai/types.ts:1201](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openai/types.ts#L1201)
+Defined in: [src/providers/openai/types.ts:1201](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1201)
 
 Container type - 'auto' creates a new container

@@ -12,7 +12,7 @@ title: "Function: doStreamFetch()"
 
 > **doStreamFetch**(`url`, `init`, `config`, `provider`, `modality`): `Promise`\<`Response`\>
 
-Defined in: [src/http/fetch.ts:301](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/http/fetch.ts#L301)
+Defined in: [src/http/fetch.ts:330](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/http/fetch.ts#L330)
 
 Executes an HTTP fetch request for streaming responses.
 

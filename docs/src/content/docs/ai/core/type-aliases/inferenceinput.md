@@ -12,7 +12,7 @@ title: "Type Alias: InferenceInput"
 
 > **InferenceInput** = `string` \| [`Message`](../classes/message.md) \| [`ContentBlock`](contentblock.md)
 
-Defined in: [src/types/llm.ts:99](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/types/llm.ts#L99)
+Defined in: [src/types/llm.ts:99](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/llm.ts#L99)
 
 Valid input types for inference.
 

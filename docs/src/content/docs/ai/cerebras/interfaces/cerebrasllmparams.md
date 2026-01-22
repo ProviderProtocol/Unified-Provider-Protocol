@@ -10,7 +10,7 @@ title: "Interface: CerebrasLLMParams"
 
 # Interface: CerebrasLLMParams
 
-Defined in: [src/providers/cerebras/types.ts:25](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L25)
+Defined in: [src/providers/cerebras/types.ts:25](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L25)
 
 Parameters for the Cerebras Chat Completions API.
 
@@ -33,7 +33,7 @@ const params: CerebrasLLMParams = {
 
 > `optional` **clear\_thinking**: `boolean`
 
-Defined in: [src/providers/cerebras/types.ts:66](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L66)
+Defined in: [src/providers/cerebras/types.ts:66](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L66)
 
 Whether to clear thinking content for zai-glm-4.7 model.
 When true, removes thinking content from the response.
@@ -44,7 +44,7 @@ When true, removes thinking content from the response.
 
 > `optional` **logprobs**: `boolean`
 
-Defined in: [src/providers/cerebras/types.ts:96](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L96)
+Defined in: [src/providers/cerebras/types.ts:96](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L96)
 
 Whether to return log probabilities of output tokens
 
@@ -54,7 +54,7 @@ Whether to return log probabilities of output tokens
 
 > `optional` **max\_completion\_tokens**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:27](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L27)
+Defined in: [src/providers/cerebras/types.ts:27](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L27)
 
 Maximum number of tokens to generate
 
@@ -64,7 +64,7 @@ Maximum number of tokens to generate
 
 > `optional` **parallel\_tool\_calls**: `boolean`
 
-Defined in: [src/providers/cerebras/types.ts:69](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L69)
+Defined in: [src/providers/cerebras/types.ts:69](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L69)
 
 Whether to enable parallel tool calls (default: true)
 
@@ -74,7 +74,7 @@ Whether to enable parallel tool calls (default: true)
 
 > `optional` **prediction**: `object`
 
-Defined in: [src/providers/cerebras/types.ts:87](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L87)
+Defined in: [src/providers/cerebras/types.ts:87](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L87)
 
 Predicted output for latency reduction.
 Only supported on gpt-oss-120b and zai-glm-4.7.
@@ -93,7 +93,7 @@ Only supported on gpt-oss-120b and zai-glm-4.7.
 
 > `optional` **queue\_threshold**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:81](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L81)
+Defined in: [src/providers/cerebras/types.ts:81](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L81)
 
 Maximum queue time in ms (50-20000)
 
@@ -103,7 +103,7 @@ Maximum queue time in ms (50-20000)
 
 > `optional` **reasoning\_effort**: `"low"` \| `"medium"` \| `"high"`
 
-Defined in: [src/providers/cerebras/types.ts:51](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L51)
+Defined in: [src/providers/cerebras/types.ts:51](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L51)
 
 Reasoning intensity for gpt-oss-120b model.
 Controls how much reasoning/thinking the model does.
@@ -114,7 +114,7 @@ Controls how much reasoning/thinking the model does.
 
 > `optional` **reasoning\_format**: `"parsed"` \| `"raw"` \| `"hidden"` \| `"none"`
 
-Defined in: [src/providers/cerebras/types.ts:60](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L60)
+Defined in: [src/providers/cerebras/types.ts:60](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L60)
 
 How reasoning text appears in the response.
 - `parsed`: Thinking in separate `reasoning` field
@@ -128,7 +128,7 @@ How reasoning text appears in the response.
 
 > `optional` **response\_format**: [`CerebrasResponseFormat`](../type-aliases/cerebrasresponseformat.md)
 
-Defined in: [src/providers/cerebras/types.ts:45](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L45)
+Defined in: [src/providers/cerebras/types.ts:45](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L45)
 
 Response format for structured output
 
@@ -138,7 +138,7 @@ Response format for structured output
 
 > `optional` **seed**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:39](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L39)
+Defined in: [src/providers/cerebras/types.ts:39](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L39)
 
 Seed for deterministic sampling
 
@@ -146,9 +146,9 @@ Seed for deterministic sampling
 
 ### service\_tier?
 
-> `optional` **service\_tier**: `"default"` \| `"auto"` \| `"priority"` \| `"flex"`
+> `optional` **service\_tier**: `"default"` \| `"priority"` \| `"auto"` \| `"flex"`
 
-Defined in: [src/providers/cerebras/types.ts:78](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L78)
+Defined in: [src/providers/cerebras/types.ts:78](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L78)
 
 Service tier selection for request prioritization.
 - `priority`: Highest priority (dedicated endpoints only)
@@ -162,7 +162,7 @@ Service tier selection for request prioritization.
 
 > `optional` **stop**: `string`[]
 
-Defined in: [src/providers/cerebras/types.ts:36](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L36)
+Defined in: [src/providers/cerebras/types.ts:36](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L36)
 
 Custom stop sequences (max 4)
 
@@ -172,7 +172,7 @@ Custom stop sequences (max 4)
 
 > `optional` **temperature**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:30](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L30)
+Defined in: [src/providers/cerebras/types.ts:30](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L30)
 
 Temperature for randomness (0 to 1.5, default: 1.0)
 
@@ -182,7 +182,7 @@ Temperature for randomness (0 to 1.5, default: 1.0)
 
 > `optional` **tool\_choice**: [`CerebrasToolChoice`](../type-aliases/cerebrastoolchoice.md)
 
-Defined in: [src/providers/cerebras/types.ts:93](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L93)
+Defined in: [src/providers/cerebras/types.ts:93](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L93)
 
 Tool choice configuration
 
@@ -192,7 +192,7 @@ Tool choice configuration
 
 > `optional` **top\_logprobs**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:99](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L99)
+Defined in: [src/providers/cerebras/types.ts:99](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L99)
 
 Number of most likely tokens to return at each position (0-20). Requires logprobs=true.
 
@@ -202,7 +202,7 @@ Number of most likely tokens to return at each position (0-20). Requires logprob
 
 > `optional` **top\_p**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:33](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L33)
+Defined in: [src/providers/cerebras/types.ts:33](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L33)
 
 Top-p (nucleus) sampling (0.0 - 1.0)
 
@@ -212,6 +212,6 @@ Top-p (nucleus) sampling (0.0 - 1.0)
 
 > `optional` **user**: `string`
 
-Defined in: [src/providers/cerebras/types.ts:42](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/cerebras/types.ts#L42)
+Defined in: [src/providers/cerebras/types.ts:42](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L42)
 
 User identifier for tracking

@@ -10,7 +10,7 @@ title: "Interface: OpenAIMcpTool"
 
 # Interface: OpenAIMcpTool
 
-Defined in: [src/providers/openai/types.ts:1296](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openai/types.ts#L1296)
+Defined in: [src/providers/openai/types.ts:1296](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1296)
 
 MCP tool for Responses API
 Enables connections to MCP servers
@@ -21,7 +21,7 @@ Enables connections to MCP servers
 
 > `optional` **mcp**: `object`
 
-Defined in: [src/providers/openai/types.ts:1299](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openai/types.ts#L1299)
+Defined in: [src/providers/openai/types.ts:1299](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1299)
 
 MCP server configurations
 
@@ -37,4 +37,4 @@ Server configuration
 
 > **type**: `"mcp"`
 
-Defined in: [src/providers/openai/types.ts:1297](https://github.com/ProviderProtocol/ai/blob/6f44851e2b2eace1c64786fecf0b27e8ebe78069/src/providers/openai/types.ts#L1297)
+Defined in: [src/providers/openai/types.ts:1297](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1297)

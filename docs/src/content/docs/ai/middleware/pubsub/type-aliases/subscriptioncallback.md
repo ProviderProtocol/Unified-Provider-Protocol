@@ -1,0 +1,35 @@
+---
+title: "Type Alias: SubscriptionCallback()"
+---
+
+[**@providerprotocol/ai**](../../../index.md)
+
+***
+
+[@providerprotocol/ai](./index.md) / [middleware/pubsub](../index.md) / SubscriptionCallback
+
+# Type Alias: SubscriptionCallback()
+
+> **SubscriptionCallback** = (`event`, `cursor?`) => `void`
+
+Defined in: [src/middleware/pubsub/types.ts:31](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L31)
+
+Subscription callback for live events.
+
+## Parameters
+
+### event
+
+[`StreamEvent`](../../../core/interfaces/streamevent.md)
+
+Stream event payload
+
+### cursor?
+
+`number`
+
+Zero-based event index when adapter supports cursors
+
+## Returns
+
+`void`
