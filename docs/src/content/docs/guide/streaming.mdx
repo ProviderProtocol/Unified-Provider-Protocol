@@ -204,7 +204,9 @@ for await (const event of stream) {
 Stream structured JSON output:
 
 ```typescript
-import { parsedObjectMiddleware } from '@providerprotocol/ai';
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { parsedObjectMiddleware } from '@providerprotocol/ai/middleware/parsed-object';
 
 const claude = llm({
   model: anthropic('claude-sonnet-4-20250514'),
@@ -224,7 +226,7 @@ const stream = claude.stream('Extract: John Doe is 30 years old');
 for await (const event of stream) {
   if (event.type === 'object_delta') {
     // Partial object as it's being constructed
-    console.log('Partial:', event.delta.text);
+    console.log('Partial:', event.delta.parsed);
   }
 }
 

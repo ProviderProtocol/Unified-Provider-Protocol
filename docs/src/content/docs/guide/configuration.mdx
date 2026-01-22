@@ -128,7 +128,7 @@ UPP provides built-in key strategies for API key management:
 Cycles through a list of API keys:
 
 ```typescript
-import { RoundRobinKeys } from '@providerprotocol/ai';
+import { RoundRobinKeys } from '@providerprotocol/ai/http';
 
 const claude = llm({
   model: anthropic('claude-sonnet-4-20250514'),
@@ -147,7 +147,7 @@ const claude = llm({
 Selects keys based on weight (useful for tiered pricing or rate limits):
 
 ```typescript
-import { WeightedKeys } from '@providerprotocol/ai';
+import { WeightedKeys } from '@providerprotocol/ai/http';
 
 const claude = llm({
   model: anthropic('claude-sonnet-4-20250514'),
@@ -165,7 +165,7 @@ const claude = llm({
 Custom key selection logic:
 
 ```typescript
-import { DynamicKey } from '@providerprotocol/ai';
+import { DynamicKey } from '@providerprotocol/ai/http';
 
 const claude = llm({
   model: anthropic('claude-sonnet-4-20250514'),
@@ -212,7 +212,7 @@ import {
   NoRetry,
   TokenBucket,
   RetryAfterStrategy,
-} from '@providerprotocol/ai';
+} from '@providerprotocol/ai/http';
 
 // Exponential backoff (recommended)
 const strategy1 = new ExponentialBackoff({
@@ -370,9 +370,10 @@ Custom headers are merged with provider-required headers (e.g., `Content-Type`, 
 ## Full Configuration Example
 
 ```typescript
-import { llm, RoundRobinKeys, ExponentialBackoff } from '@providerprotocol/ai';
+import { llm } from '@providerprotocol/ai';
 import { anthropic } from '@providerprotocol/ai/anthropic';
 import type { AnthropicLLMParams } from '@providerprotocol/ai/anthropic';
+import { RoundRobinKeys, ExponentialBackoff } from '@providerprotocol/ai/http';
 
 const claude = llm({
   model: anthropic('claude-sonnet-4-20250514'),

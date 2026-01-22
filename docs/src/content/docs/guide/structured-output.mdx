@@ -206,7 +206,9 @@ console.log(turn.data);
 Stream partial JSON as it's generated:
 
 ```typescript
-import { llm, parsedObjectMiddleware } from '@providerprotocol/ai';
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { parsedObjectMiddleware } from '@providerprotocol/ai/middleware/parsed-object';
 
 const extractor = llm({
   model: anthropic('claude-sonnet-4-20250514'),
@@ -226,7 +228,7 @@ const stream = extractor.stream('Summarize the benefits of exercise...');
 for await (const event of stream) {
   if (event.type === 'object_delta') {
     // Partial object as it's being constructed
-    console.log('Partial:', event.delta.text);
+    console.log('Partial:', event.delta.parsed);
   }
 }
 

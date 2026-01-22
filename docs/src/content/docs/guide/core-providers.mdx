@@ -223,7 +223,41 @@ const model = llm({
 const turn = await model.generate('Hello!');
 ```
 
-**Capabilities:** Streaming, tool calling, structured output, image input (Llama 4 preview).
+### With Web Search
+
+Enable real-time web search:
+
+```typescript
+const searchModel = llm({
+  model: groq('llama-3.3-70b-versatile'),
+  params: {
+    search_settings: { mode: 'auto' },
+  },
+});
+
+const turn = await searchModel.generate('What are the latest AI news today?');
+```
+
+### With RAG Documents
+
+Provide context documents with optional citations:
+
+```typescript
+const ragModel = llm({
+  model: groq('llama-3.3-70b-versatile'),
+  params: {
+    documents: [
+      { title: 'Company Policy', content: 'Employees get 20 vacation days...' },
+      { title: 'Benefits Guide', content: 'Health insurance covers...' },
+    ],
+    citation_options: { include: true },
+  },
+});
+
+const turn = await ragModel.generate('How many vacation days do employees get?');
+```
+
+**Capabilities:** Streaming, tool calling, structured output, image input (Llama 4 preview), web search, RAG with citations.
 
 **Popular models:** `llama-3.3-70b-versatile`, `llama-3.1-8b-instant`, `gemma2-9b-it`, `mixtral-8x7b-32768`
 

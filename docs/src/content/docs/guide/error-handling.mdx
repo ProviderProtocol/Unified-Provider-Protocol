@@ -114,8 +114,9 @@ try {
 UPP automatically retries transient errors when configured:
 
 ```typescript
-import { llm, ExponentialBackoff } from '@providerprotocol/ai';
+import { llm } from '@providerprotocol/ai';
 import { anthropic } from '@providerprotocol/ai/anthropic';
+import { ExponentialBackoff } from '@providerprotocol/ai/http';
 
 const claude = llm({
   model: anthropic('claude-sonnet-4-20250514'),
@@ -152,7 +153,8 @@ These errors fail immediately:
 Create custom retry logic:
 
 ```typescript
-import { RetryStrategy, UPPError, ErrorCode } from '@providerprotocol/ai';
+import { UPPError, ErrorCode } from '@providerprotocol/ai';
+import type { RetryStrategy } from '@providerprotocol/ai/http';
 
 class CustomRetryStrategy implements RetryStrategy {
   private attempts = 0;
