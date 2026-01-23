@@ -12,7 +12,7 @@ title: "Variable: webapi"
 
 > `const` **webapi**: `object`
 
-Defined in: [src/middleware/pubsub/server/webapi.ts:89](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/server/webapi.ts#L89)
+Defined in: [src/middleware/pubsub/server/webapi.ts:99](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/server/webapi.ts#L99)
 
 Web API adapter namespace for pub-sub server utilities.
 
@@ -24,12 +24,10 @@ Web API adapter namespace for pub-sub server utilities.
 
 Creates a ReadableStream that replays buffered events and subscribes to live events.
 
-This utility handles the reconnection pattern for server routes:
-1. Replays all buffered events from the adapter
-2. If stream is already completed, closes immediately
-3. Otherwise, subscribes to live events until completion
-
-Works with any framework that supports web standard ReadableStream.
+Handles reconnection for Web API frameworks (Bun, Deno, Next.js, Cloudflare Workers):
+1. Replays buffered events from the adapter
+2. Subscribes to live events until completion signal
+3. Closes when stream completes or client disconnects
 
 #### Parameters
 
@@ -54,17 +52,29 @@ A ReadableStream of SSE-formatted data
 #### Example
 
 ```typescript
-import { createSubscriberStream } from '@providerprotocol/ai/middleware/pubsub/server/webapi';
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { pubsubMiddleware, memoryAdapter } from '@providerprotocol/ai/middleware/pubsub';
+import { webapi } from '@providerprotocol/ai/middleware/pubsub/server';
 
-// Next.js App Router
+const adapter = memoryAdapter();
+
+// Next.js App Router / Bun.serve / Deno.serve
 export async function POST(req: Request) {
-  const { streamId } = await req.json();
+  const { input, conversationId } = await req.json();
 
-  return new Response(createSubscriberStream(streamId, adapter), {
+  if (!await adapter.exists(conversationId)) {
+    const model = llm({
+      model: anthropic('claude-sonnet-4-20250514'),
+      middleware: [pubsubMiddleware({ adapter, streamId: conversationId })],
+    });
+    model.stream(input).then(turn => saveToDatabase(conversationId, turn));
+  }
+
+  return new Response(webapi.createSubscriberStream(conversationId, adapter), {
     headers: {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
     },
   });
 }

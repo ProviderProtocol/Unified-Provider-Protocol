@@ -10,7 +10,7 @@ title: "Class: Image"
 
 # Class: Image
 
-Defined in: [src/core/media/Image.ts:86](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L86)
+Defined in: [src/core/media/Image.ts:86](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L86)
 
 Represents an image that can be used in UPP messages.
 
@@ -40,7 +40,7 @@ const message = new UserMessage([image.toBlock()]);
 
 > `readonly` `optional` **height**: `number`
 
-Defined in: [src/core/media/Image.ts:94](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L94)
+Defined in: [src/core/media/Image.ts:94](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L94)
 
 Image height in pixels, if known
 
@@ -50,7 +50,7 @@ Image height in pixels, if known
 
 > `readonly` **mimeType**: `string`
 
-Defined in: [src/core/media/Image.ts:90](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L90)
+Defined in: [src/core/media/Image.ts:90](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L90)
 
 MIME type of the image (e.g., 'image/jpeg', 'image/png')
 
@@ -60,7 +60,7 @@ MIME type of the image (e.g., 'image/jpeg', 'image/png')
 
 > `readonly` **source**: [`ImageSource`](../type-aliases/imagesource.md)
 
-Defined in: [src/core/media/Image.ts:88](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L88)
+Defined in: [src/core/media/Image.ts:88](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L88)
 
 The underlying image source (bytes, base64, or URL)
 
@@ -70,7 +70,7 @@ The underlying image source (bytes, base64, or URL)
 
 > `readonly` `optional` **width**: `number`
 
-Defined in: [src/core/media/Image.ts:92](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L92)
+Defined in: [src/core/media/Image.ts:92](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L92)
 
 Image width in pixels, if known
 
@@ -82,7 +82,7 @@ Image width in pixels, if known
 
 > **get** **hasData**(): `boolean`
 
-Defined in: [src/core/media/Image.ts:114](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L114)
+Defined in: [src/core/media/Image.ts:114](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L114)
 
 Whether this image has data loaded in memory.
 
@@ -99,7 +99,7 @@ These must be fetched before their data can be accessed.
 
 > **toBase64**(): `string`
 
-Defined in: [src/core/media/Image.ts:124](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L124)
+Defined in: [src/core/media/Image.ts:124](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L124)
 
 Converts the image to a base64-encoded string.
 
@@ -119,7 +119,7 @@ When the source is a URL (data must be fetched first)
 
 > **toBlock**(): [`ImageBlock`](../interfaces/imageblock.md)
 
-Defined in: [src/core/media/Image.ts:193](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L193)
+Defined in: [src/core/media/Image.ts:193](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L193)
 
 Converts this Image to an ImageBlock for use in UPP messages.
 
@@ -135,7 +135,7 @@ An ImageBlock that can be included in message content arrays
 
 > **toBytes**(): `Uint8Array`
 
-Defined in: [src/core/media/Image.ts:157](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L157)
+Defined in: [src/core/media/Image.ts:157](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L157)
 
 Gets the image data as raw bytes.
 
@@ -155,7 +155,7 @@ When the source is a URL (data must be fetched first)
 
 > **toDataUrl**(): `string`
 
-Defined in: [src/core/media/Image.ts:146](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L146)
+Defined in: [src/core/media/Image.ts:146](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L146)
 
 Converts the image to a data URL suitable for embedding in HTML or CSS.
 
@@ -175,7 +175,7 @@ When the source is a URL (data must be fetched first)
 
 > **toUrl**(): `string`
 
-Defined in: [src/core/media/Image.ts:180](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L180)
+Defined in: [src/core/media/Image.ts:180](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L180)
 
 Gets the URL for URL-sourced images.
 
@@ -195,7 +195,7 @@ When the source is not a URL
 
 > `static` **fromBase64**(`base64`, `mimeType`): `Image`
 
-Defined in: [src/core/media/Image.ts:278](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L278)
+Defined in: [src/core/media/Image.ts:278](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L278)
 
 Creates an Image from a base64-encoded string.
 
@@ -231,7 +231,7 @@ const image = Image.fromBase64(base64String, 'image/jpeg');
 
 > `static` **fromBlock**(`block`): `Image`
 
-Defined in: [src/core/media/Image.ts:291](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L291)
+Defined in: [src/core/media/Image.ts:291](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L291)
 
 Creates an Image from an existing ImageBlock.
 
@@ -258,7 +258,7 @@ An Image with the block's source and metadata
 
 > `static` **fromBytes**(`data`, `mimeType`): `Image`
 
-Defined in: [src/core/media/Image.ts:262](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L262)
+Defined in: [src/core/media/Image.ts:262](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L262)
 
 Creates an Image from raw byte data.
 
@@ -294,7 +294,7 @@ const image = Image.fromBytes(pngData, 'image/png');
 
 > `static` **fromPath**(`path`): `Promise`\<`Image`\>
 
-Defined in: [src/core/media/Image.ts:217](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L217)
+Defined in: [src/core/media/Image.ts:217](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L217)
 
 Creates an Image by reading a file from disk.
 
@@ -327,7 +327,7 @@ const image = await Image.fromPath('./photos/vacation.jpg');
 
 > `static` **fromUrl**(`url`, `mimeType?`): `Image`
 
-Defined in: [src/core/media/Image.ts:245](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/media/Image.ts#L245)
+Defined in: [src/core/media/Image.ts:245](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/media/Image.ts#L245)
 
 Creates an Image from a URL reference.
 

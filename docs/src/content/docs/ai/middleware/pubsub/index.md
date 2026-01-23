@@ -28,6 +28,7 @@ exported `createSubscriberStream` utility.
 
 ## Type Aliases
 
+- [CompletionCallback](type-aliases/completioncallback.md)
 - [SubscriptionCallback](type-aliases/subscriptioncallback.md)
 - [Unsubscribe](type-aliases/unsubscribe.md)
 

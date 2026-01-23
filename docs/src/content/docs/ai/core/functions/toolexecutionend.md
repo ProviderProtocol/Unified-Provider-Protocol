@@ -12,7 +12,7 @@ title: "Function: toolExecutionEnd()"
 
 > **toolExecutionEnd**(`toolCallId`, `toolName`, `result`, `isError`, `timestamp`, `index`): [`StreamEvent`](../interfaces/streamevent.md)
 
-Defined in: [src/types/stream.ts:374](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/stream.ts#L374)
+Defined in: [src/types/stream.ts:407](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/stream.ts#L407)
 
 Creates a tool execution end stream event.
 

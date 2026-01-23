@@ -55,6 +55,12 @@ for await (const event of stream) {
 const turn = await stream.turn;
 ```
 
+Stream results are PromiseLike, so you can also await the stream directly to auto-drain:
+
+```typescript
+const turn = await claude.stream('Count to 5');
+```
+
 **Stream Control:**
 
 ```typescript
@@ -650,7 +656,9 @@ const result = await model.generate('Hello');
 
 ### Pub-Sub Middleware (Stream Resumption)
 
-Enable reconnecting clients to catch up on missed events during active generation. The middleware buffers events and publishes them to subscribers.
+Enable reconnecting clients to catch up on missed events during active generation. The middleware buffers events, publishes them to subscribers, and removes streams on completion/abort/error.
+If a stream never reaches those hooks (for example, a process crash), the adapter may retain the entry. Custom adapters should invoke `onComplete` when `remove()` runs so subscriber streams can terminate.
+Streams are created lazily on first `append()` or `subscribe()` call.
 
 ```typescript
 import { llm } from '@providerprotocol/ai';
@@ -670,11 +678,12 @@ Bun.serve({
 
     if (!exists) {
       // Start background generation (fire and forget)
+      // Stream is created lazily on first append()
       const model = llm({
         model: anthropic('claude-sonnet-4-20250514'),
         middleware: [pubsubMiddleware({ adapter, streamId })],
       });
-      consumeInBackground(model.stream(messages));
+      model.stream(messages).then(turn => { /* save to DB */ });
     }
 
     // Both new and reconnect: subscribe to events
@@ -718,17 +727,12 @@ Implement `PubSubAdapter` for custom backends (Redis, etc.):
 import type { PubSubAdapter } from '@providerprotocol/ai/middleware/pubsub';
 
 const redisAdapter: PubSubAdapter = {
-  async exists(streamId) { /* ... */ },
-  async create(streamId, metadata) { /* ... */ },
-  async append(streamId, event) { /* ... */ },
-  async markCompleted(streamId) { /* ... */ },
-  async isCompleted(streamId) { /* ... */ },
-  async getEvents(streamId) { /* ... */ },
-  async getStream(streamId) { /* ... */ },
-  subscribe(streamId, callback) { /* ... */ },
-  publish(streamId, event) { /* ... */ },
-  async remove(streamId) { /* ... */ },
-  async cleanup(maxAge) { /* ... */ },
+  async exists(streamId) { /* check if stream exists */ },
+  async append(streamId, event) { /* append event, create lazily */ },
+  async getEvents(streamId) { /* return events or [] */ },
+  subscribe(streamId, onEvent, onComplete) { /* subscribe to live events */ },
+  publish(streamId, event) { /* broadcast to subscribers */ },
+  async remove(streamId) { /* notify onComplete then delete */ },
 };
 ```
 

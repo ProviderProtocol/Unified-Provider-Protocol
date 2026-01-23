@@ -10,25 +10,17 @@ title: "Interface: StoredStream"
 
 # Interface: StoredStream
 
-Defined in: [src/middleware/pubsub/types.ts:15](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L15)
+Defined in: [src/middleware/pubsub/types.ts:15](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L15)
 
-Stored stream state.
+Stored stream state (in-flight only).
 
 ## Properties
-
-### completed
-
-> `readonly` **completed**: `boolean`
-
-Defined in: [src/middleware/pubsub/types.ts:21](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L21)
-
-***
 
 ### createdAt
 
 > `readonly` **createdAt**: `number`
 
-Defined in: [src/middleware/pubsub/types.ts:19](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L19)
+Defined in: [src/middleware/pubsub/types.ts:17](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L17)
 
 ***
 
@@ -36,23 +28,7 @@ Defined in: [src/middleware/pubsub/types.ts:19](https://github.com/ProviderProto
 
 > `readonly` **events**: readonly [`StreamEvent`](../../../core/interfaces/streamevent.md)[]
 
-Defined in: [src/middleware/pubsub/types.ts:22](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L22)
-
-***
-
-### modelId
-
-> `readonly` **modelId**: `string`
-
-Defined in: [src/middleware/pubsub/types.ts:17](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L17)
-
-***
-
-### provider
-
-> `readonly` **provider**: `string`
-
-Defined in: [src/middleware/pubsub/types.ts:18](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L18)
+Defined in: [src/middleware/pubsub/types.ts:18](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L18)
 
 ***
 
@@ -60,12 +36,4 @@ Defined in: [src/middleware/pubsub/types.ts:18](https://github.com/ProviderProto
 
 > `readonly` **streamId**: `string`
 
-Defined in: [src/middleware/pubsub/types.ts:16](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L16)
-
-***
-
-### updatedAt
-
-> `readonly` **updatedAt**: `number`
-
-Defined in: [src/middleware/pubsub/types.ts:20](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L20)
+Defined in: [src/middleware/pubsub/types.ts:16](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L16)

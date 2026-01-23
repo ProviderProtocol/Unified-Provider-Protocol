@@ -10,7 +10,7 @@ title: "Interface: GoogleCacheUpdateRequest"
 
 # Interface: GoogleCacheUpdateRequest
 
-Defined in: [src/providers/google/types.ts:598](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/google/types.ts#L598)
+Defined in: [src/providers/google/types.ts:598](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/google/types.ts#L598)
 
 Request body for updating a cached content entry.
 Only expiration can be updated; all other fields are immutable.
@@ -21,7 +21,7 @@ Only expiration can be updated; all other fields are immutable.
 
 > `optional` **expireTime**: `string`
 
-Defined in: [src/providers/google/types.ts:600](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/google/types.ts#L600)
+Defined in: [src/providers/google/types.ts:600](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/google/types.ts#L600)
 
 New absolute expiration time (RFC 3339 format, mutually exclusive with ttl)
 
@@ -31,6 +31,6 @@ New absolute expiration time (RFC 3339 format, mutually exclusive with ttl)
 
 > `optional` **ttl**: `string`
 
-Defined in: [src/providers/google/types.ts:602](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/google/types.ts#L602)
+Defined in: [src/providers/google/types.ts:602](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/google/types.ts#L602)
 
 New time-to-live duration (e.g., "3600s", mutually exclusive with expireTime)

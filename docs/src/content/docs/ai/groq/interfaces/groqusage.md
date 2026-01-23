@@ -10,7 +10,7 @@ title: "Interface: GroqUsage"
 
 # Interface: GroqUsage
 
-Defined in: [src/providers/groq/types.ts:292](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L292)
+Defined in: [src/providers/groq/types.ts:292](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L292)
 
 Token usage statistics from the API response
 
@@ -20,7 +20,7 @@ Token usage statistics from the API response
 
 > `optional` **completion\_time**: `number`
 
-Defined in: [src/providers/groq/types.ts:298](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L298)
+Defined in: [src/providers/groq/types.ts:298](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L298)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/providers/groq/types.ts:298](https://github.com/ProviderProtoco
 
 > **completion\_tokens**: `number`
 
-Defined in: [src/providers/groq/types.ts:294](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L294)
+Defined in: [src/providers/groq/types.ts:294](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L294)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [src/providers/groq/types.ts:294](https://github.com/ProviderProtoco
 
 > `optional` **prompt\_time**: `number`
 
-Defined in: [src/providers/groq/types.ts:297](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L297)
+Defined in: [src/providers/groq/types.ts:297](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L297)
 
 ***
 
@@ -44,7 +44,7 @@ Defined in: [src/providers/groq/types.ts:297](https://github.com/ProviderProtoco
 
 > **prompt\_tokens**: `number`
 
-Defined in: [src/providers/groq/types.ts:293](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L293)
+Defined in: [src/providers/groq/types.ts:293](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L293)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [src/providers/groq/types.ts:293](https://github.com/ProviderProtoco
 
 > `optional` **prompt\_tokens\_details**: `object`
 
-Defined in: [src/providers/groq/types.ts:299](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L299)
+Defined in: [src/providers/groq/types.ts:299](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L299)
 
 #### cached\_tokens?
 
@@ -64,7 +64,7 @@ Defined in: [src/providers/groq/types.ts:299](https://github.com/ProviderProtoco
 
 > `optional` **queue\_time**: `number`
 
-Defined in: [src/providers/groq/types.ts:296](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L296)
+Defined in: [src/providers/groq/types.ts:296](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L296)
 
 ***
 
@@ -72,4 +72,4 @@ Defined in: [src/providers/groq/types.ts:296](https://github.com/ProviderProtoco
 
 > **total\_tokens**: `number`
 
-Defined in: [src/providers/groq/types.ts:295](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L295)
+Defined in: [src/providers/groq/types.ts:295](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L295)

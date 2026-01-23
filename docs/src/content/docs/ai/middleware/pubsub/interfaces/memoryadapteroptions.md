@@ -10,7 +10,7 @@ title: "Interface: MemoryAdapterOptions"
 
 # Interface: MemoryAdapterOptions
 
-Defined in: [src/middleware/pubsub/types.ts:174](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L174)
+Defined in: [src/middleware/pubsub/types.ts:104](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L104)
 
 Options for memory adapter.
 
@@ -20,9 +20,9 @@ Options for memory adapter.
 
 > `optional` **maxStreams**: `number`
 
-Defined in: [src/middleware/pubsub/types.ts:179](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L179)
+Defined in: [src/middleware/pubsub/types.ts:109](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L109)
 
-Max streams to keep (LRU eviction).
+Max concurrent streams allowed. Throws if exceeded.
 
 #### Default
 

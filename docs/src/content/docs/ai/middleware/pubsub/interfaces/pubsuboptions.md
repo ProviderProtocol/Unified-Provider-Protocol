@@ -10,7 +10,7 @@ title: "Interface: PubSubOptions"
 
 # Interface: PubSubOptions
 
-Defined in: [src/middleware/pubsub/types.ts:145](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L145)
+Defined in: [src/middleware/pubsub/types.ts:88](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L88)
 
 Options for pub-sub middleware.
 
@@ -20,7 +20,7 @@ Options for pub-sub middleware.
 
 > `optional` **adapter**: [`PubSubAdapter`](pubsubadapter.md)
 
-Defined in: [src/middleware/pubsub/types.ts:150](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L150)
+Defined in: [src/middleware/pubsub/types.ts:93](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L93)
 
 Storage adapter instance.
 
@@ -36,29 +36,6 @@ memoryAdapter()
 
 > `optional` **streamId**: `string`
 
-Defined in: [src/middleware/pubsub/types.ts:162](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L162)
+Defined in: [src/middleware/pubsub/types.ts:98](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L98)
 
-Stream identifier for reconnection support.
-
-When provided:
-- If stream exists in adapter → Reconnection, replay buffered events
-- If stream doesn't exist → New request, create entry and proceed
-
-When not provided:
-- No pub/sub behavior, middleware is effectively disabled
-
-***
-
-### ttl?
-
-> `optional` **ttl**: `number`
-
-Defined in: [src/middleware/pubsub/types.ts:168](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L168)
-
-TTL for stored streams in milliseconds.
-
-#### Default
-
-```ts
-600000 (10 minutes)
-```
+Stream identifier for pub-sub behavior.

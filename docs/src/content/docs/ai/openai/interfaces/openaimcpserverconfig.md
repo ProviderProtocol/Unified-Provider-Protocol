@@ -10,7 +10,7 @@ title: "Interface: OpenAIMcpServerConfig"
 
 # Interface: OpenAIMcpServerConfig
 
-Defined in: [src/providers/openai/types.ts:1274](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1274)
+Defined in: [src/providers/openai/types.ts:1274](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openai/types.ts#L1274)
 
 MCP (Model Context Protocol) server configuration
 
@@ -20,7 +20,7 @@ MCP (Model Context Protocol) server configuration
 
 > `optional` **allowed\_resources**: `string`[]
 
-Defined in: [src/providers/openai/types.ts:1287](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1287)
+Defined in: [src/providers/openai/types.ts:1287](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openai/types.ts#L1287)
 
 Allowed resources
 
@@ -30,7 +30,7 @@ Allowed resources
 
 > `optional` **headers**: `Record`\<`string`, `string`\>
 
-Defined in: [src/providers/openai/types.ts:1285](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1285)
+Defined in: [src/providers/openai/types.ts:1285](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openai/types.ts#L1285)
 
 Headers to send with requests
 
@@ -40,7 +40,7 @@ Headers to send with requests
 
 > `optional` **name**: `string`
 
-Defined in: [src/providers/openai/types.ts:1278](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1278)
+Defined in: [src/providers/openai/types.ts:1278](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openai/types.ts#L1278)
 
 Server name for identification
 
@@ -50,7 +50,7 @@ Server name for identification
 
 > `optional` **require\_approval**: `"always"` \| \{ `tools`: `string`[]; `type`: `"except"`; \} \| `"never"`
 
-Defined in: [src/providers/openai/types.ts:1289](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1289)
+Defined in: [src/providers/openai/types.ts:1289](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openai/types.ts#L1289)
 
 Require approval for tool calls
 
@@ -60,7 +60,7 @@ Require approval for tool calls
 
 > `optional` **tool\_configuration**: `object`
 
-Defined in: [src/providers/openai/types.ts:1280](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1280)
+Defined in: [src/providers/openai/types.ts:1280](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openai/types.ts#L1280)
 
 Tool configuration for the server
 
@@ -76,6 +76,6 @@ Allowed tools from this server
 
 > **url**: `string`
 
-Defined in: [src/providers/openai/types.ts:1276](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/openai/types.ts#L1276)
+Defined in: [src/providers/openai/types.ts:1276](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openai/types.ts#L1276)
 
 Server URL

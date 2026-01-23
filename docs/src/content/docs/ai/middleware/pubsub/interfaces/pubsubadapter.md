@@ -10,22 +10,13 @@ title: "Interface: PubSubAdapter"
 
 # Interface: PubSubAdapter
 
-Defined in: [src/middleware/pubsub/types.ts:53](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L53)
+Defined in: [src/middleware/pubsub/types.ts:49](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L49)
 
 Storage adapter interface for pub-sub middleware.
 
-Implement this interface for custom backends (Redis, etc.).
-
-## Example
-
-```typescript
-const redisAdapter: PubSubAdapter = {
-  async create(streamId, metadata) {
-    await redis.hset(`stream:${streamId}`, metadata);
-  },
-  // ... other methods
-};
-```
+Stores in-flight streams only. Completed streams are removed immediately.
+Apps should persist completed conversations via `.then()` and serve from
+their own storage on reconnect.
 
 ## Methods
 
@@ -33,79 +24,19 @@ const redisAdapter: PubSubAdapter = {
 
 > **append**(`streamId`, `event`): `Promise`\<`void`\>
 
-Defined in: [src/middleware/pubsub/types.ts:76](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L76)
+Defined in: [src/middleware/pubsub/types.ts:58](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L58)
 
-Appends an event to the stream.
+Appends an event to the stream (creates lazily if needed).
 
 #### Parameters
 
 ##### streamId
 
 `string`
-
-Stream to append to
 
 ##### event
 
 [`StreamEvent`](../../../core/interfaces/streamevent.md)
-
-Stream event to store
-
-#### Returns
-
-`Promise`\<`void`\>
-
-***
-
-### cleanup()
-
-> **cleanup**(`maxAge`): `Promise`\<`void`\>
-
-Defined in: [src/middleware/pubsub/types.ts:139](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L139)
-
-Removes streams older than maxAge.
-
-#### Parameters
-
-##### maxAge
-
-`number`
-
-Maximum age in milliseconds
-
-#### Returns
-
-`Promise`\<`void`\>
-
-***
-
-### create()
-
-> **create**(`streamId`, `metadata`): `Promise`\<`void`\>
-
-Defined in: [src/middleware/pubsub/types.ts:68](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L68)
-
-Creates a stream entry.
-
-#### Parameters
-
-##### streamId
-
-`string`
-
-Unique stream identifier
-
-##### metadata
-
-Stream metadata (modelId, provider)
-
-###### modelId
-
-`string`
-
-###### provider
-
-`string`
 
 #### Returns
 
@@ -117,7 +48,7 @@ Stream metadata (modelId, provider)
 
 > **exists**(`streamId`): `Promise`\<`boolean`\>
 
-Defined in: [src/middleware/pubsub/types.ts:60](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L60)
+Defined in: [src/middleware/pubsub/types.ts:53](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L53)
 
 Checks if a stream exists.
 
@@ -127,21 +58,17 @@ Checks if a stream exists.
 
 `string`
 
-Stream identifier to check
-
 #### Returns
 
 `Promise`\<`boolean`\>
-
-True if the stream exists
 
 ***
 
 ### getEvents()
 
-> **getEvents**(`streamId`): `Promise`\<[`StreamEvent`](../../../core/interfaces/streamevent.md)[] \| `null`\>
+> **getEvents**(`streamId`): `Promise`\<[`StreamEvent`](../../../core/interfaces/streamevent.md)[]\>
 
-Defined in: [src/middleware/pubsub/types.ts:99](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L99)
+Defined in: [src/middleware/pubsub/types.ts:63](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L63)
 
 Fetches all events for replay.
 
@@ -151,83 +78,9 @@ Fetches all events for replay.
 
 `string`
 
-Stream to fetch events from
-
 #### Returns
 
-`Promise`\<[`StreamEvent`](../../../core/interfaces/streamevent.md)[] \| `null`\>
-
-Array of events or null if stream doesn't exist
-
-***
-
-### getStream()
-
-> **getStream**(`streamId`): `Promise`\<[`StoredStream`](storedstream.md) \| `null`\>
-
-Defined in: [src/middleware/pubsub/types.ts:107](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L107)
-
-Gets stream metadata.
-
-#### Parameters
-
-##### streamId
-
-`string`
-
-Stream to get
-
-#### Returns
-
-`Promise`\<[`StoredStream`](storedstream.md) \| `null`\>
-
-Stream metadata or null if not found
-
-***
-
-### isCompleted()
-
-> **isCompleted**(`streamId`): `Promise`\<`boolean`\>
-
-Defined in: [src/middleware/pubsub/types.ts:91](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L91)
-
-Checks if stream is completed.
-
-#### Parameters
-
-##### streamId
-
-`string`
-
-Stream to check
-
-#### Returns
-
-`Promise`\<`boolean`\>
-
-True if stream is completed
-
-***
-
-### markCompleted()
-
-> **markCompleted**(`streamId`): `Promise`\<`void`\>
-
-Defined in: [src/middleware/pubsub/types.ts:83](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L83)
-
-Marks stream as completed.
-
-#### Parameters
-
-##### streamId
-
-`string`
-
-Stream to mark complete
-
-#### Returns
-
-`Promise`\<`void`\>
+`Promise`\<[`StreamEvent`](../../../core/interfaces/streamevent.md)[]\>
 
 ***
 
@@ -235,7 +88,7 @@ Stream to mark complete
 
 > **publish**(`streamId`, `event`): `void`
 
-Defined in: [src/middleware/pubsub/types.ts:125](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L125)
+Defined in: [src/middleware/pubsub/types.ts:77](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L77)
 
 Publishes event to all subscribers.
 
@@ -245,13 +98,9 @@ Publishes event to all subscribers.
 
 `string`
 
-Stream to publish to
-
 ##### event
 
 [`StreamEvent`](../../../core/interfaces/streamevent.md)
-
-Event to broadcast
 
 #### Returns
 
@@ -263,17 +112,15 @@ Event to broadcast
 
 > **remove**(`streamId`): `Promise`\<`void`\>
 
-Defined in: [src/middleware/pubsub/types.ts:132](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L132)
+Defined in: [src/middleware/pubsub/types.ts:82](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L82)
 
-Removes a stream (cleanup).
+Notifies subscribers and removes stream from storage.
 
 #### Parameters
 
 ##### streamId
 
 `string`
-
-Stream to remove
 
 #### Returns
 
@@ -283,11 +130,11 @@ Stream to remove
 
 ### subscribe()
 
-> **subscribe**(`streamId`, `callback`): [`Unsubscribe`](../type-aliases/unsubscribe.md)
+> **subscribe**(`streamId`, `onEvent`, `onComplete`): [`Unsubscribe`](../type-aliases/unsubscribe.md)
 
-Defined in: [src/middleware/pubsub/types.ts:117](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/types.ts#L117)
+Defined in: [src/middleware/pubsub/types.ts:68](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L68)
 
-Subscribes to live events for a stream.
+Subscribes to live events (creates lazily if needed).
 
 #### Parameters
 
@@ -295,16 +142,14 @@ Subscribes to live events for a stream.
 
 `string`
 
-Stream to subscribe to
-
-##### callback
+##### onEvent
 
 [`SubscriptionCallback`](../type-aliases/subscriptioncallback.md)
 
-Function called for each new event
+##### onComplete
+
+[`CompletionCallback`](../type-aliases/completioncallback.md)
 
 #### Returns
 
 [`Unsubscribe`](../type-aliases/unsubscribe.md)
-
-Unsubscribe function

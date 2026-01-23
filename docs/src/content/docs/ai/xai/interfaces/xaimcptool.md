@@ -10,7 +10,7 @@ title: "Interface: XAIMcpTool"
 
 # Interface: XAIMcpTool
 
-Defined in: [src/providers/xai/types.ts:388](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/xai/types.ts#L388)
+Defined in: [src/providers/xai/types.ts:388](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/xai/types.ts#L388)
 
 Remote MCP server tool configuration.
 
@@ -33,7 +33,7 @@ const tool: XAIMcpTool = {
 
 > `optional` **allowed\_tool\_names**: `string`[]
 
-Defined in: [src/providers/xai/types.ts:398](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/xai/types.ts#L398)
+Defined in: [src/providers/xai/types.ts:398](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/xai/types.ts#L398)
 
 Specific tools to enable (empty = all available)
 
@@ -43,7 +43,7 @@ Specific tools to enable (empty = all available)
 
 > `optional` **authorization**: `string`
 
-Defined in: [src/providers/xai/types.ts:400](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/xai/types.ts#L400)
+Defined in: [src/providers/xai/types.ts:400](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/xai/types.ts#L400)
 
 Authentication token
 
@@ -53,7 +53,7 @@ Authentication token
 
 > `optional` **extra\_headers**: `Record`\<`string`, `string`\>
 
-Defined in: [src/providers/xai/types.ts:402](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/xai/types.ts#L402)
+Defined in: [src/providers/xai/types.ts:402](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/xai/types.ts#L402)
 
 Custom request headers
 
@@ -63,7 +63,7 @@ Custom request headers
 
 > `optional` **server\_description**: `string`
 
-Defined in: [src/providers/xai/types.ts:396](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/xai/types.ts#L396)
+Defined in: [src/providers/xai/types.ts:396](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/xai/types.ts#L396)
 
 Description of server capabilities
 
@@ -73,7 +73,7 @@ Description of server capabilities
 
 > `optional` **server\_label**: `string`
 
-Defined in: [src/providers/xai/types.ts:394](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/xai/types.ts#L394)
+Defined in: [src/providers/xai/types.ts:394](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/xai/types.ts#L394)
 
 Server label for tool call prefixing
 
@@ -83,7 +83,7 @@ Server label for tool call prefixing
 
 > **server\_url**: `string`
 
-Defined in: [src/providers/xai/types.ts:392](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/xai/types.ts#L392)
+Defined in: [src/providers/xai/types.ts:392](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/xai/types.ts#L392)
 
 MCP server URL (HTTP Streaming/SSE only)
 
@@ -93,6 +93,6 @@ MCP server URL (HTTP Streaming/SSE only)
 
 > **type**: `"mcp"`
 
-Defined in: [src/providers/xai/types.ts:390](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/xai/types.ts#L390)
+Defined in: [src/providers/xai/types.ts:390](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/xai/types.ts#L390)
 
 Tool type identifier

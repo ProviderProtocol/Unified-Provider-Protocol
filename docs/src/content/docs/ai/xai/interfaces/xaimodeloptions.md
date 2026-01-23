@@ -10,7 +10,7 @@ title: "Interface: XAIModelOptions"
 
 # Interface: XAIModelOptions
 
-Defined in: [src/providers/xai/types.ts:243](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/xai/types.ts#L243)
+Defined in: [src/providers/xai/types.ts:243](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/xai/types.ts#L243)
 
 Options for configuring an xAI model reference.
 
@@ -20,6 +20,6 @@ Options for configuring an xAI model reference.
 
 > `optional` **api**: [`XAIAPIMode`](../type-aliases/xaiapimode.md)
 
-Defined in: [src/providers/xai/types.ts:245](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/xai/types.ts#L245)
+Defined in: [src/providers/xai/types.ts:245](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/xai/types.ts#L245)
 
 The API mode to use for this model

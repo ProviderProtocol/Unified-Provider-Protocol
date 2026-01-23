@@ -12,7 +12,7 @@ title: "Variable: server"
 
 > `const` **server**: `object`
 
-Defined in: [src/middleware/pubsub/server/index.ts:67](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/server/index.ts#L67)
+Defined in: [src/middleware/pubsub/server/index.ts:67](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/server/index.ts#L67)
 
 Server adapters namespace for pub-sub stream resumption.
 
@@ -32,10 +32,10 @@ Express/Connect adapter
 
 Stream buffered and live events to an Express response.
 
-This utility handles the reconnection pattern for Express routes:
-1. Replays all buffered events from the adapter
-2. If stream is already completed, ends immediately
-3. Otherwise, subscribes to live events until completion
+Handles reconnection for Express routes:
+1. Replays buffered events from the adapter
+2. Subscribes to live events until completion signal
+3. Ends when stream completes or client disconnects
 
 ##### Parameters
 
@@ -64,11 +64,25 @@ Express response object
 ##### Example
 
 ```typescript
-import { streamSubscriber } from '@providerprotocol/ai/middleware/pubsub/server/express';
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { pubsubMiddleware, memoryAdapter } from '@providerprotocol/ai/middleware/pubsub';
+import { express } from '@providerprotocol/ai/middleware/pubsub/server';
 
-app.post('/api/ai/reconnect', async (req, res) => {
-  const { streamId } = req.body;
-  streamSubscriber(streamId, adapter, res);
+const adapter = memoryAdapter();
+
+app.post('/api/chat', async (req, res) => {
+  const { input, conversationId } = req.body;
+
+  if (!await adapter.exists(conversationId)) {
+    const model = llm({
+      model: anthropic('claude-sonnet-4-20250514'),
+      middleware: [pubsubMiddleware({ adapter, streamId: conversationId })],
+    });
+    model.stream(input).then(turn => saveToDatabase(conversationId, turn));
+  }
+
+  return express.streamSubscriber(conversationId, adapter, res);
 });
 ```
 
@@ -84,10 +98,10 @@ Fastify adapter
 
 Stream buffered and live events to a Fastify reply.
 
-This utility handles the reconnection pattern for Fastify routes:
-1. Replays all buffered events from the adapter
-2. If stream is already completed, ends immediately
-3. Otherwise, subscribes to live events until completion
+Handles reconnection for Fastify routes:
+1. Replays buffered events from the adapter
+2. Subscribes to live events until completion signal
+3. Ends when stream completes or client disconnects
 
 ##### Parameters
 
@@ -116,11 +130,25 @@ Fastify reply object
 ##### Example
 
 ```typescript
-import { streamSubscriber } from '@providerprotocol/ai/middleware/pubsub/server/fastify';
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { pubsubMiddleware, memoryAdapter } from '@providerprotocol/ai/middleware/pubsub';
+import { fastify as pubsubFastify } from '@providerprotocol/ai/middleware/pubsub/server';
 
-app.post('/api/ai/reconnect', async (request, reply) => {
-  const { streamId } = request.body;
-  return streamSubscriber(streamId, adapter, reply);
+const adapter = memoryAdapter();
+
+app.post('/api/chat', async (request, reply) => {
+  const { input, conversationId } = request.body as { input: string; conversationId: string };
+
+  if (!await adapter.exists(conversationId)) {
+    const model = llm({
+      model: anthropic('claude-sonnet-4-20250514'),
+      middleware: [pubsubMiddleware({ adapter, streamId: conversationId })],
+    });
+    model.stream(input).then(turn => saveToDatabase(conversationId, turn));
+  }
+
+  return pubsubFastify.streamSubscriber(conversationId, adapter, reply);
 });
 ```
 
@@ -136,10 +164,10 @@ H3/Nitro/Nuxt adapter
 
 Stream buffered and live events to an H3 event response.
 
-This utility handles the reconnection pattern for H3/Nuxt routes:
-1. Replays all buffered events from the adapter
-2. If stream is already completed, ends immediately
-3. Otherwise, subscribes to live events until completion
+Handles reconnection for H3/Nuxt routes:
+1. Replays buffered events from the adapter
+2. Subscribes to live events until completion signal
+3. Ends when stream completes or client disconnects
 
 ##### Parameters
 
@@ -168,11 +196,25 @@ H3 event object
 ##### Example
 
 ```typescript
-import { streamSubscriber } from '@providerprotocol/ai/middleware/pubsub/server/h3';
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { pubsubMiddleware, memoryAdapter } from '@providerprotocol/ai/middleware/pubsub';
+import { h3 } from '@providerprotocol/ai/middleware/pubsub/server';
+
+const adapter = memoryAdapter();
 
 export default defineEventHandler(async (event) => {
-  const { streamId } = await readBody(event);
-  return streamSubscriber(streamId, adapter, event);
+  const { input, conversationId } = await readBody(event);
+
+  if (!await adapter.exists(conversationId)) {
+    const model = llm({
+      model: anthropic('claude-sonnet-4-20250514'),
+      middleware: [pubsubMiddleware({ adapter, streamId: conversationId })],
+    });
+    model.stream(input).then(turn => saveToDatabase(conversationId, turn));
+  }
+
+  return h3.streamSubscriber(conversationId, adapter, event);
 });
 ```
 
@@ -188,12 +230,10 @@ Web API adapter (Bun, Deno, Next.js, Workers)
 
 Creates a ReadableStream that replays buffered events and subscribes to live events.
 
-This utility handles the reconnection pattern for server routes:
-1. Replays all buffered events from the adapter
-2. If stream is already completed, closes immediately
-3. Otherwise, subscribes to live events until completion
-
-Works with any framework that supports web standard ReadableStream.
+Handles reconnection for Web API frameworks (Bun, Deno, Next.js, Cloudflare Workers):
+1. Replays buffered events from the adapter
+2. Subscribes to live events until completion signal
+3. Closes when stream completes or client disconnects
 
 ##### Parameters
 
@@ -218,17 +258,29 @@ A ReadableStream of SSE-formatted data
 ##### Example
 
 ```typescript
-import { createSubscriberStream } from '@providerprotocol/ai/middleware/pubsub/server/webapi';
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { pubsubMiddleware, memoryAdapter } from '@providerprotocol/ai/middleware/pubsub';
+import { webapi } from '@providerprotocol/ai/middleware/pubsub/server';
 
-// Next.js App Router
+const adapter = memoryAdapter();
+
+// Next.js App Router / Bun.serve / Deno.serve
 export async function POST(req: Request) {
-  const { streamId } = await req.json();
+  const { input, conversationId } = await req.json();
 
-  return new Response(createSubscriberStream(streamId, adapter), {
+  if (!await adapter.exists(conversationId)) {
+    const model = llm({
+      model: anthropic('claude-sonnet-4-20250514'),
+      middleware: [pubsubMiddleware({ adapter, streamId: conversationId })],
+    });
+    model.stream(input).then(turn => saveToDatabase(conversationId, turn));
+  }
+
+  return new Response(webapi.createSubscriberStream(conversationId, adapter), {
     headers: {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
     },
   });
 }

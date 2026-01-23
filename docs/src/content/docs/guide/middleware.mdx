@@ -131,7 +131,7 @@ for await (const event of stream) {
 
 ### Pub-Sub Middleware (Stream Resumption)
 
-Enable reconnecting clients to catch up on missed events during active generation. The middleware buffers events and publishes them to subscribers.
+Enable reconnecting clients to catch up on missed events during active generation. The middleware buffers events and publishes them to subscribers. Streams are created lazily on first use.
 
 ```typescript
 import { llm } from '@providerprotocol/ai';
@@ -147,7 +147,6 @@ const instance = llm({
     pubsubMiddleware({
       adapter,
       streamId: 'unique-stream-id',  // Client-provided ID for reconnection
-      ttl: 600_000,  // 10 minutes (default)
     }),
   ],
 });
@@ -155,7 +154,7 @@ const instance = llm({
 
 #### Server-Side: Handling Reconnections
 
-The middleware buffers events and server routes handle reconnection logic.
+The middleware buffers events and server routes handle reconnection logic. Use the fire-and-forget pattern with `.then()` to save completed turns without blocking the response.
 
 <Tabs>
   <TabItem label="Web API">
@@ -171,21 +170,17 @@ Bun.serve({
   port: 3000,
   async fetch(req: Request) {
     const { messages, streamId } = await req.json();
-    const exists = await adapter.exists(streamId);
 
-    if (!exists) {
-      // Start background generation (fire and forget)
+    if (!await adapter.exists(streamId)) {
+      // Fire-and-forget: start generation and save when complete
       const model = llm({
         model: anthropic('claude-sonnet-4-20250514'),
         middleware: [pubsubMiddleware({ adapter, streamId })],
       });
-      // Consume stream in background - don't await
-      (async () => {
-        for await (const _ of model.stream(messages)) { /* events buffered */ }
-      })();
+      model.stream(messages).then(turn => saveToDatabase(streamId, turn));
     }
 
-    // Both new and reconnect: subscribe to events
+    // Both new and reconnecting clients subscribe to events
     return new Response(webapi.createSubscriberStream(streamId, adapter), {
       headers: { 'Content-Type': 'text/event-stream' },
     });
@@ -204,16 +199,13 @@ const adapter = memoryAdapter();
 
 app.post('/api/ai', async (req, res) => {
   const { messages, streamId } = req.body;
-  const exists = await adapter.exists(streamId);
 
-  if (!exists) {
+  if (!await adapter.exists(streamId)) {
     const model = llm({
       model: anthropic('claude-sonnet-4-20250514'),
       middleware: [pubsubMiddleware({ adapter, streamId })],
     });
-    (async () => {
-      for await (const _ of model.stream(messages)) {}
-    })();
+    model.stream(messages).then(turn => saveToDatabase(streamId, turn));
   }
 
   express.streamSubscriber(streamId, adapter, res);
@@ -231,16 +223,13 @@ const adapter = memoryAdapter();
 
 app.post('/api/ai', async (request, reply) => {
   const { messages, streamId } = request.body;
-  const exists = await adapter.exists(streamId);
 
-  if (!exists) {
+  if (!await adapter.exists(streamId)) {
     const model = llm({
       model: anthropic('claude-sonnet-4-20250514'),
       middleware: [pubsubMiddleware({ adapter, streamId })],
     });
-    (async () => {
-      for await (const _ of model.stream(messages)) {}
-    })();
+    model.stream(messages).then(turn => saveToDatabase(streamId, turn));
   }
 
   return fastify.streamSubscriber(streamId, adapter, reply);
@@ -259,16 +248,13 @@ const adapter = memoryAdapter();
 
 export default defineEventHandler(async (event) => {
   const { messages, streamId } = await readBody(event);
-  const exists = await adapter.exists(streamId);
 
-  if (!exists) {
+  if (!await adapter.exists(streamId)) {
     const model = llm({
       model: anthropic('claude-sonnet-4-20250514'),
       middleware: [pubsubMiddleware({ adapter, streamId })],
     });
-    (async () => {
-      for await (const _ of model.stream(messages)) {}
-    })();
+    model.stream(messages).then(turn => saveToDatabase(streamId, turn));
   }
 
   return h3.streamSubscriber(streamId, adapter, event);
@@ -279,25 +265,27 @@ export default defineEventHandler(async (event) => {
 
 #### Custom Storage Adapters
 
-Implement `PubSubAdapter` for custom backends (Redis, etc.):
+Implement `PubSubAdapter` for custom backends (Redis, etc.). Streams are created lazily on first `append()` or `subscribe()` call.
 
 ```typescript
-import type { PubSubAdapter } from '@providerprotocol/ai/middleware/pubsub';
+import type { PubSubAdapter, SubscriptionCallback, CompletionCallback } from '@providerprotocol/ai/middleware/pubsub';
 
 const redisAdapter: PubSubAdapter = {
-  async exists(streamId) { /* check Redis */ },
-  async create(streamId, metadata) { /* store in Redis */ },
-  async append(streamId, event) { /* append event */ },
-  async markCompleted(streamId) { /* mark done */ },
-  async isCompleted(streamId) { /* check completion */ },
-  async getEvents(streamId) { /* fetch all events */ },
-  async getStream(streamId) { /* get metadata */ },
-  subscribe(streamId, callback) { /* Redis pub/sub */ },
-  publish(streamId, event) { /* broadcast event */ },
-  async remove(streamId) { /* cleanup */ },
-  async cleanup(maxAge) { /* remove old streams */ },
+  async exists(streamId) { /* check if stream exists */ },
+  async append(streamId, event) { /* append event (create stream if needed) */ },
+  async getEvents(streamId) { /* return events array ([] if not found) */ },
+  subscribe(streamId, onEvent: SubscriptionCallback, onComplete: CompletionCallback) {
+    /* subscribe to events; call onComplete when stream ends */
+    return () => { /* unsubscribe */ };
+  },
+  publish(streamId, event) { /* broadcast event to subscribers */ },
+  async remove(streamId) { /* notify onComplete callbacks, then delete */ },
 };
 ```
+
+<Aside type="note">
+The `remove()` method must notify all subscribers via their `onComplete` callback before deleting the stream. This signals clients to close their connections gracefully.
+</Aside>
 
 ## Request Transformation
 

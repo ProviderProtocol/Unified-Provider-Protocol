@@ -10,7 +10,7 @@ title: "Interface: ResponsesBuiltInTool"
 
 # Interface: ResponsesBuiltInTool
 
-Defined in: [src/providers/responses/types.ts:379](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L379)
+Defined in: [src/providers/responses/types.ts:379](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/responses/types.ts#L379)
 
 Built-in tool placeholder for provider-specific tools.
 Providers implementing OpenResponses may add their own built-in tools.
@@ -25,4 +25,4 @@ Providers implementing OpenResponses may add their own built-in tools.
 
 > **type**: `string`
 
-Defined in: [src/providers/responses/types.ts:380](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/responses/types.ts#L380)
+Defined in: [src/providers/responses/types.ts:380](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/responses/types.ts#L380)

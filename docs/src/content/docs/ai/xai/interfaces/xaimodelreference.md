@@ -10,7 +10,7 @@ title: "Interface: XAIModelReference"
 
 # Interface: XAIModelReference
 
-Defined in: [src/providers/xai/types.ts:251](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/xai/types.ts#L251)
+Defined in: [src/providers/xai/types.ts:251](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/xai/types.ts#L251)
 
 A reference to an xAI model with optional configuration.
 
@@ -20,7 +20,7 @@ A reference to an xAI model with optional configuration.
 
 > **modelId**: `string`
 
-Defined in: [src/providers/xai/types.ts:253](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/xai/types.ts#L253)
+Defined in: [src/providers/xai/types.ts:253](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/xai/types.ts#L253)
 
 The xAI model identifier (e.g., 'grok-4', 'grok-3-mini')
 
@@ -30,6 +30,6 @@ The xAI model identifier (e.g., 'grok-4', 'grok-3-mini')
 
 > `optional` **options**: [`XAIModelOptions`](xaimodeloptions.md)
 
-Defined in: [src/providers/xai/types.ts:255](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/xai/types.ts#L255)
+Defined in: [src/providers/xai/types.ts:255](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/xai/types.ts#L255)
 
 Optional model-specific options

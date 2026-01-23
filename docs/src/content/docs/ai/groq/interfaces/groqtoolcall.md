@@ -10,7 +10,7 @@ title: "Interface: GroqToolCall"
 
 # Interface: GroqToolCall
 
-Defined in: [src/providers/groq/types.ts:217](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L217)
+Defined in: [src/providers/groq/types.ts:217](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L217)
 
 Tool call structure in assistant messages.
 
@@ -20,7 +20,7 @@ Tool call structure in assistant messages.
 
 > **function**: `object`
 
-Defined in: [src/providers/groq/types.ts:220](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L220)
+Defined in: [src/providers/groq/types.ts:220](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L220)
 
 #### arguments
 
@@ -36,7 +36,7 @@ Defined in: [src/providers/groq/types.ts:220](https://github.com/ProviderProtoco
 
 > **id**: `string`
 
-Defined in: [src/providers/groq/types.ts:218](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L218)
+Defined in: [src/providers/groq/types.ts:218](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L218)
 
 ***
 
@@ -44,4 +44,4 @@ Defined in: [src/providers/groq/types.ts:218](https://github.com/ProviderProtoco
 
 > **type**: `"function"`
 
-Defined in: [src/providers/groq/types.ts:219](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L219)
+Defined in: [src/providers/groq/types.ts:219](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L219)

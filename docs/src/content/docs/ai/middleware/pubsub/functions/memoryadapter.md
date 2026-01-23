@@ -12,12 +12,12 @@ title: "Function: memoryAdapter()"
 
 > **memoryAdapter**(`options`): [`PubSubAdapter`](../interfaces/pubsubadapter.md)
 
-Defined in: [src/middleware/pubsub/memory-adapter.ts:56](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/memory-adapter.ts#L56)
+Defined in: [src/middleware/pubsub/memory-adapter.ts:52](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/memory-adapter.ts#L52)
 
 Creates an in-memory storage adapter for pub-sub middleware.
 
-Stores streams in a Map with LRU eviction when maxStreams is reached.
-All methods return promises for interface compatibility with async backends.
+Stores streams in a Map. Throws when maxStreams is exceeded.
+Streams are created lazily on first append or subscribe.
 
 ## Parameters
 
@@ -38,7 +38,5 @@ A PubSubAdapter instance
 ```typescript
 import { pubsubMiddleware, memoryAdapter } from '@providerprotocol/ai/middleware/pubsub';
 
-const mw = pubsubMiddleware({
-  adapter: memoryAdapter({ maxStreams: 500 }),
-});
+const adapter = memoryAdapter({ maxStreams: 500 });
 ```

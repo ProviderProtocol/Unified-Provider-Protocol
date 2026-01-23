@@ -10,12 +10,13 @@ title: "Interface: StreamResult"
 
 # Interface: StreamResult\<TData\>
 
-Defined in: [src/types/stream.ts:169](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/stream.ts#L169)
+Defined in: [src/types/stream.ts:173](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/stream.ts#L173)
 
 Stream result - an async iterable that also provides the final turn.
 
 Allows consuming streaming events while also awaiting the complete
-Turn result after streaming finishes.
+Turn result after streaming finishes. Implements `PromiseLike<Turn>`
+for direct awaiting with automatic stream consumption.
 
 ## Example
 
@@ -24,21 +25,24 @@ import { StreamEventType } from 'upp';
 
 const stream = instance.stream('Tell me a story');
 
-// Consume streaming events
+// Option 1: Consume streaming events manually
 for await (const event of stream) {
   if (event.type === StreamEventType.TextDelta) {
     process.stdout.write(event.delta.text ?? '');
   }
 }
-
-// Get the complete turn after streaming
 const turn = await stream.turn;
-console.log('\n\nTokens used:', turn.usage.totalTokens);
+
+// Option 2: Just await the turn (auto-drains the stream)
+const turn = await instance.stream('Tell me a story');
+
+// Option 3: Fire-and-forget with callback
+instance.stream('Tell me a story').then(turn => saveToDB(turn));
 ```
 
 ## Extends
 
-- `AsyncIterable`\<[`StreamEvent`](streamevent.md)\>
+- `AsyncIterable`\<[`StreamEvent`](streamevent.md)\>.`PromiseLike`\<[`Turn`](turn.md)\<`TData`\>\>
 
 ## Type Parameters
 
@@ -54,7 +58,7 @@ Type of the structured output data
 
 > `readonly` **turn**: `Promise`\<[`Turn`](turn.md)\<`TData`\>\>
 
-Defined in: [src/types/stream.ts:175](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/stream.ts#L175)
+Defined in: [src/types/stream.ts:179](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/stream.ts#L179)
 
 Promise that resolves to the complete Turn after streaming finishes.
 Rejects if the stream is aborted or terminated early.
@@ -81,7 +85,7 @@ Defined in: node\_modules/typescript/lib/lib.es2018.asynciterable.d.ts:38
 
 > **abort**(): `void`
 
-Defined in: [src/types/stream.ts:181](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/stream.ts#L181)
+Defined in: [src/types/stream.ts:185](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/stream.ts#L185)
 
 Aborts the stream, stopping further events and cancelling the request.
 This will cause [StreamResult.turn](#turn) to reject.
@@ -89,3 +93,47 @@ This will cause [StreamResult.turn](#turn) to reject.
 #### Returns
 
 `void`
+
+***
+
+### then()
+
+> **then**\<`TResult1`, `TResult2`\>(`onfulfilled?`, `onrejected?`): `PromiseLike`\<`TResult1` \| `TResult2`\>
+
+Defined in: node\_modules/typescript/lib/lib.es5.d.ts:1544
+
+Attaches callbacks for the resolution and/or rejection of the Promise.
+
+#### Type Parameters
+
+##### TResult1
+
+`TResult1` = [`Turn`](turn.md)\<`TData`\>
+
+##### TResult2
+
+`TResult2` = `never`
+
+#### Parameters
+
+##### onfulfilled?
+
+The callback to execute when the Promise is resolved.
+
+(`value`) => `TResult1` \| `PromiseLike`\<`TResult1`\> | `null`
+
+##### onrejected?
+
+The callback to execute when the Promise is rejected.
+
+(`reason`) => `TResult2` \| `PromiseLike`\<`TResult2`\> | `null`
+
+#### Returns
+
+`PromiseLike`\<`TResult1` \| `TResult2`\>
+
+A Promise for the completion of which ever callback is executed.
+
+#### Inherited from
+
+`PromiseLike.then`

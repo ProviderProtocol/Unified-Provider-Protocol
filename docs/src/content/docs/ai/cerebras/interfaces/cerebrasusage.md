@@ -10,7 +10,7 @@ title: "Interface: CerebrasUsage"
 
 # Interface: CerebrasUsage
 
-Defined in: [src/providers/cerebras/types.ts:265](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L265)
+Defined in: [src/providers/cerebras/types.ts:265](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/cerebras/types.ts#L265)
 
 Token usage statistics from the API response
 
@@ -20,7 +20,7 @@ Token usage statistics from the API response
 
 > **completion\_tokens**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:267](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L267)
+Defined in: [src/providers/cerebras/types.ts:267](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/cerebras/types.ts#L267)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/providers/cerebras/types.ts:267](https://github.com/ProviderPro
 
 > `optional` **completion\_tokens\_details**: `object`
 
-Defined in: [src/providers/cerebras/types.ts:272](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L272)
+Defined in: [src/providers/cerebras/types.ts:272](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/cerebras/types.ts#L272)
 
 #### accepted\_prediction\_tokens?
 
@@ -44,7 +44,7 @@ Defined in: [src/providers/cerebras/types.ts:272](https://github.com/ProviderPro
 
 > **prompt\_tokens**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:266](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L266)
+Defined in: [src/providers/cerebras/types.ts:266](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/cerebras/types.ts#L266)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [src/providers/cerebras/types.ts:266](https://github.com/ProviderPro
 
 > `optional` **prompt\_tokens\_details**: `object`
 
-Defined in: [src/providers/cerebras/types.ts:269](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L269)
+Defined in: [src/providers/cerebras/types.ts:269](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/cerebras/types.ts#L269)
 
 #### cached\_tokens?
 
@@ -64,4 +64,4 @@ Defined in: [src/providers/cerebras/types.ts:269](https://github.com/ProviderPro
 
 > **total\_tokens**: `number`
 
-Defined in: [src/providers/cerebras/types.ts:268](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L268)
+Defined in: [src/providers/cerebras/types.ts:268](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/cerebras/types.ts#L268)

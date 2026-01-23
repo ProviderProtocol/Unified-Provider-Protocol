@@ -12,7 +12,7 @@ title: "Variable: express"
 
 > `const` **express**: `object`
 
-Defined in: [src/middleware/pubsub/server/express.ts:71](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/middleware/pubsub/server/express.ts#L71)
+Defined in: [src/middleware/pubsub/server/express.ts:85](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/server/express.ts#L85)
 
 Express adapter namespace for pub-sub server utilities.
 
@@ -24,10 +24,10 @@ Express adapter namespace for pub-sub server utilities.
 
 Stream buffered and live events to an Express response.
 
-This utility handles the reconnection pattern for Express routes:
-1. Replays all buffered events from the adapter
-2. If stream is already completed, ends immediately
-3. Otherwise, subscribes to live events until completion
+Handles reconnection for Express routes:
+1. Replays buffered events from the adapter
+2. Subscribes to live events until completion signal
+3. Ends when stream completes or client disconnects
 
 #### Parameters
 
@@ -56,10 +56,24 @@ Express response object
 #### Example
 
 ```typescript
-import { streamSubscriber } from '@providerprotocol/ai/middleware/pubsub/server/express';
+import { llm } from '@providerprotocol/ai';
+import { anthropic } from '@providerprotocol/ai/anthropic';
+import { pubsubMiddleware, memoryAdapter } from '@providerprotocol/ai/middleware/pubsub';
+import { express } from '@providerprotocol/ai/middleware/pubsub/server';
 
-app.post('/api/ai/reconnect', async (req, res) => {
-  const { streamId } = req.body;
-  streamSubscriber(streamId, adapter, res);
+const adapter = memoryAdapter();
+
+app.post('/api/chat', async (req, res) => {
+  const { input, conversationId } = req.body;
+
+  if (!await adapter.exists(conversationId)) {
+    const model = llm({
+      model: anthropic('claude-sonnet-4-20250514'),
+      middleware: [pubsubMiddleware({ adapter, streamId: conversationId })],
+    });
+    model.stream(input).then(turn => saveToDatabase(conversationId, turn));
+  }
+
+  return express.streamSubscriber(conversationId, adapter, res);
 });
 ```

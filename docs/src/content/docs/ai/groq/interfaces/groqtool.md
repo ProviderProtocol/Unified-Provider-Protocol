@@ -10,7 +10,7 @@ title: "Interface: GroqTool"
 
 # Interface: GroqTool
 
-Defined in: [src/providers/groq/types.ts:229](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L229)
+Defined in: [src/providers/groq/types.ts:229](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L229)
 
 Tool definition for the Groq API.
 
@@ -20,7 +20,7 @@ Tool definition for the Groq API.
 
 > **function**: `object`
 
-Defined in: [src/providers/groq/types.ts:231](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L231)
+Defined in: [src/providers/groq/types.ts:231](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L231)
 
 #### description
 
@@ -60,4 +60,4 @@ Defined in: [src/providers/groq/types.ts:231](https://github.com/ProviderProtoco
 
 > **type**: `"function"`
 
-Defined in: [src/providers/groq/types.ts:230](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/groq/types.ts#L230)
+Defined in: [src/providers/groq/types.ts:230](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L230)

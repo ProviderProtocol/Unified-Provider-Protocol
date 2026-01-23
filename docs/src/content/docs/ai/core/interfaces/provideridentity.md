@@ -10,7 +10,7 @@ title: "Interface: ProviderIdentity"
 
 # Interface: ProviderIdentity
 
-Defined in: [src/types/provider.ts:96](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/provider.ts#L96)
+Defined in: [src/types/provider.ts:96](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L96)
 
 Provider identity shape for structural typing.
 
@@ -27,7 +27,7 @@ without generic variance constraints.
 
 > `readonly` **name**: `string`
 
-Defined in: [src/types/provider.ts:98](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/provider.ts#L98)
+Defined in: [src/types/provider.ts:98](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L98)
 
 Provider name (e.g., 'openai', 'anthropic')
 
@@ -37,6 +37,6 @@ Provider name (e.g., 'openai', 'anthropic')
 
 > `readonly` **version**: `string`
 
-Defined in: [src/types/provider.ts:101](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/provider.ts#L101)
+Defined in: [src/types/provider.ts:101](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L101)
 
 Provider version string

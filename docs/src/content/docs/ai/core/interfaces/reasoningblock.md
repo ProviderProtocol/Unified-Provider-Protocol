@@ -10,7 +10,7 @@ title: "Interface: ReasoningBlock"
 
 # Interface: ReasoningBlock
 
-Defined in: [src/types/content.ts:210](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/content.ts#L210)
+Defined in: [src/types/content.ts:210](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/content.ts#L210)
 
 Reasoning content block.
 
@@ -32,7 +32,7 @@ const reasoningBlock: ReasoningBlock = {
 
 > **text**: `string`
 
-Defined in: [src/types/content.ts:215](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/content.ts#L215)
+Defined in: [src/types/content.ts:215](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/content.ts#L215)
 
 The reasoning/thinking text
 
@@ -42,6 +42,6 @@ The reasoning/thinking text
 
 > **type**: `"reasoning"`
 
-Defined in: [src/types/content.ts:212](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/content.ts#L212)
+Defined in: [src/types/content.ts:212](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/content.ts#L212)
 
 Discriminator for reasoning blocks

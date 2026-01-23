@@ -10,7 +10,7 @@ title: "Interface: EmbeddingOptions"
 
 # Interface: EmbeddingOptions\<TParams\>
 
-Defined in: [src/types/embedding.ts:63](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/embedding.ts#L63)
+Defined in: [src/types/embedding.ts:63](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L63)
 
 Options for creating an embedding instance with the embedding() function.
 
@@ -38,7 +38,7 @@ Provider-specific parameter type
 
 > `optional` **config**: [`ProviderConfig`](providerconfig.md)
 
-Defined in: [src/types/embedding.ts:68](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/embedding.ts#L68)
+Defined in: [src/types/embedding.ts:68](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L68)
 
 Provider infrastructure configuration
 
@@ -48,7 +48,7 @@ Provider infrastructure configuration
 
 > `optional` **middleware**: [`Middleware`](middleware.md)[]
 
-Defined in: [src/types/embedding.ts:79](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/embedding.ts#L79)
+Defined in: [src/types/embedding.ts:79](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L79)
 
 Middleware for intercepting and transforming requests and responses.
 
@@ -61,7 +61,7 @@ and reverse order for response/end hooks.
 
 > **model**: [`EmbeddingModelInput`](embeddingmodelinput.md)
 
-Defined in: [src/types/embedding.ts:65](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/embedding.ts#L65)
+Defined in: [src/types/embedding.ts:65](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L65)
 
 A model reference from a provider factory
 
@@ -71,6 +71,6 @@ A model reference from a provider factory
 
 > `optional` **params**: `TParams`
 
-Defined in: [src/types/embedding.ts:71](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/embedding.ts#L71)
+Defined in: [src/types/embedding.ts:71](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L71)
 
 Provider-specific parameters (passed through unchanged)

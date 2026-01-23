@@ -10,7 +10,7 @@ title: "Interface: CerebrasToolCall"
 
 # Interface: CerebrasToolCall
 
-Defined in: [src/providers/cerebras/types.ts:199](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L199)
+Defined in: [src/providers/cerebras/types.ts:199](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/cerebras/types.ts#L199)
 
 Tool call structure in assistant messages.
 
@@ -20,7 +20,7 @@ Tool call structure in assistant messages.
 
 > **function**: `object`
 
-Defined in: [src/providers/cerebras/types.ts:202](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L202)
+Defined in: [src/providers/cerebras/types.ts:202](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/cerebras/types.ts#L202)
 
 #### arguments
 
@@ -36,7 +36,7 @@ Defined in: [src/providers/cerebras/types.ts:202](https://github.com/ProviderPro
 
 > **id**: `string`
 
-Defined in: [src/providers/cerebras/types.ts:200](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L200)
+Defined in: [src/providers/cerebras/types.ts:200](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/cerebras/types.ts#L200)
 
 ***
 
@@ -44,4 +44,4 @@ Defined in: [src/providers/cerebras/types.ts:200](https://github.com/ProviderPro
 
 > **type**: `"function"`
 
-Defined in: [src/providers/cerebras/types.ts:201](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/cerebras/types.ts#L201)
+Defined in: [src/providers/cerebras/types.ts:201](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/cerebras/types.ts#L201)

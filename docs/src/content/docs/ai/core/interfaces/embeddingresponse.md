@@ -10,7 +10,7 @@ title: "Interface: EmbeddingResponse"
 
 # Interface: EmbeddingResponse
 
-Defined in: [src/types/provider.ts:352](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/provider.ts#L352)
+Defined in: [src/types/provider.ts:352](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L352)
 
 **`Internal`**
 
@@ -22,7 +22,7 @@ Response from provider's embed method.
 
 > **embeddings**: [`EmbeddingVector`](embeddingvector.md)[]
 
-Defined in: [src/types/provider.ts:354](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/provider.ts#L354)
+Defined in: [src/types/provider.ts:354](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L354)
 
 Embedding vectors
 
@@ -32,7 +32,7 @@ Embedding vectors
 
 > `optional` **metadata**: `Record`\<`string`, `unknown`\>
 
-Defined in: [src/types/provider.ts:358](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/provider.ts#L358)
+Defined in: [src/types/provider.ts:358](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L358)
 
 Provider-specific response metadata
 
@@ -42,6 +42,6 @@ Provider-specific response metadata
 
 > **usage**: [`EmbeddingUsage`](embeddingusage.md)
 
-Defined in: [src/types/provider.ts:356](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/types/provider.ts#L356)
+Defined in: [src/types/provider.ts:356](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L356)
 
 Aggregate usage

@@ -10,7 +10,7 @@ title: "Interface: GoogleGroundingMetadata"
 
 # Interface: GoogleGroundingMetadata
 
-Defined in: [src/providers/google/types.ts:791](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/google/types.ts#L791)
+Defined in: [src/providers/google/types.ts:791](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/google/types.ts#L791)
 
 Grounding metadata returned with search/maps results.
 
@@ -20,7 +20,7 @@ Grounding metadata returned with search/maps results.
 
 > `optional` **googleMapsWidgetContextToken**: `string`
 
-Defined in: [src/providers/google/types.ts:821](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/google/types.ts#L821)
+Defined in: [src/providers/google/types.ts:821](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/google/types.ts#L821)
 
 Google Maps widget context token
 
@@ -30,7 +30,7 @@ Google Maps widget context token
 
 > `optional` **groundingChunks**: `object`[]
 
-Defined in: [src/providers/google/types.ts:799](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/google/types.ts#L799)
+Defined in: [src/providers/google/types.ts:799](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/google/types.ts#L799)
 
 Grounding chunks (sources)
 
@@ -68,7 +68,7 @@ Grounding chunks (sources)
 
 > `optional` **groundingSupports**: `object`[]
 
-Defined in: [src/providers/google/types.ts:811](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/google/types.ts#L811)
+Defined in: [src/providers/google/types.ts:811](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/google/types.ts#L811)
 
 Grounding supports (citations)
 
@@ -102,7 +102,7 @@ Grounding supports (citations)
 
 > `optional` **searchEntryPoint**: `object`
 
-Defined in: [src/providers/google/types.ts:795](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/google/types.ts#L795)
+Defined in: [src/providers/google/types.ts:795](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/google/types.ts#L795)
 
 Search entry point with rendered HTML
 
@@ -116,6 +116,6 @@ Search entry point with rendered HTML
 
 > `optional` **webSearchQueries**: `string`[]
 
-Defined in: [src/providers/google/types.ts:793](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/providers/google/types.ts#L793)
+Defined in: [src/providers/google/types.ts:793](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/google/types.ts#L793)
 
 Web search queries executed

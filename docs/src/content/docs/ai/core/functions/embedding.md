@@ -12,7 +12,7 @@ title: "Function: embedding()"
 
 > **embedding**\<`TParams`\>(`options`): [`EmbeddingInstance`](../interfaces/embeddinginstance.md)\<`TParams`\>
 
-Defined in: [src/core/embedding.ts:370](https://github.com/ProviderProtocol/ai/blob/a69934fc726a09868abc2d9bf66b6a1c46d1e64d/src/core/embedding.ts#L370)
+Defined in: [src/core/embedding.ts:370](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/embedding.ts#L370)
 
 Creates an embedding instance configured with the specified options.
 
