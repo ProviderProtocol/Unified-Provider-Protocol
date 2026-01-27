@@ -12,7 +12,7 @@ title: "Variable: fastify"
 
 > `const` **fastify**: `object`
 
-Defined in: [src/middleware/pubsub/server/fastify.ts:87](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/server/fastify.ts#L87)
+Defined in: [src/middleware/pubsub/server/fastify.ts:87](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/server/fastify.ts#L87)
 
 Fastify adapter namespace for pub-sub server utilities.
 

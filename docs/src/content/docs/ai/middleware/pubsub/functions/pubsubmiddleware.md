@@ -12,7 +12,7 @@ title: "Function: pubsubMiddleware()"
 
 > **pubsubMiddleware**(`options`): [`Middleware`](../../../core/interfaces/middleware.md)
 
-Defined in: [src/middleware/pubsub/index.ts:96](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/index.ts#L96)
+Defined in: [src/middleware/pubsub/index.ts:96](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/index.ts#L96)
 
 Creates pub-sub middleware for stream buffering and publishing.
 

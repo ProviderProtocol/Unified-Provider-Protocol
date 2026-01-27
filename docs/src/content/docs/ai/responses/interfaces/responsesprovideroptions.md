@@ -10,7 +10,7 @@ title: "Interface: ResponsesProviderOptions"
 
 # Interface: ResponsesProviderOptions
 
-Defined in: [src/providers/responses/types.ts:41](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/responses/types.ts#L41)
+Defined in: [src/providers/responses/types.ts:41](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/responses/types.ts#L41)
 
 Configuration options for creating an OpenResponses model reference.
 
@@ -39,7 +39,7 @@ const model = responses('llama-3.3-70b', {
 
 > `optional` **apiKeyEnv**: `string`
 
-Defined in: [src/providers/responses/types.ts:59](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/responses/types.ts#L59)
+Defined in: [src/providers/responses/types.ts:59](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/responses/types.ts#L59)
 
 Environment variable name containing the API key.
 Defaults to 'OPENRESPONSES_API_KEY'.
@@ -60,7 +60,7 @@ Defaults to 'OPENRESPONSES_API_KEY'.
 
 > **host**: `string`
 
-Defined in: [src/providers/responses/types.ts:50](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/responses/types.ts#L50)
+Defined in: [src/providers/responses/types.ts:50](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/responses/types.ts#L50)
 
 The base URL for the OpenResponses-compatible API.
 The `/responses` endpoint will be appended to this URL.

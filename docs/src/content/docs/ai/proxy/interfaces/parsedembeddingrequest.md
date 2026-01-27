@@ -10,7 +10,7 @@ title: "Interface: ParsedEmbeddingRequest"
 
 # Interface: ParsedEmbeddingRequest
 
-Defined in: [src/providers/proxy/server/webapi.ts:58](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/proxy/server/webapi.ts#L58)
+Defined in: [src/providers/proxy/server/webapi.ts:58](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/proxy/server/webapi.ts#L58)
 
 Parsed request body for embedding endpoints.
 
@@ -20,7 +20,7 @@ Parsed request body for embedding endpoints.
 
 > **inputs**: [`EmbeddingInput`](../../core/type-aliases/embeddinginput.md)[]
 
-Defined in: [src/providers/proxy/server/webapi.ts:59](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/proxy/server/webapi.ts#L59)
+Defined in: [src/providers/proxy/server/webapi.ts:59](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/proxy/server/webapi.ts#L59)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/providers/proxy/server/webapi.ts:59](https://github.com/Provide
 
 > `optional` **model**: `string`
 
-Defined in: [src/providers/proxy/server/webapi.ts:61](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/proxy/server/webapi.ts#L61)
+Defined in: [src/providers/proxy/server/webapi.ts:61](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/proxy/server/webapi.ts#L61)
 
 ***
 
@@ -36,4 +36,4 @@ Defined in: [src/providers/proxy/server/webapi.ts:61](https://github.com/Provide
 
 > `optional` **params**: `Record`\<`string`, `unknown`\>
 
-Defined in: [src/providers/proxy/server/webapi.ts:60](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/proxy/server/webapi.ts#L60)
+Defined in: [src/providers/proxy/server/webapi.ts:60](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/proxy/server/webapi.ts#L60)

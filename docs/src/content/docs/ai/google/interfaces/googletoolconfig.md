@@ -10,7 +10,7 @@ title: "Interface: GoogleToolConfig"
 
 # Interface: GoogleToolConfig
 
-Defined in: [src/providers/google/types.ts:775](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/google/types.ts#L775)
+Defined in: [src/providers/google/types.ts:775](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/google/types.ts#L775)
 
 Tool configuration for retrieval (e.g., user location for Maps).
 
@@ -20,7 +20,7 @@ Tool configuration for retrieval (e.g., user location for Maps).
 
 > `optional` **retrievalConfig**: `object`
 
-Defined in: [src/providers/google/types.ts:777](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/google/types.ts#L777)
+Defined in: [src/providers/google/types.ts:777](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/google/types.ts#L777)
 
 Retrieval configuration
 

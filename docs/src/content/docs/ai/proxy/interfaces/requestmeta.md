@@ -10,7 +10,7 @@ title: "Interface: RequestMeta"
 
 # Interface: RequestMeta
 
-Defined in: [src/providers/proxy/server/types.ts:42](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/proxy/server/types.ts#L42)
+Defined in: [src/providers/proxy/server/types.ts:42](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/proxy/server/types.ts#L42)
 
 Metadata about the incoming request.
 
@@ -20,7 +20,7 @@ Metadata about the incoming request.
 
 > **headers**: `Record`\<`string`, `string` \| `undefined`\>
 
-Defined in: [src/providers/proxy/server/types.ts:46](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/proxy/server/types.ts#L46)
+Defined in: [src/providers/proxy/server/types.ts:46](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/proxy/server/types.ts#L46)
 
 Raw headers from the request
 
@@ -30,6 +30,6 @@ Raw headers from the request
 
 > **wantsStream**: `boolean`
 
-Defined in: [src/providers/proxy/server/types.ts:44](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/proxy/server/types.ts#L44)
+Defined in: [src/providers/proxy/server/types.ts:44](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/proxy/server/types.ts#L44)
 
 Whether the client wants a streaming response

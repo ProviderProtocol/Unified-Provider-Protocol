@@ -10,7 +10,7 @@ title: "Interface: KeyStrategy"
 
 # Interface: KeyStrategy
 
-Defined in: [src/types/provider.ts:38](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L38)
+Defined in: [src/types/provider.ts:38](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/provider.ts#L38)
 
 API key strategy interface for managing multiple keys.
 
@@ -42,7 +42,7 @@ class RoundRobinKeys implements KeyStrategy {
 
 > **getKey**(): `string` \| `Promise`\<`string`\>
 
-Defined in: [src/types/provider.ts:44](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L44)
+Defined in: [src/types/provider.ts:44](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/provider.ts#L44)
 
 Gets the next API key to use for a request.
 

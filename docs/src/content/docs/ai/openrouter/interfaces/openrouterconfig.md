@@ -10,7 +10,7 @@ title: "Interface: OpenRouterConfig"
 
 # Interface: OpenRouterConfig
 
-Defined in: [src/providers/openrouter/types.ts:287](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openrouter/types.ts#L287)
+Defined in: [src/providers/openrouter/types.ts:287](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/openrouter/types.ts#L287)
 
 Configuration for the OpenRouter provider.
 
@@ -20,6 +20,6 @@ Configuration for the OpenRouter provider.
 
 > `optional` **api**: `"responses"` \| `"completions"`
 
-Defined in: [src/providers/openrouter/types.ts:289](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openrouter/types.ts#L289)
+Defined in: [src/providers/openrouter/types.ts:289](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/openrouter/types.ts#L289)
 
 Which API to use: 'completions' (default) or 'responses' (beta).

@@ -12,7 +12,7 @@ title: "Variable: tools"
 
 > `const` **tools**: `object`
 
-Defined in: [src/providers/google/types.ts:960](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/google/types.ts#L960)
+Defined in: [src/providers/google/types.ts:960](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/google/types.ts#L960)
 
 Namespace object containing all Google tool helper constructors.
 

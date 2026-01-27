@@ -12,7 +12,7 @@ title: "Function: createProvider()"
 
 > **createProvider**\<`TOptions`\>(`options`): [`Provider`](../interfaces/provider.md)\<`TOptions`\>
 
-Defined in: [src/core/provider.ts:126](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/core/provider.ts#L126)
+Defined in: [src/core/provider.ts:126](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/core/provider.ts#L126)
 
 Creates a provider factory function with registered modality handlers.
 

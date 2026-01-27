@@ -10,7 +10,7 @@ title: "Interface: Middleware"
 
 # Interface: Middleware
 
-Defined in: [src/types/middleware.ts:138](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L138)
+Defined in: [src/types/middleware.ts:139](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L139)
 
 Middleware interface with optional hooks.
 
@@ -50,7 +50,7 @@ const customMiddleware: Middleware = {
 
 > `readonly` **name**: `string`
 
-Defined in: [src/types/middleware.ts:140](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L140)
+Defined in: [src/types/middleware.ts:141](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L141)
 
 Middleware name for debugging and logging
 
@@ -60,7 +60,7 @@ Middleware name for debugging and logging
 
 > `optional` **onAbort**(`error`, `ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:176](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L176)
+Defined in: [src/types/middleware.ts:177](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L177)
 
 Called when a request is cancelled (for example, when a stream is aborted
 or a client disconnects).
@@ -90,7 +90,7 @@ The middleware context
 
 > `optional` **onEnd**(`ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:157](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L157)
+Defined in: [src/types/middleware.ts:158](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L158)
 
 Called when generate/stream completes successfully.
 Called in reverse middleware order.
@@ -113,9 +113,9 @@ The middleware context with response populated
 
 > `optional` **onError**(`error`, `ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:166](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L166)
+Defined in: [src/types/middleware.ts:167](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L167)
 
-Called on any error during execution.
+Called on non-cancellation errors during execution.
 Called for all middleware that have this hook, regardless of order.
 
 #### Parameters
@@ -142,7 +142,7 @@ The middleware context
 
 > `optional` **onRequest**(`ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:185](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L185)
+Defined in: [src/types/middleware.ts:186](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L186)
 
 Called before provider execution. Can modify the request.
 
@@ -164,7 +164,7 @@ The middleware context with mutable request
 
 > `optional` **onResponse**(`ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:193](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L193)
+Defined in: [src/types/middleware.ts:194](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L194)
 
 Called after provider execution. Can modify the response.
 Called in reverse middleware order.
@@ -187,7 +187,7 @@ The middleware context with mutable response
 
 > `optional` **onStart**(`ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:149](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L149)
+Defined in: [src/types/middleware.ts:150](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L150)
 
 Called when generate/stream starts, before any provider execution.
 
@@ -209,7 +209,7 @@ The middleware context
 
 > `optional` **onStreamEnd**(`ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:216](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L216)
+Defined in: [src/types/middleware.ts:226](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L226)
 
 Called when stream completes, after all events have been processed.
 
@@ -231,7 +231,7 @@ The stream context
 
 > `optional` **onStreamEvent**(`event`, `ctx`): [`StreamEvent`](streamevent.md) \| [`StreamEvent`](streamevent.md)[] \| `null`
 
-Defined in: [src/types/middleware.ts:209](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L209)
+Defined in: [src/types/middleware.ts:219](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L219)
 
 Called for each stream event. Can transform, filter, or expand events.
 
@@ -266,7 +266,7 @@ Transformed event(s) or null to filter
 
 > `optional` **onToolCall**(`tool`, `params`, `ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:227](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L227)
+Defined in: [src/types/middleware.ts:237](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L237)
 
 Called when a tool is about to be executed.
 
@@ -300,7 +300,7 @@ The middleware context
 
 > `optional` **onToolResult**(`tool`, `result`, `ctx`): `void` \| `Promise`\<`void`\>
 
-Defined in: [src/types/middleware.ts:236](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L236)
+Defined in: [src/types/middleware.ts:246](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L246)
 
 Called after tool execution completes.
 
@@ -317,6 +317,35 @@ The tool that was executed
 `unknown`
 
 The result from the tool
+
+##### ctx
+
+[`MiddlewareContext`](middlewarecontext.md)
+
+The middleware context
+
+#### Returns
+
+`void` \| `Promise`\<`void`\>
+
+***
+
+### onTurn()?
+
+> `optional` **onTurn**(`turn`, `ctx`): `void` \| `Promise`\<`void`\>
+
+Defined in: [src/types/middleware.ts:203](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L203)
+
+Called when a complete Turn has been assembled (LLM only).
+Called in reverse middleware order.
+
+#### Parameters
+
+##### turn
+
+[`Turn`](turn.md)
+
+The completed Turn
 
 ##### ctx
 

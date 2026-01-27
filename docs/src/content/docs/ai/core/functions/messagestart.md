@@ -12,7 +12,7 @@ title: "Function: messageStart()"
 
 > **messageStart**(): [`StreamEvent`](../interfaces/streamevent.md)
 
-Defined in: [src/types/stream.ts:325](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/stream.ts#L325)
+Defined in: [src/types/stream.ts:332](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/stream.ts#L332)
 
 Creates a message start stream event.
 

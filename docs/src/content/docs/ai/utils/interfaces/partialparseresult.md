@@ -10,7 +10,7 @@ title: "Interface: PartialParseResult"
 
 # Interface: PartialParseResult\<T\>
 
-Defined in: [src/utils/partial-json.ts:16](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/utils/partial-json.ts#L16)
+Defined in: [src/utils/partial-json.ts:16](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/utils/partial-json.ts#L16)
 
 Result of parsing partial JSON.
 
@@ -28,7 +28,7 @@ The expected type of the parsed value
 
 > **isComplete**: `boolean`
 
-Defined in: [src/utils/partial-json.ts:20](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/utils/partial-json.ts#L20)
+Defined in: [src/utils/partial-json.ts:20](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/utils/partial-json.ts#L20)
 
 Whether the JSON was complete and valid
 
@@ -38,6 +38,6 @@ Whether the JSON was complete and valid
 
 > **value**: `T` \| `undefined`
 
-Defined in: [src/utils/partial-json.ts:18](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/utils/partial-json.ts#L18)
+Defined in: [src/utils/partial-json.ts:18](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/utils/partial-json.ts#L18)
 
 The parsed value, or undefined if parsing failed

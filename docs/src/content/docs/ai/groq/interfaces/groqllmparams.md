@@ -10,7 +10,7 @@ title: "Interface: GroqLLMParams"
 
 # Interface: GroqLLMParams
 
-Defined in: [src/providers/groq/types.ts:25](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L25)
+Defined in: [src/providers/groq/types.ts:25](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L25)
 
 Parameters for the Groq Chat Completions API.
 
@@ -33,7 +33,7 @@ const params: GroqLLMParams = {
 
 > `optional` **citation\_options**: [`GroqCitationOptions`](groqcitationoptions.md)
 
-Defined in: [src/providers/groq/types.ts:81](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L81)
+Defined in: [src/providers/groq/types.ts:81](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L81)
 
 Citation options for document-based responses
 
@@ -43,7 +43,7 @@ Citation options for document-based responses
 
 > `optional` **documents**: [`GroqDocument`](groqdocument.md)[]
 
-Defined in: [src/providers/groq/types.ts:78](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L78)
+Defined in: [src/providers/groq/types.ts:78](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L78)
 
 Documents for RAG (retrieval-augmented generation)
 
@@ -53,7 +53,7 @@ Documents for RAG (retrieval-augmented generation)
 
 > `optional` **frequency\_penalty**: `number`
 
-Defined in: [src/providers/groq/types.ts:42](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L42)
+Defined in: [src/providers/groq/types.ts:42](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L42)
 
 Frequency penalty (-2.0 - 2.0)
 
@@ -63,7 +63,7 @@ Frequency penalty (-2.0 - 2.0)
 
 > `optional` **logprobs**: `boolean`
 
-Defined in: [src/providers/groq/types.ts:63](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L63)
+Defined in: [src/providers/groq/types.ts:63](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L63)
 
 Enable log probabilities output
 
@@ -73,7 +73,7 @@ Enable log probabilities output
 
 > `optional` **max\_completion\_tokens**: `number`
 
-Defined in: [src/providers/groq/types.ts:30](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L30)
+Defined in: [src/providers/groq/types.ts:30](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L30)
 
 Maximum completion tokens (alias for max_tokens)
 
@@ -83,7 +83,7 @@ Maximum completion tokens (alias for max_tokens)
 
 > `optional` **max\_tokens**: `number`
 
-Defined in: [src/providers/groq/types.ts:27](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L27)
+Defined in: [src/providers/groq/types.ts:27](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L27)
 
 Maximum number of tokens to generate
 
@@ -93,7 +93,7 @@ Maximum number of tokens to generate
 
 > `optional` **parallel\_tool\_calls**: `boolean`
 
-Defined in: [src/providers/groq/types.ts:48](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L48)
+Defined in: [src/providers/groq/types.ts:48](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L48)
 
 Whether to enable parallel tool calls
 
@@ -103,7 +103,7 @@ Whether to enable parallel tool calls
 
 > `optional` **presence\_penalty**: `number`
 
-Defined in: [src/providers/groq/types.ts:45](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L45)
+Defined in: [src/providers/groq/types.ts:45](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L45)
 
 Presence penalty (-2.0 - 2.0)
 
@@ -113,7 +113,7 @@ Presence penalty (-2.0 - 2.0)
 
 > `optional` **reasoning\_effort**: `"low"` \| `"medium"` \| `"high"` \| `"none"`
 
-Defined in: [src/providers/groq/types.ts:69](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L69)
+Defined in: [src/providers/groq/types.ts:69](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L69)
 
 Reasoning effort for reasoning-capable models
 
@@ -123,7 +123,7 @@ Reasoning effort for reasoning-capable models
 
 > `optional` **reasoning\_format**: `"parsed"` \| `"raw"` \| `"hidden"`
 
-Defined in: [src/providers/groq/types.ts:72](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L72)
+Defined in: [src/providers/groq/types.ts:72](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L72)
 
 Reasoning format for reasoning-capable models
 
@@ -133,7 +133,7 @@ Reasoning format for reasoning-capable models
 
 > `optional` **response\_format**: [`GroqResponseFormat`](../type-aliases/groqresponseformat.md)
 
-Defined in: [src/providers/groq/types.ts:57](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L57)
+Defined in: [src/providers/groq/types.ts:57](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L57)
 
 Response format for structured output
 
@@ -143,7 +143,7 @@ Response format for structured output
 
 > `optional` **search\_settings**: [`GroqSearchSettings`](groqsearchsettings.md)
 
-Defined in: [src/providers/groq/types.ts:75](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L75)
+Defined in: [src/providers/groq/types.ts:75](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L75)
 
 Web search settings for search-enabled models
 
@@ -153,7 +153,7 @@ Web search settings for search-enabled models
 
 > `optional` **seed**: `number`
 
-Defined in: [src/providers/groq/types.ts:51](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L51)
+Defined in: [src/providers/groq/types.ts:51](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L51)
 
 Seed for deterministic sampling
 
@@ -163,7 +163,7 @@ Seed for deterministic sampling
 
 > `optional` **service\_tier**: `"flex"` \| `"on_demand"`
 
-Defined in: [src/providers/groq/types.ts:60](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L60)
+Defined in: [src/providers/groq/types.ts:60](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L60)
 
 Service tier selection
 
@@ -173,7 +173,7 @@ Service tier selection
 
 > `optional` **stop**: `string` \| `string`[]
 
-Defined in: [src/providers/groq/types.ts:39](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L39)
+Defined in: [src/providers/groq/types.ts:39](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L39)
 
 Custom stop sequences
 
@@ -183,7 +183,7 @@ Custom stop sequences
 
 > `optional` **temperature**: `number`
 
-Defined in: [src/providers/groq/types.ts:33](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L33)
+Defined in: [src/providers/groq/types.ts:33](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L33)
 
 Temperature for randomness (0.0 to 2.0). Note: Groq's API converts 0 to 1e-8 internally.
 
@@ -193,7 +193,7 @@ Temperature for randomness (0.0 to 2.0). Note: Groq's API converts 0 to 1e-8 int
 
 > `optional` **top\_logprobs**: `number`
 
-Defined in: [src/providers/groq/types.ts:66](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L66)
+Defined in: [src/providers/groq/types.ts:66](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L66)
 
 Number of top log probabilities to return (0-20)
 
@@ -203,7 +203,7 @@ Number of top log probabilities to return (0-20)
 
 > `optional` **top\_p**: `number`
 
-Defined in: [src/providers/groq/types.ts:36](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L36)
+Defined in: [src/providers/groq/types.ts:36](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L36)
 
 Top-p (nucleus) sampling (0.0 - 1.0)
 
@@ -213,6 +213,6 @@ Top-p (nucleus) sampling (0.0 - 1.0)
 
 > `optional` **user**: `string`
 
-Defined in: [src/providers/groq/types.ts:54](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L54)
+Defined in: [src/providers/groq/types.ts:54](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L54)
 
 User identifier for rate limit tracking

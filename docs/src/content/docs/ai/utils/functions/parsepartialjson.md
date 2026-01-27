@@ -12,7 +12,7 @@ title: "Function: parsePartialJson()"
 
 > **parsePartialJson**\<`T`\>(`json`): [`PartialParseResult`](../interfaces/partialparseresult.md)\<`T`\>
 
-Defined in: [src/utils/partial-json.ts:217](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/utils/partial-json.ts#L217)
+Defined in: [src/utils/partial-json.ts:217](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/utils/partial-json.ts#L217)
 
 Parses potentially incomplete JSON, returning as much as can be extracted.
 

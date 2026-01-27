@@ -10,7 +10,7 @@ title: "Interface: MemoryAdapterOptions"
 
 # Interface: MemoryAdapterOptions
 
-Defined in: [src/middleware/pubsub/types.ts:104](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L104)
+Defined in: [src/middleware/pubsub/types.ts:104](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L104)
 
 Options for memory adapter.
 
@@ -20,7 +20,7 @@ Options for memory adapter.
 
 > `optional` **maxStreams**: `number`
 
-Defined in: [src/middleware/pubsub/types.ts:109](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L109)
+Defined in: [src/middleware/pubsub/types.ts:109](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L109)
 
 Max concurrent streams allowed. Throws if exceeded.
 

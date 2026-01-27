@@ -10,7 +10,7 @@ title: "Interface: GroqDocument"
 
 # Interface: GroqDocument
 
-Defined in: [src/providers/groq/types.ts:95](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L95)
+Defined in: [src/providers/groq/types.ts:95](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L95)
 
 Document for RAG (retrieval-augmented generation).
 
@@ -20,7 +20,7 @@ Document for RAG (retrieval-augmented generation).
 
 > **content**: `string`
 
-Defined in: [src/providers/groq/types.ts:97](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L97)
+Defined in: [src/providers/groq/types.ts:97](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L97)
 
 Document content
 
@@ -30,7 +30,7 @@ Document content
 
 > `optional` **id**: `string`
 
-Defined in: [src/providers/groq/types.ts:99](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L99)
+Defined in: [src/providers/groq/types.ts:99](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L99)
 
 Optional document ID for citation
 
@@ -40,6 +40,6 @@ Optional document ID for citation
 
 > `optional` **title**: `string`
 
-Defined in: [src/providers/groq/types.ts:101](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L101)
+Defined in: [src/providers/groq/types.ts:101](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L101)
 
 Optional document title

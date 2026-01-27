@@ -10,7 +10,7 @@ title: "Interface: EmbeddingUsage"
 
 # Interface: EmbeddingUsage
 
-Defined in: [src/types/provider.ts:379](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L379)
+Defined in: [src/types/provider.ts:379](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/provider.ts#L379)
 
 Usage statistics for embedding operations.
 
@@ -20,6 +20,6 @@ Usage statistics for embedding operations.
 
 > **totalTokens**: `number`
 
-Defined in: [src/types/provider.ts:381](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L381)
+Defined in: [src/types/provider.ts:381](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/provider.ts#L381)
 
 Total tokens processed

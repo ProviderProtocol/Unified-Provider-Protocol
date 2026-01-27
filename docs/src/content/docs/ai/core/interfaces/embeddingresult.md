@@ -10,7 +10,7 @@ title: "Interface: EmbeddingResult"
 
 # Interface: EmbeddingResult
 
-Defined in: [src/types/embedding.ts:128](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L128)
+Defined in: [src/types/embedding.ts:128](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/embedding.ts#L128)
 
 Result from embed() call.
 
@@ -20,7 +20,7 @@ Result from embed() call.
 
 > **embeddings**: [`Embedding`](embedding.md)[]
 
-Defined in: [src/types/embedding.ts:130](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L130)
+Defined in: [src/types/embedding.ts:130](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/embedding.ts#L130)
 
 Embeddings in same order as inputs
 
@@ -30,7 +30,7 @@ Embeddings in same order as inputs
 
 > `optional` **metadata**: `Record`\<`string`, `unknown`\>
 
-Defined in: [src/types/embedding.ts:136](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L136)
+Defined in: [src/types/embedding.ts:136](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/embedding.ts#L136)
 
 Provider-specific response metadata
 
@@ -40,6 +40,6 @@ Provider-specific response metadata
 
 > **usage**: [`EmbeddingUsage`](embeddingusage.md)
 
-Defined in: [src/types/embedding.ts:133](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L133)
+Defined in: [src/types/embedding.ts:133](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/embedding.ts#L133)
 
 Usage statistics

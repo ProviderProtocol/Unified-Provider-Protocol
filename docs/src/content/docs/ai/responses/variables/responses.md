@@ -12,7 +12,7 @@ title: "Variable: responses"
 
 > `const` **responses**: `ResponsesProvider`
 
-Defined in: [src/providers/responses/index.ts:85](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/responses/index.ts#L85)
+Defined in: [src/providers/responses/index.ts:85](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/responses/index.ts#L85)
 
 OpenResponses provider singleton.
 

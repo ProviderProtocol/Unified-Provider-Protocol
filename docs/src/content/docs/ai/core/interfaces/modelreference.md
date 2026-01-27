@@ -10,7 +10,7 @@ title: "Interface: ModelReference"
 
 # Interface: ModelReference\<TOptions\>
 
-Defined in: [src/types/provider.ts:190](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L190)
+Defined in: [src/types/provider.ts:190](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/provider.ts#L190)
 
 A reference to a model, created by a provider factory.
 
@@ -39,7 +39,7 @@ Provider-specific options type
 
 > `readonly` **modelId**: `string`
 
-Defined in: [src/types/provider.ts:192](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L192)
+Defined in: [src/types/provider.ts:192](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/provider.ts#L192)
 
 The model identifier (e.g., 'gpt-4', 'claude-3-opus')
 
@@ -49,7 +49,7 @@ The model identifier (e.g., 'gpt-4', 'claude-3-opus')
 
 > `readonly` `optional` **options**: `TOptions`
 
-Defined in: [src/types/provider.ts:213](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L213)
+Defined in: [src/types/provider.ts:213](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/provider.ts#L213)
 
 The original options passed when creating this model reference.
 
@@ -62,7 +62,7 @@ to resolve the correct handler at request time, avoiding race conditions from sh
 
 > `readonly` **provider**: [`Provider`](provider.md)\<`TOptions`\>
 
-Defined in: [src/types/provider.ts:195](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L195)
+Defined in: [src/types/provider.ts:195](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/provider.ts#L195)
 
 The provider that created this reference
 
@@ -72,7 +72,7 @@ The provider that created this reference
 
 > `readonly` `optional` **providerConfig**: `Partial`\<[`ProviderConfig`](providerconfig.md)\>
 
-Defined in: [src/types/provider.ts:205](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/provider.ts#L205)
+Defined in: [src/types/provider.ts:205](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/provider.ts#L205)
 
 Optional provider-specific configuration that gets merged into request config.
 

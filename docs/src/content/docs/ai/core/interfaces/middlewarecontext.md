@@ -10,7 +10,7 @@ title: "Interface: MiddlewareContext"
 
 # Interface: MiddlewareContext
 
-Defined in: [src/types/middleware.ts:51](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L51)
+Defined in: [src/types/middleware.ts:52](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L52)
 
 Shared context passed to all middleware hooks.
 
@@ -38,7 +38,7 @@ const loggingMiddleware: Middleware = {
 
 > `optional` **endTime**: `number`
 
-Defined in: [src/types/middleware.ts:77](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L77)
+Defined in: [src/types/middleware.ts:78](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L78)
 
 Request end timestamp in milliseconds (set after completion)
 
@@ -48,7 +48,7 @@ Request end timestamp in milliseconds (set after completion)
 
 > `readonly` **modality**: [`MiddlewareModality`](../type-aliases/middlewaremodality.md)
 
-Defined in: [src/types/middleware.ts:53](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L53)
+Defined in: [src/types/middleware.ts:54](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L54)
 
 The modality being used
 
@@ -58,7 +58,7 @@ The modality being used
 
 > `readonly` **modelId**: `string`
 
-Defined in: [src/types/middleware.ts:56](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L56)
+Defined in: [src/types/middleware.ts:57](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L57)
 
 Model ID
 
@@ -68,7 +68,7 @@ Model ID
 
 > `readonly` **provider**: `string`
 
-Defined in: [src/types/middleware.ts:59](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L59)
+Defined in: [src/types/middleware.ts:60](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L60)
 
 Provider name
 
@@ -78,7 +78,7 @@ Provider name
 
 > **request**: [`AnyRequest`](../type-aliases/anyrequest.md)
 
-Defined in: [src/types/middleware.ts:65](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L65)
+Defined in: [src/types/middleware.ts:66](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L66)
 
 Request object (modality-specific, mutable for onRequest hook)
 
@@ -88,7 +88,7 @@ Request object (modality-specific, mutable for onRequest hook)
 
 > `optional` **response**: [`AnyResponse`](../type-aliases/anyresponse.md)
 
-Defined in: [src/types/middleware.ts:68](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L68)
+Defined in: [src/types/middleware.ts:69](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L69)
 
 Response object (populated after execution, mutable for onResponse hook)
 
@@ -98,7 +98,7 @@ Response object (populated after execution, mutable for onResponse hook)
 
 > `readonly` **startTime**: `number`
 
-Defined in: [src/types/middleware.ts:74](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L74)
+Defined in: [src/types/middleware.ts:75](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L75)
 
 Request start timestamp in milliseconds
 
@@ -108,7 +108,7 @@ Request start timestamp in milliseconds
 
 > `readonly` **state**: `Map`\<`string`, `unknown`\>
 
-Defined in: [src/types/middleware.ts:71](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L71)
+Defined in: [src/types/middleware.ts:72](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L72)
 
 Shared state across middleware - use for passing data between hooks
 
@@ -118,6 +118,6 @@ Shared state across middleware - use for passing data between hooks
 
 > `readonly` **streaming**: `boolean`
 
-Defined in: [src/types/middleware.ts:62](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L62)
+Defined in: [src/types/middleware.ts:63](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L63)
 
 Whether this is a streaming request

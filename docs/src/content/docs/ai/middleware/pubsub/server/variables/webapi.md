@@ -12,7 +12,7 @@ title: "Variable: webapi"
 
 > `const` **webapi**: `object`
 
-Defined in: [src/middleware/pubsub/server/webapi.ts:99](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/server/webapi.ts#L99)
+Defined in: [src/middleware/pubsub/server/webapi.ts:99](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/server/webapi.ts#L99)
 
 Web API adapter namespace for pub-sub server utilities.
 

@@ -10,7 +10,7 @@ title: "Interface: AnthropicBashTool"
 
 # Interface: AnthropicBashTool
 
-Defined in: [src/providers/anthropic/types.ts:961](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/anthropic/types.ts#L961)
+Defined in: [src/providers/anthropic/types.ts:961](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/anthropic/types.ts#L961)
 
 Bash tool for shell command execution.
 
@@ -34,7 +34,7 @@ const tool: AnthropicBashTool = {
 
 > **name**: `"bash"`
 
-Defined in: [src/providers/anthropic/types.ts:965](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/anthropic/types.ts#L965)
+Defined in: [src/providers/anthropic/types.ts:965](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/anthropic/types.ts#L965)
 
 Tool name - must be 'bash'
 
@@ -44,6 +44,6 @@ Tool name - must be 'bash'
 
 > **type**: `"bash_20250124"`
 
-Defined in: [src/providers/anthropic/types.ts:963](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/anthropic/types.ts#L963)
+Defined in: [src/providers/anthropic/types.ts:963](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/anthropic/types.ts#L963)
 
 Tool type identifier

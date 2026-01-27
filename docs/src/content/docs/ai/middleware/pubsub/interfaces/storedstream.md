@@ -10,7 +10,7 @@ title: "Interface: StoredStream"
 
 # Interface: StoredStream
 
-Defined in: [src/middleware/pubsub/types.ts:15](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L15)
+Defined in: [src/middleware/pubsub/types.ts:15](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L15)
 
 Stored stream state (in-flight only).
 
@@ -20,7 +20,7 @@ Stored stream state (in-flight only).
 
 > `readonly` **createdAt**: `number`
 
-Defined in: [src/middleware/pubsub/types.ts:17](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L17)
+Defined in: [src/middleware/pubsub/types.ts:17](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L17)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/middleware/pubsub/types.ts:17](https://github.com/ProviderProto
 
 > `readonly` **events**: readonly [`StreamEvent`](../../../core/interfaces/streamevent.md)[]
 
-Defined in: [src/middleware/pubsub/types.ts:18](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L18)
+Defined in: [src/middleware/pubsub/types.ts:18](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L18)
 
 ***
 
@@ -36,4 +36,4 @@ Defined in: [src/middleware/pubsub/types.ts:18](https://github.com/ProviderProto
 
 > `readonly` **streamId**: `string`
 
-Defined in: [src/middleware/pubsub/types.ts:16](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L16)
+Defined in: [src/middleware/pubsub/types.ts:16](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L16)

@@ -10,7 +10,7 @@ title: "Interface: CerebrasTool"
 
 # Interface: CerebrasTool
 
-Defined in: [src/providers/cerebras/types.ts:211](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/cerebras/types.ts#L211)
+Defined in: [src/providers/cerebras/types.ts:211](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/cerebras/types.ts#L211)
 
 Tool definition for the Cerebras API.
 
@@ -20,7 +20,7 @@ Tool definition for the Cerebras API.
 
 > **function**: `object`
 
-Defined in: [src/providers/cerebras/types.ts:213](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/cerebras/types.ts#L213)
+Defined in: [src/providers/cerebras/types.ts:213](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/cerebras/types.ts#L213)
 
 #### description
 
@@ -60,4 +60,4 @@ Defined in: [src/providers/cerebras/types.ts:213](https://github.com/ProviderPro
 
 > **type**: `"function"`
 
-Defined in: [src/providers/cerebras/types.ts:212](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/cerebras/types.ts#L212)
+Defined in: [src/providers/cerebras/types.ts:212](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/cerebras/types.ts#L212)

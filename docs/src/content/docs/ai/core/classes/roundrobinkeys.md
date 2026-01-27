@@ -10,7 +10,7 @@ title: "Class: RoundRobinKeys"
 
 # Class: RoundRobinKeys
 
-Defined in: [src/http/keys.ts:35](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/http/keys.ts#L35)
+Defined in: [src/http/keys.ts:35](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/http/keys.ts#L35)
 
 Distributes API requests across multiple keys using round-robin selection.
 
@@ -48,7 +48,7 @@ keys.getKey(); // Returns 'sk-key-1' (cycles back)
 
 > **new RoundRobinKeys**(`keys`): `RoundRobinKeys`
 
-Defined in: [src/http/keys.ts:45](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/http/keys.ts#L45)
+Defined in: [src/http/keys.ts:45](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/http/keys.ts#L45)
 
 Creates a new RoundRobinKeys instance.
 
@@ -74,7 +74,7 @@ When the keys array is empty
 
 > **getKey**(): `string`
 
-Defined in: [src/http/keys.ts:57](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/http/keys.ts#L57)
+Defined in: [src/http/keys.ts:57](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/http/keys.ts#L57)
 
 Returns the next key in the rotation sequence.
 

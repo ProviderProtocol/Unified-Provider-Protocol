@@ -10,7 +10,7 @@ title: "Interface: PubSubAdapter"
 
 # Interface: PubSubAdapter
 
-Defined in: [src/middleware/pubsub/types.ts:49](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L49)
+Defined in: [src/middleware/pubsub/types.ts:49](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L49)
 
 Storage adapter interface for pub-sub middleware.
 
@@ -24,7 +24,7 @@ their own storage on reconnect.
 
 > **append**(`streamId`, `event`): `Promise`\<`void`\>
 
-Defined in: [src/middleware/pubsub/types.ts:58](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L58)
+Defined in: [src/middleware/pubsub/types.ts:58](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L58)
 
 Appends an event to the stream (creates lazily if needed).
 
@@ -48,7 +48,7 @@ Appends an event to the stream (creates lazily if needed).
 
 > **exists**(`streamId`): `Promise`\<`boolean`\>
 
-Defined in: [src/middleware/pubsub/types.ts:53](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L53)
+Defined in: [src/middleware/pubsub/types.ts:53](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L53)
 
 Checks if a stream exists.
 
@@ -68,7 +68,7 @@ Checks if a stream exists.
 
 > **getEvents**(`streamId`): `Promise`\<[`StreamEvent`](../../../core/interfaces/streamevent.md)[]\>
 
-Defined in: [src/middleware/pubsub/types.ts:63](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L63)
+Defined in: [src/middleware/pubsub/types.ts:63](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L63)
 
 Fetches all events for replay.
 
@@ -88,7 +88,7 @@ Fetches all events for replay.
 
 > **publish**(`streamId`, `event`): `void`
 
-Defined in: [src/middleware/pubsub/types.ts:77](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L77)
+Defined in: [src/middleware/pubsub/types.ts:77](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L77)
 
 Publishes event to all subscribers.
 
@@ -112,7 +112,7 @@ Publishes event to all subscribers.
 
 > **remove**(`streamId`): `Promise`\<`void`\>
 
-Defined in: [src/middleware/pubsub/types.ts:82](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L82)
+Defined in: [src/middleware/pubsub/types.ts:82](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L82)
 
 Notifies subscribers and removes stream from storage.
 
@@ -132,7 +132,7 @@ Notifies subscribers and removes stream from storage.
 
 > **subscribe**(`streamId`, `onEvent`, `onComplete`): [`Unsubscribe`](../type-aliases/unsubscribe.md)
 
-Defined in: [src/middleware/pubsub/types.ts:68](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L68)
+Defined in: [src/middleware/pubsub/types.ts:68](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L68)
 
 Subscribes to live events (creates lazily if needed).
 

@@ -10,7 +10,7 @@ title: "Interface: EmbedOptions"
 
 # Interface: EmbedOptions
 
-Defined in: [src/types/embedding.ts:85](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L85)
+Defined in: [src/types/embedding.ts:85](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/embedding.ts#L85)
 
 Options for embed() calls.
 
@@ -20,7 +20,7 @@ Options for embed() calls.
 
 > `optional` **batchSize**: `number`
 
-Defined in: [src/types/embedding.ts:93](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L93)
+Defined in: [src/types/embedding.ts:93](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/embedding.ts#L93)
 
 Inputs per batch when chunked (default: provider max)
 
@@ -30,7 +30,7 @@ Inputs per batch when chunked (default: provider max)
 
 > `optional` **chunked**: `boolean`
 
-Defined in: [src/types/embedding.ts:90](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L90)
+Defined in: [src/types/embedding.ts:90](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/embedding.ts#L90)
 
 Enable chunked processing with progress for large input sets.
 When true, returns EmbeddingStream instead of Promise.
@@ -41,7 +41,7 @@ When true, returns EmbeddingStream instead of Promise.
 
 > `optional` **concurrency**: `number`
 
-Defined in: [src/types/embedding.ts:96](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L96)
+Defined in: [src/types/embedding.ts:96](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/embedding.ts#L96)
 
 Concurrent batch limit when chunked (default: 1)
 
@@ -51,7 +51,7 @@ Concurrent batch limit when chunked (default: 1)
 
 > `optional` **inputType**: [`EmbeddingInputType`](../type-aliases/embeddinginputtype.md)
 
-Defined in: [src/types/embedding.ts:102](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L102)
+Defined in: [src/types/embedding.ts:102](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/embedding.ts#L102)
 
 Hint for embedding optimization (provider-specific)
 
@@ -61,6 +61,6 @@ Hint for embedding optimization (provider-specific)
 
 > `optional` **signal**: `AbortSignal`
 
-Defined in: [src/types/embedding.ts:99](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/embedding.ts#L99)
+Defined in: [src/types/embedding.ts:99](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/embedding.ts#L99)
 
 Abort signal for cancellation

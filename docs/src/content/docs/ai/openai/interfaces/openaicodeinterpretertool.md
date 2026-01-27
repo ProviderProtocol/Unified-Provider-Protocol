@@ -10,7 +10,7 @@ title: "Interface: OpenAICodeInterpreterTool"
 
 # Interface: OpenAICodeInterpreterTool
 
-Defined in: [src/providers/openai/types.ts:1212](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openai/types.ts#L1212)
+Defined in: [src/providers/openai/types.ts:1212](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/openai/types.ts#L1212)
 
 Code interpreter tool for Responses API
 Allows the model to write and run Python code
@@ -21,7 +21,7 @@ Allows the model to write and run Python code
 
 > `optional` **code\_interpreter**: `object`
 
-Defined in: [src/providers/openai/types.ts:1215](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openai/types.ts#L1215)
+Defined in: [src/providers/openai/types.ts:1215](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/openai/types.ts#L1215)
 
 Code interpreter configuration
 
@@ -37,4 +37,4 @@ Container configuration
 
 > **type**: `"code_interpreter"`
 
-Defined in: [src/providers/openai/types.ts:1213](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openai/types.ts#L1213)
+Defined in: [src/providers/openai/types.ts:1213](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/openai/types.ts#L1213)

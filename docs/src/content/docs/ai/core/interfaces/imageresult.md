@@ -10,7 +10,7 @@ title: "Interface: ImageResult"
 
 # Interface: ImageResult
 
-Defined in: [src/types/image.ts:123](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/image.ts#L123)
+Defined in: [src/types/image.ts:123](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/image.ts#L123)
 
 Result from generate() or edit() calls.
 
@@ -20,7 +20,7 @@ Result from generate() or edit() calls.
 
 > **images**: [`GeneratedImage`](generatedimage.md)[]
 
-Defined in: [src/types/image.ts:125](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/image.ts#L125)
+Defined in: [src/types/image.ts:125](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/image.ts#L125)
 
 Generated images
 
@@ -30,7 +30,7 @@ Generated images
 
 > `optional` **metadata**: `Record`\<`string`, `unknown`\>
 
-Defined in: [src/types/image.ts:128](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/image.ts#L128)
+Defined in: [src/types/image.ts:128](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/image.ts#L128)
 
 Provider-specific response metadata
 
@@ -40,6 +40,6 @@ Provider-specific response metadata
 
 > `optional` **usage**: [`ImageUsage`](imageusage.md)
 
-Defined in: [src/types/image.ts:131](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/image.ts#L131)
+Defined in: [src/types/image.ts:131](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/image.ts#L131)
 
 Usage/billing information

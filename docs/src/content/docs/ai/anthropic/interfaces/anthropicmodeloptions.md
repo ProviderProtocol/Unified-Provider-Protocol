@@ -10,7 +10,7 @@ title: "Interface: AnthropicModelOptions"
 
 # Interface: AnthropicModelOptions
 
-Defined in: [src/providers/anthropic/index.ts:29](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/anthropic/index.ts#L29)
+Defined in: [src/providers/anthropic/index.ts:29](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/anthropic/index.ts#L29)
 
 Options for configuring an Anthropic model reference.
 
@@ -41,7 +41,7 @@ const modelWithCustomBeta = anthropic('claude-sonnet-4-20250514', {
 
 > `optional` **betas**: `string`[]
 
-Defined in: [src/providers/anthropic/index.ts:36](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/anthropic/index.ts#L36)
+Defined in: [src/providers/anthropic/index.ts:36](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/anthropic/index.ts#L36)
 
 Beta features to enable for this model.
 

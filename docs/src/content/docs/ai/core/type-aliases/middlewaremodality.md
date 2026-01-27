@@ -12,6 +12,6 @@ title: "Type Alias: MiddlewareModality"
 
 > **MiddlewareModality** = `"llm"` \| `"embedding"` \| `"image"`
 
-Defined in: [src/types/middleware.ts:19](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L19)
+Defined in: [src/types/middleware.ts:20](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L20)
 
 Modality discriminator for middleware context.

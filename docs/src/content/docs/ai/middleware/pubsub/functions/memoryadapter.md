@@ -12,7 +12,7 @@ title: "Function: memoryAdapter()"
 
 > **memoryAdapter**(`options`): [`PubSubAdapter`](../interfaces/pubsubadapter.md)
 
-Defined in: [src/middleware/pubsub/memory-adapter.ts:52](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/memory-adapter.ts#L52)
+Defined in: [src/middleware/pubsub/memory-adapter.ts:52](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/memory-adapter.ts#L52)
 
 Creates an in-memory storage adapter for pub-sub middleware.
 

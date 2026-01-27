@@ -10,7 +10,7 @@ title: "Interface: PubSubOptions"
 
 # Interface: PubSubOptions
 
-Defined in: [src/middleware/pubsub/types.ts:88](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L88)
+Defined in: [src/middleware/pubsub/types.ts:88](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L88)
 
 Options for pub-sub middleware.
 
@@ -20,7 +20,7 @@ Options for pub-sub middleware.
 
 > `optional` **adapter**: [`PubSubAdapter`](pubsubadapter.md)
 
-Defined in: [src/middleware/pubsub/types.ts:93](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L93)
+Defined in: [src/middleware/pubsub/types.ts:93](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L93)
 
 Storage adapter instance.
 
@@ -36,6 +36,6 @@ memoryAdapter()
 
 > `optional` **streamId**: `string`
 
-Defined in: [src/middleware/pubsub/types.ts:98](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/middleware/pubsub/types.ts#L98)
+Defined in: [src/middleware/pubsub/types.ts:98](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/middleware/pubsub/types.ts#L98)
 
 Stream identifier for pub-sub behavior.

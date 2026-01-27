@@ -10,7 +10,7 @@ title: "Class: AssistantMessage"
 
 # Class: AssistantMessage
 
-Defined in: [src/types/messages.ts:260](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L260)
+Defined in: [src/types/messages.ts:263](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L263)
 
 Assistant response message.
 
@@ -40,7 +40,7 @@ const msg = new AssistantMessage(
 
 > **new AssistantMessage**(`content`, `toolCalls?`, `options?`): `AssistantMessage`
 
-Defined in: [src/types/messages.ts:277](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L277)
+Defined in: [src/types/messages.ts:280](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L280)
 
 Creates a new assistant message.
 
@@ -78,7 +78,7 @@ Optional message ID and metadata
 
 > `readonly` **content**: [`AssistantContent`](../type-aliases/assistantcontent.md)[]
 
-Defined in: [src/types/messages.ts:265](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L265)
+Defined in: [src/types/messages.ts:268](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L268)
 
 Content blocks in this message
 
@@ -88,7 +88,7 @@ Content blocks in this message
 
 > `readonly` **id**: `string`
 
-Defined in: [src/types/messages.ts:121](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L121)
+Defined in: [src/types/messages.ts:124](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L124)
 
 Unique message identifier
 
@@ -102,7 +102,7 @@ Unique message identifier
 
 > `readonly` `optional` **metadata**: [`MessageMetadata`](../interfaces/messagemetadata.md)
 
-Defined in: [src/types/messages.ts:127](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L127)
+Defined in: [src/types/messages.ts:130](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L130)
 
 Provider-specific metadata, namespaced by provider name
 
@@ -116,7 +116,7 @@ Provider-specific metadata, namespaced by provider name
 
 > `readonly` **timestamp**: `Date`
 
-Defined in: [src/types/messages.ts:124](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L124)
+Defined in: [src/types/messages.ts:127](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L127)
 
 Timestamp when the message was created
 
@@ -130,7 +130,7 @@ Timestamp when the message was created
 
 > `readonly` `optional` **toolCalls**: [`ToolCall`](../interfaces/toolcall.md)[]
 
-Defined in: [src/types/messages.ts:268](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L268)
+Defined in: [src/types/messages.ts:271](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L271)
 
 Tool calls requested by the model (if any)
 
@@ -140,7 +140,7 @@ Tool calls requested by the model (if any)
 
 > `readonly` **type**: `"assistant"`
 
-Defined in: [src/types/messages.ts:262](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L262)
+Defined in: [src/types/messages.ts:265](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L265)
 
 Message type discriminator
 
@@ -156,7 +156,7 @@ Message type discriminator
 
 > **get** **audio**(): [`AudioBlock`](../interfaces/audioblock.md)[]
 
-Defined in: [src/types/messages.ts:177](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L177)
+Defined in: [src/types/messages.ts:180](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L180)
 
 All audio content blocks in this message.
 
@@ -176,7 +176,7 @@ All audio content blocks in this message.
 
 > **get** **documents**(): [`DocumentBlock`](../interfaces/documentblock.md)[]
 
-Defined in: [src/types/messages.ts:170](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L170)
+Defined in: [src/types/messages.ts:173](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L173)
 
 All document content blocks in this message.
 
@@ -196,7 +196,7 @@ All document content blocks in this message.
 
 > **get** **hasToolCalls**(): `boolean`
 
-Defined in: [src/types/messages.ts:298](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L298)
+Defined in: [src/types/messages.ts:301](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L301)
 
 Whether this message contains tool call requests.
 
@@ -212,7 +212,7 @@ Whether this message contains tool call requests.
 
 > **get** **images**(): [`ImageBlock`](../interfaces/imageblock.md)[]
 
-Defined in: [src/types/messages.ts:163](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L163)
+Defined in: [src/types/messages.ts:166](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L166)
 
 All image content blocks in this message.
 
@@ -232,7 +232,7 @@ All image content blocks in this message.
 
 > **get** **reasoning**(): [`ReasoningBlock`](../interfaces/reasoningblock.md)[]
 
-Defined in: [src/types/messages.ts:192](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L192)
+Defined in: [src/types/messages.ts:195](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L195)
 
 All reasoning/thinking content blocks in this message.
 Available when using extended thinking models.
@@ -253,7 +253,7 @@ Available when using extended thinking models.
 
 > **get** **text**(): `string`
 
-Defined in: [src/types/messages.ts:153](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L153)
+Defined in: [src/types/messages.ts:156](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L156)
 
 Concatenated text content from all text blocks.
 Blocks are joined with double newlines.
@@ -274,7 +274,7 @@ Blocks are joined with double newlines.
 
 > **get** **video**(): [`VideoBlock`](../interfaces/videoblock.md)[]
 
-Defined in: [src/types/messages.ts:184](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L184)
+Defined in: [src/types/messages.ts:187](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L187)
 
 All video content blocks in this message.
 
@@ -292,7 +292,7 @@ All video content blocks in this message.
 
 > `protected` **getContent**(): [`ContentBlock`](../type-aliases/contentblock.md)[]
 
-Defined in: [src/types/messages.ts:291](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/messages.ts#L291)
+Defined in: [src/types/messages.ts:294](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/messages.ts#L294)
 
 Returns the content blocks for this message.
 Implemented by subclasses to provide type-specific content.

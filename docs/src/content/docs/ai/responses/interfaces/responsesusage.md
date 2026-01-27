@@ -10,7 +10,7 @@ title: "Interface: ResponsesUsage"
 
 # Interface: ResponsesUsage
 
-Defined in: [src/providers/responses/types.ts:468](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/responses/types.ts#L468)
+Defined in: [src/providers/responses/types.ts:468](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/responses/types.ts#L468)
 
 Token usage statistics
 
@@ -20,7 +20,7 @@ Token usage statistics
 
 > **input\_tokens**: `number`
 
-Defined in: [src/providers/responses/types.ts:469](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/responses/types.ts#L469)
+Defined in: [src/providers/responses/types.ts:469](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/responses/types.ts#L469)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/providers/responses/types.ts:469](https://github.com/ProviderPr
 
 > `optional` **input\_tokens\_details**: `object`
 
-Defined in: [src/providers/responses/types.ts:472](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/responses/types.ts#L472)
+Defined in: [src/providers/responses/types.ts:472](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/responses/types.ts#L472)
 
 #### audio\_tokens?
 
@@ -52,7 +52,7 @@ Defined in: [src/providers/responses/types.ts:472](https://github.com/ProviderPr
 
 > **output\_tokens**: `number`
 
-Defined in: [src/providers/responses/types.ts:470](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/responses/types.ts#L470)
+Defined in: [src/providers/responses/types.ts:470](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/responses/types.ts#L470)
 
 ***
 
@@ -60,7 +60,7 @@ Defined in: [src/providers/responses/types.ts:470](https://github.com/ProviderPr
 
 > `optional` **output\_tokens\_details**: `object`
 
-Defined in: [src/providers/responses/types.ts:478](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/responses/types.ts#L478)
+Defined in: [src/providers/responses/types.ts:478](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/responses/types.ts#L478)
 
 #### reasoning\_tokens?
 
@@ -76,4 +76,4 @@ Defined in: [src/providers/responses/types.ts:478](https://github.com/ProviderPr
 
 > **total\_tokens**: `number`
 
-Defined in: [src/providers/responses/types.ts:471](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/responses/types.ts#L471)
+Defined in: [src/providers/responses/types.ts:471](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/responses/types.ts#L471)

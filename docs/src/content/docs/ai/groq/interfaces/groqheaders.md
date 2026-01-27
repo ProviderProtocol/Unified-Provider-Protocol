@@ -10,7 +10,7 @@ title: "Interface: GroqHeaders"
 
 # Interface: GroqHeaders
 
-Defined in: [src/providers/groq/types.ts:357](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L357)
+Defined in: [src/providers/groq/types.ts:357](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L357)
 
 Groq-specific HTTP headers for API requests.
 
@@ -32,6 +32,6 @@ const headers: GroqHeaders = {
 
 > `optional` **X-Request-Id**: `string`
 
-Defined in: [src/providers/groq/types.ts:359](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L359)
+Defined in: [src/providers/groq/types.ts:359](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L359)
 
 Client-generated request ID for tracing

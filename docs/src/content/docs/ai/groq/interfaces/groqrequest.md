@@ -10,7 +10,7 @@ title: "Interface: GroqRequest"
 
 # Interface: GroqRequest
 
-Defined in: [src/providers/groq/types.ts:131](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L131)
+Defined in: [src/providers/groq/types.ts:131](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L131)
 
 Request body for the Groq Chat Completions API.
 
@@ -20,7 +20,7 @@ Request body for the Groq Chat Completions API.
 
 > `optional` **citation\_options**: [`GroqCitationOptions`](groqcitationoptions.md)
 
-Defined in: [src/providers/groq/types.ts:156](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L156)
+Defined in: [src/providers/groq/types.ts:156](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L156)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: [src/providers/groq/types.ts:156](https://github.com/ProviderProtoco
 
 > `optional` **documents**: [`GroqDocument`](groqdocument.md)[]
 
-Defined in: [src/providers/groq/types.ts:155](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L155)
+Defined in: [src/providers/groq/types.ts:155](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L155)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [src/providers/groq/types.ts:155](https://github.com/ProviderProtoco
 
 > `optional` **frequency\_penalty**: `number`
 
-Defined in: [src/providers/groq/types.ts:142](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L142)
+Defined in: [src/providers/groq/types.ts:142](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L142)
 
 ***
 
@@ -44,7 +44,7 @@ Defined in: [src/providers/groq/types.ts:142](https://github.com/ProviderProtoco
 
 > `optional` **logprobs**: `boolean`
 
-Defined in: [src/providers/groq/types.ts:150](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L150)
+Defined in: [src/providers/groq/types.ts:150](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L150)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [src/providers/groq/types.ts:150](https://github.com/ProviderProtoco
 
 > `optional` **max\_completion\_tokens**: `number`
 
-Defined in: [src/providers/groq/types.ts:140](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L140)
+Defined in: [src/providers/groq/types.ts:140](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L140)
 
 ***
 
@@ -60,7 +60,7 @@ Defined in: [src/providers/groq/types.ts:140](https://github.com/ProviderProtoco
 
 > `optional` **max\_tokens**: `number`
 
-Defined in: [src/providers/groq/types.ts:139](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L139)
+Defined in: [src/providers/groq/types.ts:139](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L139)
 
 ***
 
@@ -68,7 +68,7 @@ Defined in: [src/providers/groq/types.ts:139](https://github.com/ProviderProtoco
 
 > **messages**: [`GroqMessage`](../type-aliases/groqmessage.md)[]
 
-Defined in: [src/providers/groq/types.ts:133](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L133)
+Defined in: [src/providers/groq/types.ts:133](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L133)
 
 ***
 
@@ -76,7 +76,7 @@ Defined in: [src/providers/groq/types.ts:133](https://github.com/ProviderProtoco
 
 > **model**: `string`
 
-Defined in: [src/providers/groq/types.ts:132](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L132)
+Defined in: [src/providers/groq/types.ts:132](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L132)
 
 ***
 
@@ -84,7 +84,7 @@ Defined in: [src/providers/groq/types.ts:132](https://github.com/ProviderProtoco
 
 > `optional` **parallel\_tool\_calls**: `boolean`
 
-Defined in: [src/providers/groq/types.ts:147](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L147)
+Defined in: [src/providers/groq/types.ts:147](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L147)
 
 ***
 
@@ -92,7 +92,7 @@ Defined in: [src/providers/groq/types.ts:147](https://github.com/ProviderProtoco
 
 > `optional` **presence\_penalty**: `number`
 
-Defined in: [src/providers/groq/types.ts:141](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L141)
+Defined in: [src/providers/groq/types.ts:141](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L141)
 
 ***
 
@@ -100,7 +100,7 @@ Defined in: [src/providers/groq/types.ts:141](https://github.com/ProviderProtoco
 
 > `optional` **reasoning\_effort**: `string`
 
-Defined in: [src/providers/groq/types.ts:152](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L152)
+Defined in: [src/providers/groq/types.ts:152](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L152)
 
 ***
 
@@ -108,7 +108,7 @@ Defined in: [src/providers/groq/types.ts:152](https://github.com/ProviderProtoco
 
 > `optional` **reasoning\_format**: `string`
 
-Defined in: [src/providers/groq/types.ts:153](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L153)
+Defined in: [src/providers/groq/types.ts:153](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L153)
 
 ***
 
@@ -116,7 +116,7 @@ Defined in: [src/providers/groq/types.ts:153](https://github.com/ProviderProtoco
 
 > `optional` **response\_format**: [`GroqResponseFormat`](../type-aliases/groqresponseformat.md)
 
-Defined in: [src/providers/groq/types.ts:148](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L148)
+Defined in: [src/providers/groq/types.ts:148](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L148)
 
 ***
 
@@ -124,7 +124,7 @@ Defined in: [src/providers/groq/types.ts:148](https://github.com/ProviderProtoco
 
 > `optional` **search\_settings**: [`GroqSearchSettings`](groqsearchsettings.md)
 
-Defined in: [src/providers/groq/types.ts:154](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L154)
+Defined in: [src/providers/groq/types.ts:154](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L154)
 
 ***
 
@@ -132,7 +132,7 @@ Defined in: [src/providers/groq/types.ts:154](https://github.com/ProviderProtoco
 
 > `optional` **seed**: `number`
 
-Defined in: [src/providers/groq/types.ts:144](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L144)
+Defined in: [src/providers/groq/types.ts:144](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L144)
 
 ***
 
@@ -140,7 +140,7 @@ Defined in: [src/providers/groq/types.ts:144](https://github.com/ProviderProtoco
 
 > `optional` **service\_tier**: `string`
 
-Defined in: [src/providers/groq/types.ts:149](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L149)
+Defined in: [src/providers/groq/types.ts:149](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L149)
 
 ***
 
@@ -148,7 +148,7 @@ Defined in: [src/providers/groq/types.ts:149](https://github.com/ProviderProtoco
 
 > `optional` **stop**: `string` \| `string`[]
 
-Defined in: [src/providers/groq/types.ts:138](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L138)
+Defined in: [src/providers/groq/types.ts:138](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L138)
 
 ***
 
@@ -156,7 +156,7 @@ Defined in: [src/providers/groq/types.ts:138](https://github.com/ProviderProtoco
 
 > `optional` **stream**: `boolean`
 
-Defined in: [src/providers/groq/types.ts:136](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L136)
+Defined in: [src/providers/groq/types.ts:136](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L136)
 
 ***
 
@@ -164,7 +164,7 @@ Defined in: [src/providers/groq/types.ts:136](https://github.com/ProviderProtoco
 
 > `optional` **stream\_options**: `object`
 
-Defined in: [src/providers/groq/types.ts:137](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L137)
+Defined in: [src/providers/groq/types.ts:137](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L137)
 
 #### include\_usage?
 
@@ -176,7 +176,7 @@ Defined in: [src/providers/groq/types.ts:137](https://github.com/ProviderProtoco
 
 > `optional` **temperature**: `number`
 
-Defined in: [src/providers/groq/types.ts:134](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L134)
+Defined in: [src/providers/groq/types.ts:134](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L134)
 
 ***
 
@@ -184,7 +184,7 @@ Defined in: [src/providers/groq/types.ts:134](https://github.com/ProviderProtoco
 
 > `optional` **tool\_choice**: [`GroqToolChoice`](../type-aliases/groqtoolchoice.md)
 
-Defined in: [src/providers/groq/types.ts:146](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L146)
+Defined in: [src/providers/groq/types.ts:146](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L146)
 
 ***
 
@@ -192,7 +192,7 @@ Defined in: [src/providers/groq/types.ts:146](https://github.com/ProviderProtoco
 
 > `optional` **tools**: [`GroqTool`](groqtool.md)[]
 
-Defined in: [src/providers/groq/types.ts:145](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L145)
+Defined in: [src/providers/groq/types.ts:145](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L145)
 
 ***
 
@@ -200,7 +200,7 @@ Defined in: [src/providers/groq/types.ts:145](https://github.com/ProviderProtoco
 
 > `optional` **top\_logprobs**: `number`
 
-Defined in: [src/providers/groq/types.ts:151](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L151)
+Defined in: [src/providers/groq/types.ts:151](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L151)
 
 ***
 
@@ -208,7 +208,7 @@ Defined in: [src/providers/groq/types.ts:151](https://github.com/ProviderProtoco
 
 > `optional` **top\_p**: `number`
 
-Defined in: [src/providers/groq/types.ts:135](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L135)
+Defined in: [src/providers/groq/types.ts:135](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L135)
 
 ***
 
@@ -216,4 +216,4 @@ Defined in: [src/providers/groq/types.ts:135](https://github.com/ProviderProtoco
 
 > `optional` **user**: `string`
 
-Defined in: [src/providers/groq/types.ts:143](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/groq/types.ts#L143)
+Defined in: [src/providers/groq/types.ts:143](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/groq/types.ts#L143)

@@ -10,7 +10,7 @@ title: "Interface: StreamContext"
 
 # Interface: StreamContext
 
-Defined in: [src/types/middleware.ts:101](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L101)
+Defined in: [src/types/middleware.ts:102](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L102)
 
 Context for stream event hooks.
 
@@ -39,6 +39,6 @@ const filterMiddleware: Middleware = {
 
 > `readonly` **state**: `Map`\<`string`, `unknown`\>
 
-Defined in: [src/types/middleware.ts:103](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/types/middleware.ts#L103)
+Defined in: [src/types/middleware.ts:104](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/types/middleware.ts#L104)
 
 Shared state (same reference as MiddlewareContext.state)

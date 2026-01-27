@@ -10,7 +10,7 @@ title: "Interface: OpenAICompletionsWebSearchUserLocation"
 
 # Interface: OpenAICompletionsWebSearchUserLocation
 
-Defined in: [src/providers/openai/types.ts:78](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openai/types.ts#L78)
+Defined in: [src/providers/openai/types.ts:78](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/openai/types.ts#L78)
 
 User location for web search context in the Chat Completions API.
 
@@ -27,7 +27,7 @@ In the Completions API, location fields are nested under an `approximate` object
 
 > **approximate**: `object`
 
-Defined in: [src/providers/openai/types.ts:82](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openai/types.ts#L82)
+Defined in: [src/providers/openai/types.ts:82](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/openai/types.ts#L82)
 
 Approximate location details
 
@@ -61,6 +61,6 @@ IANA timezone (e.g., "America/New_York")
 
 > **type**: `"approximate"`
 
-Defined in: [src/providers/openai/types.ts:80](https://github.com/ProviderProtocol/ai/blob/6f2d4a4a826c226dbc802f693f1242d98ad92fae/src/providers/openai/types.ts#L80)
+Defined in: [src/providers/openai/types.ts:80](https://github.com/ProviderProtocol/ai/blob/29e09700edf4843264a00104f273a6daebc22804/src/providers/openai/types.ts#L80)
 
 Location type - must be 'approximate'
